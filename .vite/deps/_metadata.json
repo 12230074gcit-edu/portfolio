@@ -1,0 +1,60 @@
+{
+  "hash": "575860c3",
+  "configHash": "1ca8a1a7",
+  "lockfileHash": "eae5faf0",
+  "browserHash": "67addff0",
+  "optimized": {
+    "gsap": {
+      "src": "../../node_modules/gsap/index.js",
+      "file": "gsap.js",
+      "fileHash": "86340e00",
+      "needsInterop": false
+    },
+    "gsap/MotionPathPlugin": {
+      "src": "../../node_modules/gsap/MotionPathPlugin.js",
+      "file": "gsap_MotionPathPlugin.js",
+      "fileHash": "8a087132",
+      "needsInterop": false
+    },
+    "gsap/ScrollTrigger": {
+      "src": "../../node_modules/gsap/ScrollTrigger.js",
+      "file": "gsap_ScrollTrigger.js",
+      "fileHash": "fddf83b9",
+      "needsInterop": false
+    },
+    "gsap/flip": {
+      "src": "../../node_modules/gsap/flip.js",
+      "file": "gsap_flip.js",
+      "fileHash": "996eca41",
+      "needsInterop": false
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "446bacf6",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "6fc1d68d",
+      "needsInterop": true
+    },
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "556cf65d",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "matrix-DgZRbHrz": {
+      "file": "matrix-DgZRbHrz.js",
+      "isDynamicEntry": false
+    },
+    "react-Na5-BvaJ": {
+      "file": "react-Na5-BvaJ.js",
+      "isDynamicEntry": false
+    }
+  }
+}
