@@ -65,54 +65,70 @@ export default function ProjectsSection() {
         },
       });
 
+      // Set initial states
       cards.forEach((card, i) => {
         gsap.set(card, {
-          y: 0,
           opacity: i === 0 ? 1 : 0,
+          zIndex: projects.length - i,
         });
+        gsap.set(flips[i], {
+          rotateY: i === 0 ? 0 : 90,
+          transformPerspective: 1500,
+          transformOrigin: "center center",
+        });
+      });
 
+      // Animate through cards with smooth 3D flip
+      cards.forEach((card, i) => {
         if (i === 0) return;
 
-        const baseTime = i * 1.2;
+        const baseTime = i * 1.5;
 
-        // Bring current card
+        // Flip out previous card
         tl.to(
-          card,
+          flips[i - 1],
           {
-            opacity: 1,
+            rotateY: -90,
             duration: 0.8,
-            ease: "power2.out",
+            ease: "power3.inOut",
           },
           baseTime
         );
 
-        // Fade previous card
+        // Fade out previous card
         tl.to(
           cards[i - 1],
           {
             opacity: 0,
-            duration: 0.8,
-            ease: "power2.out",
+            duration: 0.6,
+            ease: "power2.inOut",
           },
-          baseTime
+          baseTime + 0.2
         );
 
-        // 3D flip entrance
+        // Bring in current card
+        tl.to(
+          cards[i],
+          {
+            opacity: 1,
+            duration: 0.6,
+            ease: "power2.inOut",
+          },
+          baseTime + 0.3
+        );
+
+        // Flip in current card
         tl.fromTo(
           flips[i],
           {
-            rotateX: -90,
-            opacity: 0,
-            transformPerspective: 2000,
+            rotateY: 90,
           },
           {
-            rotateX: 0,
-            opacity: 1,
+            rotateY: 0,
             duration: 0.8,
-            ease: "power2.out",
-            force3D: true,
+            ease: "power3.inOut",
           },
-          baseTime + 0.1
+          baseTime + 0.4
         );
       });
     }, sectionRef);
@@ -156,6 +172,8 @@ export default function ProjectsSection() {
           width: "min(720px, 90vw)",
           height: "520px",
           margin: "60px auto",
+          perspective: "1500px",
+          perspectiveOrigin: "center center",
         }}
       >
         {projects.map((project, i) => (

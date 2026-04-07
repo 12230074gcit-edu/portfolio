@@ -100,7 +100,7 @@ export default function ContactSection() {
       id="contact"
       ref={sectionRef}
       style={{
-        minHeight: "100vh",
+        minHeight: "80vh",
         position: "relative",
         zIndex: 5,
         display: "flex",
@@ -109,7 +109,7 @@ export default function ContactSection() {
         textAlign: "center",
         color: "#fff",
         fontFamily: "'Montserrat', sans-serif",
-        padding: "100px 40px",
+        padding: "60px 40px",
       }}
     >
       {/* Background glow */}

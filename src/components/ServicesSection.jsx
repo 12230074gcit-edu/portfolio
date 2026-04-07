@@ -93,8 +93,8 @@ export default function ServicesSection() {
       ref={sectionRef}
       id="services-section"
       style={{
-        minHeight: "100vh",
-        padding: "120px 80px",
+        minHeight: "auto",
+        padding: "80px 80px 40px",
         color: "#fff",
         position: "relative",
         zIndex: 5,
@@ -116,7 +116,7 @@ export default function ServicesSection() {
       />
 
       {/* Title */}
-      <div style={{ textAlign: "center", marginBottom: "100px" }}>
+      <div style={{ textAlign: "center", marginBottom: "60px" }}>
         <h1
           className="services-title"
           style={{
