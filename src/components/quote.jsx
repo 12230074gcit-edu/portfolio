@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Flip } from 'gsap/Flip';
 
-gsap.registerPlugin(ScrollTrigger, Flip);
+gsap.registerPlugin(ScrollTrigger);
 
 export const QuoteSection = () => {
   const sectionRef = useRef(null);
@@ -15,28 +14,29 @@ export const QuoteSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Flip hat into this section
+      // Animate hat into this section
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top 70%',
         onEnter: () => {
           const hat = document.getElementById('shared-hat');
-          if (!hat) return;
+          if (!hat || !hatTargetRef.current) return;
 
+          // Get target position
+          const targetRect = hatTargetRef.current.getBoundingClientRect();
+          
           gsap.killTweensOf(hat);
-          const state = Flip.getState(hat);
-          hatTargetRef.current.appendChild(hat);
-
-          Flip.from(state, {
+          gsap.to(hat, {
+            x: targetRect.left + targetRect.width / 2 - window.innerWidth / 2,
+            y: targetRect.top + targetRect.height / 2 - 100,
+            scale: 0.8,
             duration: 1.5,
             ease: 'power3.inOut',
-            absolute: true,
-            scale: true,
             onComplete: () => {
               // Gentle floating
               gsap.to(hat, {
                 duration: 4,
-                y: -15,
+                y: '+=15',
                 rotation: 5,
                 repeat: -1,
                 yoyo: true,
