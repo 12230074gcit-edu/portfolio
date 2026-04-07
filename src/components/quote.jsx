@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Flip } from 'gsap/flip';
+import { Flip } from 'gsap/Flip';
 
 gsap.registerPlugin(ScrollTrigger, Flip);
 
@@ -11,10 +11,11 @@ export const QuoteSection = () => {
   const chessRef = useRef(null);
   const hatTargetRef = useRef(null);
   const titleRef = useRef(null);
+  const wordsRef = useRef([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Flip hat into ProjectsSection
+      // Flip hat into this section
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top 70%',
@@ -32,78 +33,104 @@ export const QuoteSection = () => {
             absolute: true,
             scale: true,
             onComplete: () => {
+              // Gentle floating
               gsap.to(hat, {
                 duration: 4,
-                y: -20,
-                rotation: 8,
+                y: -15,
+                rotation: 5,
                 repeat: -1,
                 yoyo: true,
                 ease: 'sine.inOut',
               });
-              gsap.to(hat, { rotation: '+=15', duration: 10, repeat: -1, ease: 'power1.inOut' });
-              gsap.to(hat, { scale: 1.08, duration: 3, repeat: -1, yoyo: true, ease: 'power2.inOut' });
             },
           });
         },
       });
 
-      // Cube scroll animation
+      // Parallax for decorative elements
       gsap.to(cubeRef.current, {
-        y: -200,
-        x: 100,
-        rotation: 40,
+        y: -150,
+        x: 80,
+        rotation: 30,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top bottom',
           end: 'bottom top',
-          scrub: true,
+          scrub: 1.5,
         },
       });
 
-      // Chess scroll animation
       gsap.to(chessRef.current, {
-        y: -220,
-        x: -120,
-        rotation: -25,
+        y: -180,
+        x: -100,
+        rotation: -20,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top bottom',
           end: 'bottom top',
-          scrub: true,
+          scrub: 1.5,
         },
       });
 
-      // Title fade-in
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 120 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.5,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 80%',
-          },
-        }
-      );
+      // Word-by-word reveal
+      wordsRef.current.forEach((word, i) => {
+        gsap.fromTo(
+          word,
+          { opacity: 0, y: 40, filter: 'blur(10px)' },
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 75%',
+            },
+            delay: i * 0.08,
+          }
+        );
+      });
     });
 
     return () => ctx.revert();
   }, []);
+
+  const quoteWords = [
+    'Designing', 'experiences', 'that', 'turn',
+    'interaction', 'into', 'engagement',
+    'and', 'engagement', 'into', 'loyalty.'
+  ];
 
   return (
     <section
       ref={sectionRef}
       style={{
         position: 'relative',
-        height: 'auto', // auto height based on content
-        padding: '60px 20px', // reduced padding
+        minHeight: '60vh',
+        padding: '100px 20px',
         overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      {/* TITLE */}
+      {/* Ambient glow */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '600px',
+          height: '400px',
+          background: 'radial-gradient(ellipse, rgba(100, 100, 255, 0.15), transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Quote text */}
       <h2
         ref={titleRef}
         style={{
@@ -111,55 +138,71 @@ export const QuoteSection = () => {
           zIndex: 20,
           textAlign: 'center',
           color: 'white',
-          fontSize: '64px',
-          lineHeight: '1.2',
+          fontSize: 'clamp(36px, 6vw, 64px)',
+          lineHeight: 1.3,
           maxWidth: '900px',
-          margin: '0 auto 40px auto', // less bottom margin
+          fontFamily: "'Montserrat', sans-serif",
+          fontWeight: 600,
+          letterSpacing: '-0.5px',
         }}
       >
-        Designing experiences that turn <br />
-        interaction into engagement <br />
-        and engagement into loyalty.
+        {quoteWords.map((word, i) => (
+          <span
+            key={i}
+            ref={el => wordsRef.current[i] = el}
+            style={{
+              display: 'inline-block',
+              marginRight: '0.3em',
+            }}
+          >
+            {word}
+            {(i === 3 || i === 6) && <br />}
+          </span>
+        ))}
       </h2>
 
-      {/* HAT TARGET */}
+      {/* Hat target */}
       <div
         ref={hatTargetRef}
         style={{
           position: 'absolute',
-          top: '15%',
-          right: '25%',
+          top: '10%',
+          right: '20%',
           width: '100px',
           height: '100px',
           zIndex: 10,
         }}
       />
 
-      {/* CUBE */}
+      {/* Floating cube */}
       <img
         ref={cubeRef}
         src="/cube.png"
-        alt="cube"
+        alt=""
         style={{
           position: 'absolute',
-          top: '25%',
+          top: '15%',
           left: '8%',
-          width: '160px',
+          width: '140px',
           zIndex: 5,
+          opacity: 0.8,
+          filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))',
         }}
       />
 
-      {/* CHESS */}
+      {/* Floating chess piece */}
       <img
         ref={chessRef}
         src="/chess.png"
-        alt="chess"
+        alt=""
         style={{
           position: 'absolute',
-          top: '50%',
+          top: '40%',
           right: '8%',
-          width: '140px',
+          width: '120px',
           zIndex: 5,
+          opacity: 0.8,
+          filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))',
         }}
       />
     </section>

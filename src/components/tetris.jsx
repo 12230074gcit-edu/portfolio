@@ -16,13 +16,13 @@ const SHAPES = [
 
 const COLORS = [
   'transparent',
-  '#00f0f0',
-  '#f0f000',
-  '#a000f0',
-  '#f0a000',
-  '#0000f0',
-  '#00f000',
-  '#f00000',
+  'rgba(0, 240, 240, 0.7)',
+  'rgba(240, 240, 0, 0.7)',
+  'rgba(160, 0, 240, 0.7)',
+  'rgba(240, 160, 0, 0.7)',
+  'rgba(0, 0, 240, 0.7)',
+  'rgba(0, 240, 0, 0.7)',
+  'rgba(240, 0, 0, 0.7)',
 ];
 
 export const TetrisCanvas = () => {
@@ -37,7 +37,7 @@ export const TetrisCanvas = () => {
   const dropCounterRef = useRef(0);
   const dropIntervalRef = useRef(900);
 
-  // ✅ RESPONSIVE SCALE
+  // Responsive scale
   useEffect(() => {
     const updateScale = () => {
       const newScale = Math.min(
@@ -53,7 +53,7 @@ export const TetrisCanvas = () => {
     return () => window.removeEventListener('resize', updateScale);
   }, []);
 
-  // ✅ TIME
+  // Timer
   useEffect(() => {
     const interval = setInterval(() => {
       setTime(prev => prev + 1);
@@ -68,7 +68,6 @@ export const TetrisCanvas = () => {
     const pos = { x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2), y: 0 };
 
     if (checkCollision(gridRef.current, shape, pos)) {
-      // Top-out: nothing can spawn here yet; indicate reset in caller.
       return null;
     }
 
@@ -187,42 +186,50 @@ export const TetrisCanvas = () => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Draw grid cells with soft glow
     gridRef.current.forEach((row, y) =>
       row.forEach((cell, x) => {
         if (cell !== 0) {
           ctx.fillStyle = COLORS[cell];
-          ctx.globalAlpha = 0.75;
-          ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+          ctx.shadowColor = COLORS[cell];
+          ctx.shadowBlur = 15;
+          ctx.fillRect(
+            x * BLOCK_SIZE + 2,
+            y * BLOCK_SIZE + 2,
+            BLOCK_SIZE - 4,
+            BLOCK_SIZE - 4
+          );
         }
       })
     );
 
+    // Draw active piece with glow
     if (activePieceRef.current) {
       ctx.fillStyle = COLORS[activePieceRef.current.colorIndex];
-      ctx.globalAlpha = 0.95;
+      ctx.shadowColor = COLORS[activePieceRef.current.colorIndex];
+      ctx.shadowBlur = 20;
 
       activePieceRef.current.shape.forEach((row, y) =>
         row.forEach((value, x) => {
           if (value) {
             ctx.fillRect(
-              (activePieceRef.current.pos.x + x) * BLOCK_SIZE,
-              (activePieceRef.current.pos.y + y) * BLOCK_SIZE,
-              BLOCK_SIZE - 2,
-              BLOCK_SIZE - 2
+              (activePieceRef.current.pos.x + x) * BLOCK_SIZE + 2,
+              (activePieceRef.current.pos.y + y) * BLOCK_SIZE + 2,
+              BLOCK_SIZE - 4,
+              BLOCK_SIZE - 4
             );
           }
         })
       );
     }
 
-    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
   }, []);
 
   useEffect(() => {
     activePieceRef.current = spawnPiece() || resetGame();
 
     const handleKeyDown = (e) => {
-      // 🔥 STOP SCROLLING
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
         e.preventDefault();
       }
@@ -268,27 +275,28 @@ export const TetrisCanvas = () => {
     const newPiece = spawnPiece();
     activePieceRef.current = newPiece;
     return newPiece;
-  };
+  }
 
   return (
     <>
-      {/* 🔥 HUD (BOTTOM RIGHT OF SCREEN) */}
+      {/* HUD */}
       <div style={{
         position: 'absolute',
-        bottom: '20px',
-        right: '20px',
+        bottom: '30px',
+        right: '30px',
         color: 'white',
-        fontFamily: 'monospace',
-        fontSize: '18px',
+        fontFamily: "'Montserrat', monospace",
+        fontSize: '16px',
         textAlign: 'right',
         zIndex: 10,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        textShadow: '0 0 20px rgba(255,255,255,0.3)',
       }}>
-        <div style={{ opacity: 0.9 }}>SCORE: {score}</div>
-        <div style={{ opacity: 0.7 }}>TIME: {time}s</div>
+        <div style={{ opacity: 0.8, marginBottom: '8px' }}>SCORE: {score}</div>
+        <div style={{ opacity: 0.5 }}>TIME: {time}s</div>
       </div>
 
-      {/* 🎮 GAME */}
+      {/* Game canvas */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -296,25 +304,25 @@ export const TetrisCanvas = () => {
         alignItems: 'center',
         justifyContent: 'center',
         pointerEvents: 'none',
-        opacity: 0.65,
+        opacity: 0.5,
       }}>
         <div style={{
           position: 'relative',
           transform: `scale(${scale})`,
-          transformOrigin: 'center'
+          transformOrigin: 'center',
         }}>
           <canvas
             ref={canvasRef}
             width={COLS * BLOCK_SIZE}
             height={ROWS * BLOCK_SIZE}
             style={{
-              border: '1px solid rgba(255,255,255,0.1)',
-              backgroundColor: 'rgba(0,0,0,0.25)',
-              backdropFilter: 'blur(3px)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '12px',
+              backgroundColor: 'rgba(0,0,0,0.2)',
+              backdropFilter: 'blur(5px)',
+              boxShadow: '0 0 60px rgba(0,0,0,0.3)',
             }}
           />
-
-
         </div>
       </div>
     </>

@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #080C72;
+  color: #fff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* Smooth transitions for all interactive elements */
+a, button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus states */
+a:focus, button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.3);
+  outline-offset: 2px;
+}
+
+/* Premium glow animation keyframes */
+@keyframes softPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes floatY {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(255, 255, 255, 0.1),
+                0 0 60px rgba(255, 255, 255, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3),
+                0 0 60px rgba(255, 255, 255, 0.15),
+                0 0 90px rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Glass card hover effect */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Premium button style */
+.premium-btn {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  color: #080C72;
+  border: none;
+  border-radius: 14px;
+  padding: 16px 32px;
+  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2),
+              0 0 0 0 rgba(255, 255, 255, 0);
+}
+
+.premium-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.premium-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25),
+              0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.premium-btn:hover::before {
+  opacity: 1;
+  animation: shimmer 1.5s infinite;
+}
+
+.premium-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Soft glow utility classes */
+.soft-glow {
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.15),
+              0 0 60px rgba(255, 255, 255, 0.08);
+}
+
+.soft-glow-hover:hover {
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.25),
+              0 0 80px rgba(255, 255, 255, 0.12);
+}
+
+/* Text glow */
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3),
+               0 0 40px rgba(255, 255, 255, 0.15);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

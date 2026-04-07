@@ -30,80 +30,99 @@ const projects = [
 
 export default function ProjectsSection() {
   const sectionRef = useRef(null);
+  const titleRef = useRef(null);
   const cardsRef = useRef([]);
   const flipRef = useRef([]);
 
   useEffect(() => {
-    const cards = cardsRef.current;
-    const flips = flipRef.current;
+    const ctx = gsap.context(() => {
+      // Title entrance
+      gsap.fromTo(
+        titleRef.current,
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+          },
+        }
+      );
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${projects.length * 120}%`,
-        scrub: 1,
-        pin: true,
-      },
-    });
+      const cards = cardsRef.current;
+      const flips = flipRef.current;
 
-    cards.forEach((card, i) => {
-      // initial state
-      gsap.set(card, {
-        y: 0,
-        opacity: i === 0 ? 1 : 0,
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: `+=${projects.length * 120}%`,
+          scrub: 1.2,
+          pin: true,
+        },
       });
 
-      if (i === 0) return;
+      cards.forEach((card, i) => {
+        gsap.set(card, {
+          y: 0,
+          opacity: i === 0 ? 1 : 0,
+        });
 
-      const baseTime = i * 1.2;
+        if (i === 0) return;
 
-      // bring current card
-      tl.to(
-        card,
-        {
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-        baseTime
-      );
+        const baseTime = i * 1.2;
 
-      // remove previous card completely
-      tl.to(
-        cards[i - 1],
-        {
-          opacity: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-        baseTime
-      );
+        // Bring current card
+        tl.to(
+          card,
+          {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          baseTime
+        );
 
-      // subtle clean flip
-      tl.fromTo(
-        flips[i],
-        {
-          rotateX: -90,
-          opacity: 0,
-          transformPerspective: 1800,
-        },
-        {
-          rotateX: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power2.out",
-          force3D: true,
-        },
-        baseTime + 0.1
-      );
-    });
+        // Fade previous card
+        tl.to(
+          cards[i - 1],
+          {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          baseTime
+        );
 
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+        // 3D flip entrance
+        tl.fromTo(
+          flips[i],
+          {
+            rotateX: -90,
+            opacity: 0,
+            transformPerspective: 2000,
+          },
+          {
+            rotateX: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            force3D: true,
+          },
+          baseTime + 0.1
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <section
+      id="projects"
       ref={sectionRef}
       style={{
         height: "100vh",
@@ -112,22 +131,29 @@ export default function ProjectsSection() {
         perspective: "2000px",
       }}
     >
+      {/* Section title */}
       <h2
+        ref={titleRef}
         style={{
           textAlign: "center",
-          paddingTop: "40px",
+          paddingTop: "50px",
           color: "white",
-          fontSize: "28px",
-          fontWeight: "700",
+          fontSize: "clamp(24px, 4vw, 32px)",
+          fontWeight: 700,
+          fontFamily: "'Montserrat', sans-serif",
+          letterSpacing: "2px",
+          textTransform: "uppercase",
+          textShadow: "0 0 30px rgba(255,255,255,0.2)",
         }}
       >
         Projects
       </h2>
 
+      {/* Cards container */}
       <div
         style={{
           position: "relative",
-          width: "720px",
+          width: "min(720px, 90vw)",
           height: "520px",
           margin: "60px auto",
         }}
@@ -143,7 +169,7 @@ export default function ProjectsSection() {
               zIndex: 10,
             }}
           >
-            {/* FLIP WRAPPER */}
+            {/* Flip wrapper */}
             <div
               ref={(el) => (flipRef.current[i] = el)}
               style={{
@@ -155,7 +181,7 @@ export default function ProjectsSection() {
                 willChange: "transform",
               }}
             >
-              {/* FRONT */}
+              {/* Card front */}
               <div
                 style={{
                   position: "absolute",
@@ -163,85 +189,73 @@ export default function ProjectsSection() {
                   height: "100%",
                   backfaceVisibility: "hidden",
                   WebkitBackfaceVisibility: "hidden",
-                  borderRadius: "22px",
-                  background: "#ffffff",
-                  boxShadow: "0 40px 120px rgba(0,0,0,0.5)",
+                  borderRadius: "24px",
+                  background: "rgba(255, 255, 255, 0.95)",
+                  boxShadow: `
+                    0 40px 100px rgba(0,0,0,0.4),
+                    0 0 0 1px rgba(255,255,255,0.1),
+                    inset 0 0 60px rgba(255,255,255,0.1)
+                  `,
                   overflow: "hidden",
                 }}
               >
-                <div style={{ padding: "20px", color: "#04128e" }}>
+                {/* Project image */}
+                <div style={{ padding: "20px", height: "65%" }}>
                   <img
                     src={project.image}
                     alt={project.name}
                     style={{
                       width: "100%",
-                      height: "70%",
+                      height: "100%",
                       objectFit: "cover",
-                      borderRadius: "14px",
+                      borderRadius: "16px",
                     }}
                   />
                 </div>
 
-                <div style={{ padding: "20px", color: "#04128e" }}>
-                  <h3 style={{ marginBottom: "10px", fontSize: "16px", fontWeight: "600" }}>{project.name}</h3>
+                {/* Project info */}
+                <div style={{ padding: "0 24px 24px", color: "#080C72" }}>
+                  <h3
+                    style={{
+                      marginBottom: "12px",
+                      fontSize: "20px",
+                      fontWeight: 700,
+                      fontFamily: "'Montserrat', sans-serif",
+                    }}
+                  >
+                    {project.name}
+                  </h3>
 
-                  <div style={{ display: "flex", gap: "10px", marginBottom: "5px" }}>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      opacity: 0.7,
+                      marginBottom: "16px",
+                      fontFamily: "'Montserrat', sans-serif",
+                    }}
+                  >
+                    {project.desc}
+                  </p>
+
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
                         style={{
-                          background: "#04128e",
+                          background: "#080C72",
                           color: "#fff",
-                          padding: "8px 14px",
+                          padding: "8px 16px",
                           borderRadius: "20px",
-                          fontSize: "13px",
-                          fontWeight: "500",
+                          fontSize: "12px",
+                          fontWeight: 500,
+                          fontFamily: "'Montserrat', sans-serif",
+                          boxShadow: "0 4px 15px rgba(8, 12, 114, 0.3)",
                         }}
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                </div>
-              </div>
-
-              {/* BACK */}
-              <div
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  transform: "rotateX(180deg)",
-                  backfaceVisibility: "hidden",
-                  WebkitBackfaceVisibility: "hidden",
-                  borderRadius: "22px",
-                  background: "#ffffff",
-                  boxShadow: "0 40px 120px rgba(0,0,0,0.5)",
-                  padding: "30px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <h3 style={{ marginBottom: "5px", color: "#04128e" }}>
-                  {project.name}
-                </h3>
-
-                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      style={{
-                        background: "#04128e",
-                        color: "#fff",
-                        padding: "6px 12px",
-                        borderRadius: "20px",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
                 </div>
               </div>
             </div>
