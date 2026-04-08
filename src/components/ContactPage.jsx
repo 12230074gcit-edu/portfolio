@@ -370,14 +370,15 @@ export default function ContactPage() {
 
       {/* Main Content */}
       <div
+        className="contact-grid"
         style={{
-          maxWidth: '1400px',
+          maxWidth: '1200px',
           margin: '0 auto',
-          padding: '140px 60px 100px',
+          padding: '140px 40px 100px',
           display: 'grid',
-          gridTemplateColumns: '1.2fr 1fr',
-          gap: '120px',
-          alignItems: 'start',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '80px',
+          alignItems: 'center',
           position: 'relative',
           zIndex: 2,
           minHeight: 'calc(100vh - 200px)',
@@ -624,7 +625,7 @@ export default function ContactPage() {
         </div>
 
         {/* Right - Info Section */}
-        <div style={{ paddingTop: '80px' }}>
+        <div style={{ paddingTop: '0' }}>
           {/* Info Cards */}
           <div style={{ marginBottom: '50px' }}>
             {infoItems.map((item, i) => (
@@ -818,6 +819,12 @@ export default function ContactPage() {
           .contact-grid {
             grid-template-columns: 1fr !important;
             gap: 60px !important;
+            padding: 120px 24px 80px !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .contact-grid {
+            padding: 100px 20px 60px !important;
           }
         }
       `}</style>
