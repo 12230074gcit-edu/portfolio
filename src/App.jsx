@@ -12,6 +12,7 @@ import ServicesSection from './components/ServicesSection';
 import ContactSection from './components/Contact';
 import ContactPage from './components/ContactPage';
 import AboutPage from './components/AboutPage';
+import ProjectDetailPage from './components/ProjectDetailPage';
 import Bubbles from './components/Bubbles';
 import CursorTrail from './components/CursorTrail';
 import Footer from './components/Footer';
@@ -233,6 +234,7 @@ function AppContent() {
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/project/:projectId" element={<ProjectDetailPage />} />
       </Routes>
     </main>
   );

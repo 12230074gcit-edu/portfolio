@@ -1,98 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import RollingText from './RollingText';
 
-gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 export const Hero = () => {
   const contentRef = useRef(null);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
-  const iconRef = useRef(null);
   const glowRef = useRef(null);
   const blocksRef = useRef([]);
   const titleWordsRef = useRef([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hat entrance with bounce
-      gsap.from(iconRef.current, {
-        scale: 0,
-        rotation: -180,
-        opacity: 0,
-        duration: 1.8,
-        ease: 'elastic.out(1, 0.5)',
-        delay: 1,
-      });
-
-      // Hat floating motion in Hero
-      const hatFloat = gsap.timeline({ repeat: -1, yoyo: true });
-      hatFloat.to(iconRef.current, {
-        duration: 6,
-        ease: 'sine.inOut',
-        motionPath: {
-          path: [
-            { x: 0, y: 0 },
-            { x: 40, y: -20 },
-            { x: 80, y: 15 },
-            { x: 50, y: 40 },
-            { x: 0, y: 30 },
-            { x: -30, y: 15 },
-          ],
-          curviness: 1.5,
-        },
-      });
-
-      // Hat scroll animation - moves through sections
-      ScrollTrigger.create({
-        trigger: '#quote-section',
-        start: 'top 80%',
-        end: 'bottom 20%',
-        scrub: 2,
-        onUpdate: (self) => {
-          hatFloat.pause();
-          const progress = self.progress;
-          gsap.to(iconRef.current, {
-            x: 200 + progress * 300,
-            y: progress * 150,
-            rotation: progress * 30,
-            scale: 0.9 - progress * 0.1,
-            duration: 0.5,
-          });
-        },
-        onLeave: () => {
-          gsap.to(iconRef.current, {
-            opacity: 0,
-            duration: 0.5,
-          });
-        },
-        onEnterBack: () => {
-          gsap.to(iconRef.current, {
-            opacity: 1,
-            duration: 0.5,
-          });
-        },
-      });
-
-      // Continue hat through projects section
-      ScrollTrigger.create({
-        trigger: '#projects-section',
-        start: 'top 50%',
-        end: 'bottom 50%',
-        scrub: 2,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          gsap.to(iconRef.current, {
-            x: 500 + progress * 200,
-            y: 150 + progress * 100,
-            rotation: 30 + progress * 20,
-            duration: 0.5,
-          });
-        },
-      });
-
       // Subtle pulsing glow
       gsap.to(glowRef.current, {
         scale: 1.2,
@@ -195,27 +117,6 @@ export const Hero = () => {
           zIndex: 0,
         }}
       />
-
-      {/* Floating hat icon */}
-      <div
-        id="shared-hat"
-        ref={iconRef}
-        style={{
-          position: 'absolute',
-          left: '-120px',
-          top: '10px',
-          width: '110px',
-          height: '110px',
-          zIndex: 30,
-          filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))',
-        }}
-      >
-        <img
-          src="/hat.svg"
-          alt="Hat"
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>
 
       {/* Main Title with word animation */}
       <h1

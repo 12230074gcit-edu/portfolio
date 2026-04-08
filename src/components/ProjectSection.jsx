@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -6,21 +7,21 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
-    id: 1,
+    id: "qube",
     name: "QUBE",
     tags: ["UI/UX", "Frontend", "DBMS"],
     image: "/qube.png",
     desc: "Quick unlocks, bonus engagement platform.",
   },
   {
-    id: 2,
+    id: "inneed",
     name: "INNEED",
     tags: ["UI/UX", "React", "Animation"],
     image: "/inneed.png",
     desc: "Smart job platform with real-time features.",
   },
   {
-    id: 3,
+    id: "tovo",
     name: "TOVO",
     tags: ["UI/UX", "Frontend", "API"],
     image: "/tovo.png",
@@ -31,6 +32,7 @@ const projects = [
 const marqueeText = "PROJECTS PORTFOLIO WORK DESIGN DEVELOPMENT CREATIVE ";
 
 export default function ProjectsSection() {
+  const navigate = useNavigate();
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const cardsRef = useRef([]);
@@ -364,24 +366,58 @@ export default function ProjectsSection() {
                     {project.desc}
                   </p>
 
-                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        style={{
-                          background: "#080C72",
-                          color: "#fff",
-                          padding: "8px 16px",
-                          borderRadius: "20px",
-                          fontSize: "12px",
-                          fontWeight: 500,
-                          fontFamily: "'Montserrat', sans-serif",
-                          boxShadow: "0 4px 15px rgba(8, 12, 114, 0.3)",
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          style={{
+                            background: "#080C72",
+                            color: "#fff",
+                            padding: "8px 16px",
+                            borderRadius: "20px",
+                            fontSize: "12px",
+                            fontWeight: 500,
+                            fontFamily: "'Montserrat', sans-serif",
+                            boxShadow: "0 4px 15px rgba(8, 12, 114, 0.3)",
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => navigate(`/project/${project.id}`)}
+                      style={{
+                        background: "linear-gradient(135deg, #080C72 0%, #1a1f7a 100%)",
+                        color: "#fff",
+                        padding: "12px 24px",
+                        borderRadius: "25px",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        fontFamily: "'Montserrat', sans-serif",
+                        border: "none",
+                        cursor: "pointer",
+                        boxShadow: "0 4px 20px rgba(8, 12, 114, 0.4)",
+                        transition: "all 0.3s ease",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "translateY(-2px)";
+                        e.currentTarget.style.boxShadow = "0 8px 30px rgba(8, 12, 114, 0.5)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.boxShadow = "0 4px 20px rgba(8, 12, 114, 0.4)";
+                      }}
+                    >
+                      View Project
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
