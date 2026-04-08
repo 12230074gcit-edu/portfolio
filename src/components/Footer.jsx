@@ -20,17 +20,17 @@ export default function Footer() {
   ];
 
   const projects = [
-    { name: 'Gamification Design', href: '#' },
-    { name: 'Mobile Apps', href: '#' },
-    { name: 'Web Development', href: '#' },
-    { name: 'UI/UX Design', href: '#' },
+    { name: 'QUBE', href: '#' },
+    { name: 'INNEED', href: '#' },
+    { name: 'TOVO', href: '#' },
+
   ];
 
   const socials = [
-    { name: 'LinkedIn', href: '#' },
-    { name: 'GitHub', href: '#' },
-    { name: 'Dribbble', href: '#' },
-    { name: 'Twitter', href: '#' },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/jigmenamgyel' },
+    { name: 'GitHub', href: 'https://github.com/12230074gcit-edu' },
+    { name: 'Facebook', href: 'https://www.facebook.com/jigme.namgyel.7146' },
+    { name: 'WhatsApp', href: 'https://wa.me/97517364568?text=Hi%2C%20I%20am%20Jigme%20Namgyel%2C%20a%20UI%2FUX%20designer%20passionate%20about%20user%20engagement%20and%20interactive%20experiences.%20How%20may%20I%20assist%20you%3F' },
   ];
 
   useEffect(() => {

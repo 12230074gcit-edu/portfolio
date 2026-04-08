@@ -41,8 +41,8 @@ const projectsData = {
       { value: '4.8', label: 'App store rating' },
       { value: '156%', label: 'Revenue increase for partners' },
     ],
-    gallery: ['/qube.png', '/qube-2.png', '/qube-3.png', '/qube-4.png'],
-    video: '/qube-demo.mp4',
+    gallery: ['/qube1.png', '/qube2.png', '/qube3.png', '/qube4.png'],
+    video: '/qube.mp4',
     testimonial: {
       quote: 'QUBE completely changed how our customers interact with our brand. They actually look forward to dining with us now.',
       author: 'Restaurant Partner',
@@ -80,8 +80,8 @@ const projectsData = {
       { value: '2.5x', label: 'Application completion rate' },
       { value: '45%', label: 'Higher offer acceptance' },
     ],
-    gallery: ['/inneed.png', '/inneed-2.png', '/inneed-3.png', '/inneed-4.png'],
-    video: '/inneed-demo.mp4',
+    gallery: ['/inneed1.png', '/inneed2.png', '/inneed3.png', '/inneed4.png'],
+    video: '/inneed.mp4',
     testimonial: {
       quote: 'INNEED made me feel in control of my career for the first time. The platform actually understands what I\'m looking for.',
       author: 'Sarah Chen',
@@ -119,7 +119,7 @@ const projectsData = {
       { value: '12s', label: 'Average time to order' },
       { value: '4.9', label: 'App store rating' },
     ],
-    gallery: ['/tovo.png', '/tovo-2.png', '/tovo-3.png', '/tovo-4.png'],
+    gallery: ['/tovo1.png', '/tovo2.png', '/tovo3.png', '/tovo4.png'],
     video: '/tovo-demo.mp4',
     testimonial: {
       quote: 'Finally, a food app that gets it. TOVO makes ordering food actually fun again.',
