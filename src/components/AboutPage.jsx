@@ -1,90 +1,199 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Bubbles from './Bubbles';
 import { Navbar } from './navbar';
 import Footer from './Footer';
+import ContactSection from './Contact';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutPage() {
   const pageRef = useRef(null);
   const avatarRef = useRef(null);
   const gridRef = useRef(null);
-  const statsRef = useRef([]);
+  const circlesRef = useRef([]);
 
   useEffect(() => {
-    // Page entrance
-    gsap.fromTo(pageRef.current, 
-      { opacity: 0 },
-      { opacity: 1, duration: 0.8, ease: 'power2.out' }
-    );
+    window.scrollTo(0, 0);
 
-    // Title animation
-    gsap.fromTo('.about-page-title',
-      { y: 100, opacity: 0, rotateX: -45 },
-      { y: 0, opacity: 1, rotateX: 0, duration: 1.2, ease: 'power3.out', delay: 0.2 }
-    );
-
-    gsap.fromTo('.about-page-subtitle',
-      { y: 60, opacity: 0 },
-      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.4 }
-    );
-
-    // Bio paragraphs
-    gsap.fromTo('.bio-text',
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.5 }
-    );
-
-    // Avatar entrance
-    gsap.fromTo(avatarRef.current,
-      { scale: 0.8, opacity: 0, x: 100 },
-      { scale: 1, opacity: 1, x: 0, duration: 1.2, ease: 'power3.out', delay: 0.3 }
-    );
-
-    // Floating avatar
-    gsap.to(avatarRef.current, {
-      y: -15,
-      repeat: -1,
-      yoyo: true,
-      duration: 3,
-      ease: 'sine.inOut',
-    });
-
-    // Stats counter animation
-    statsRef.current.forEach((stat, i) => {
-      if (!stat) return;
-      gsap.fromTo(stat,
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, delay: 0.7 + i * 0.1, ease: 'power3.out' }
+    const ctx = gsap.context(() => {
+      // Page entrance
+      gsap.fromTo(pageRef.current, 
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'power2.out' }
       );
-    });
 
-    // Skills animation
-    gsap.fromTo('.skill-tag',
-      { scale: 0, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.5, stagger: 0.05, delay: 0.9, ease: 'back.out(1.7)' }
-    );
+      // Floating circles
+      circlesRef.current.forEach((circle) => {
+        if (!circle) return;
+        gsap.to(circle, {
+          x: gsap.utils.random(-30, 30),
+          y: gsap.utils.random(-30, 30),
+          duration: gsap.utils.random(5, 10),
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut'
+        });
+      });
 
-    // Grid parallax
-    const handleMouseMove = (e) => {
-      if (!gridRef.current) return;
-      const x = (e.clientX / window.innerWidth - 0.5) * 20;
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      gsap.to(gridRef.current, { x, y, duration: 1.5, ease: 'power2.out' });
-    };
+      // Title animation
+      gsap.fromTo('.about-page-title',
+        { y: 100, opacity: 0, rotateX: -45 },
+        { y: 0, opacity: 1, rotateX: 0, duration: 1.2, ease: 'power3.out', delay: 0.2 }
+      );
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+      gsap.fromTo('.about-page-subtitle',
+        { y: 60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.4 }
+      );
+
+      // Bio paragraphs
+      gsap.fromTo('.bio-text',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out', delay: 0.5 }
+      );
+
+      // Avatar entrance
+      gsap.fromTo(avatarRef.current,
+        { scale: 0.8, opacity: 0, x: 100 },
+        { scale: 1, opacity: 1, x: 0, duration: 1.2, ease: 'power3.out', delay: 0.3 }
+      );
+
+      // Floating avatar
+      gsap.to(avatarRef.current, {
+        y: -15,
+        repeat: -1,
+        yoyo: true,
+        duration: 3,
+        ease: 'sine.inOut',
+      });
+
+      // Stats animation
+      gsap.fromTo('.stat-box',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, delay: 0.7, ease: 'power3.out' }
+      );
+
+      // Skills animation
+      gsap.fromTo('.skill-tag',
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, stagger: 0.05, delay: 0.9, ease: 'back.out(1.7)' }
+      );
+
+      // Education items
+      gsap.utils.toArray('.education-item').forEach((item, i) => {
+        gsap.fromTo(item,
+          { x: -60, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.8, delay: i * 0.15, ease: 'power3.out',
+            scrollTrigger: { trigger: '.education-section', start: 'top 80%' }
+          }
+        );
+      });
+
+      // Experience items
+      gsap.utils.toArray('.experience-item').forEach((item, i) => {
+        gsap.fromTo(item,
+          { y: 50, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, delay: i * 0.15, ease: 'power3.out',
+            scrollTrigger: { trigger: '.experience-section', start: 'top 80%' }
+          }
+        );
+      });
+
+      // Certifications
+      gsap.utils.toArray('.cert-item').forEach((item, i) => {
+        gsap.fromTo(item,
+          { scale: 0.9, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.6, delay: i * 0.1, ease: 'power3.out',
+            scrollTrigger: { trigger: '.cert-section', start: 'top 80%' }
+          }
+        );
+      });
+
+      // Grid parallax
+      const handleMouseMove = (e) => {
+        if (!gridRef.current) return;
+        const x = (e.clientX / window.innerWidth - 0.5) * 15;
+        const y = (e.clientY / window.innerHeight - 0.5) * 15;
+        gsap.to(gridRef.current, { x, y, duration: 1.5, ease: 'power2.out' });
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, pageRef);
+
+    return () => ctx.revert();
   }, []);
 
   const stats = [
     { value: '3+', label: 'Years Experience' },
-    { value: '50+', label: 'Projects Completed' },
-    { value: '30+', label: 'Happy Clients' },
+    { value: '10+', label: 'Projects Completed' },
+    { value: '5+', label: 'Happy Clients' },
   ];
 
-  const skills = [
-    'UI/UX Design', 'Gamification', 'Interaction Design', 'Prototyping',
-    'Figma', 'After Effects', 'React', 'Three.js', 'GSAP', 'Blender'
+  const technicalSkills = [
+    'UI/UX Design', 'Figma', 'Adobe Creative Suite', 'WordPress',
+    'React JS', 'HTML/CSS', 'JavaScript', 'Flutter',
+    'Node.JS', 'MongoDB', 'Firebase', 'PostgreSQL'
+  ];
+
+  const softSkills = [
+    'Team Collaboration', 'Effective Communication', 'Adaptability',
+    'Empathy', 'Patience', 'Decision Making', 'Punctuality'
+  ];
+
+  const education = [
+    {
+      degree: 'Bachelors of Interactive Designing and Development',
+      school: 'Gyalpozhing College of Information Technology',
+      period: 'July 2023 - July 2027',
+      current: true,
+    },
+    {
+      degree: 'Science',
+      school: 'Gelephu Higher Secondary School',
+      period: 'Feb 2021 - Dec 2022',
+      current: false,
+    },
+  ];
+
+  const experience = [
+    {
+      role: 'Graphic Designer',
+      company: 'AFK X Gaming',
+      type: 'Freelance',
+      period: '2025',
+      desc: 'Designed promotional posters for Diamond and PUBG recharge services, focusing on clear visual communication and engaging layouts.',
+    },
+    {
+      role: 'UI Designer',
+      company: 'Mystic Realm',
+      type: 'Freelance',
+      period: '2025',
+      desc: 'Designed an interactive user interface for a travel agency website, focusing on intuitive navigation and seamless user experience.',
+    },
+    {
+      role: 'Video Editor',
+      company: 'Bhutan Hydroponics',
+      type: 'Freelance',
+      period: '2025',
+      desc: 'Produced and edited a documentary-style promotional video highlighting the company\'s work and sustainable agricultural services.',
+    },
+  ];
+
+  const certifications = [
+    { title: 'Introduction to CyberSecurity', issuer: 'Cisco Network Academy', year: '2024' },
+    { title: 'Facilitator Certificate', issuer: 'Paro Youth Center', year: '2024' },
+    { title: 'Health Captain', issuer: 'Phuentsholing Higher Secondary School', year: '2020' },
+    { title: 'Management Captain', issuer: 'Gelephu Higher Secondary School', year: '2022' },
+  ];
+
+  const circleConfigs = [
+    { top: '10%', left: '-5%', color: '#070DC7', size: 350 },
+    { top: '20%', right: '-5%', color: '#1A64BA', size: 300 },
+    { bottom: '30%', left: '5%', color: '#6048B7', size: 280 },
+    { bottom: '10%', right: '0%', color: '#6A44F4', size: 320 },
   ];
 
   return (
@@ -98,7 +207,7 @@ export default function AboutPage() {
         overflow: 'hidden',
       }}
     >
-      {/* Background */}
+      {/* Background - matching App.jsx */}
       <div style={{ position: 'fixed', inset: 0, zIndex: -1 }}>
         <div style={{
           position: 'absolute',
@@ -106,71 +215,54 @@ export default function AboutPage() {
           background: 'linear-gradient(180deg, #080C72 0%, #0a0e5c 50%, #080C72 100%)'
         }} />
 
-        {/* Animated grid */}
         <div
           ref={gridRef}
           style={{
             position: 'absolute',
             inset: '-50px',
-            opacity: 0.06,
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), 
-              linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px',
-            maskImage: 'radial-gradient(ellipse at center, black 20%, transparent 70%)',
-            WebkitMaskImage: 'radial-gradient(ellipse at center, black 20%, transparent 70%)',
+            opacity: 0.08,
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+            maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
           }}
         />
 
-        {/* Glow orbs */}
-        <div style={{
-          position: 'absolute',
-          left: '60%',
-          top: '30%',
-          width: '600px',
-          height: '600px',
-          background: 'radial-gradient(ellipse, rgba(100, 100, 255, 0.12), transparent 60%)',
-          filter: 'blur(80px)',
-        }} />
-        <div style={{
-          position: 'absolute',
-          left: '10%',
-          bottom: '10%',
-          width: '400px',
-          height: '400px',
-          background: 'radial-gradient(ellipse, rgba(150, 100, 255, 0.08), transparent 60%)',
-          filter: 'blur(60px)',
-        }} />
+        {/* Floating blur circles */}
+        {circleConfigs.map((c, i) => (
+          <div
+            key={i}
+            ref={el => circlesRef.current[i] = el}
+            style={{
+              position: 'absolute',
+              ...c,
+              width: `${c.size}px`,
+              height: `${c.size}px`,
+              backgroundColor: c.color,
+              borderRadius: '50%',
+              filter: 'blur(80px)',
+              opacity: 0.6,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Navbar */}
       <Navbar />
 
-      {/* Main Content */}
-      <div
-        style={{
-          maxWidth: '1300px',
-          margin: '0 auto',
-          padding: '100px 60px 80px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '80px',
-          alignItems: 'center',
-          minHeight: '100vh',
-        }}
-      >
+      {/* Hero Section */}
+      <section style={{
+        minHeight: '100vh',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '80px',
+        alignItems: 'center',
+        maxWidth: '1300px',
+        margin: '0 auto',
+        padding: '120px 60px 80px',
+      }}>
         {/* Left - Content */}
         <div>
-          <p
-            style={{
-              fontSize: '12px',
-              letterSpacing: '6px',
-              opacity: 0.5,
-              marginBottom: '16px',
-              fontWeight: 500,
-            }}
-          >
+          <p style={{ fontSize: '12px', letterSpacing: '6px', opacity: 0.5, marginBottom: '16px', fontWeight: 500 }}>
             ABOUT ME
           </p>
           
@@ -199,156 +291,98 @@ export default function AboutPage() {
 
           <p
             className="about-page-subtitle"
-            style={{
-              fontSize: '18px',
-              opacity: 0.7,
-              marginBottom: '32px',
-              fontWeight: 500,
-            }}
+            style={{ fontSize: '18px', opacity: 0.7, marginBottom: '32px', fontWeight: 500 }}
           >
             Interactive Designer & Creative Developer
           </p>
 
           <div style={{ marginBottom: '40px' }}>
-            <p
-              className="bio-text"
-              style={{
-                fontSize: '15px',
-                lineHeight: 1.9,
-                opacity: 0.8,
-                marginBottom: '20px',
-                maxWidth: '500px',
-              }}
-            >
-              I&apos;m an aspiring Interactive Designer passionate about creating engaging, 
-              user-centered digital experiences. My focus lies in blending creativity with 
-              functionality to craft memorable interactions.
+            <p className="bio-text" style={{ fontSize: '15px', lineHeight: 1.9, opacity: 0.8, marginBottom: '20px', maxWidth: '500px' }}>
+              I am an aspiring Interactive Designer focused on creating engaging, user-centered digital experiences. I combine design thinking, usability, and gamification strategies to improve user retention and build impactful digital products.
             </p>
-            <p
-              className="bio-text"
-              style={{
-                fontSize: '15px',
-                lineHeight: 1.9,
-                opacity: 0.8,
-                maxWidth: '500px',
-              }}
-            >
-              With a background in gamification design and interactive media, I specialize 
-              in turning complex ideas into intuitive, delightful user experiences that 
-              drive engagement and retention.
+            <p className="bio-text" style={{ fontSize: '15px', lineHeight: 1.9, opacity: 0.8, maxWidth: '500px' }}>
+              With strong interests in UI/UX design, interactive systems, and digital storytelling, I aim to create solutions that are both functional and meaningful while continuously improving my creative and technical skills.
             </p>
           </div>
 
           {/* Stats */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '40px',
-              marginBottom: '40px',
-            }}
-          >
+          <div style={{ display: 'flex', gap: '40px', marginBottom: '40px' }}>
             {stats.map((stat, i) => (
               <div
                 key={stat.label}
-                ref={(el) => (statsRef.current[i] = el)}
+                className="stat-box"
                 style={{
                   padding: '20px 0',
                   borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
                   paddingRight: i < stats.length - 1 ? '40px' : '0',
                 }}
               >
-                <p
-                  style={{
-                    fontSize: '36px',
-                    fontWeight: 700,
-                    marginBottom: '8px',
-                    background: 'linear-gradient(135deg, #fff 0%, rgba(200,200,255,0.8) 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                  }}
-                >
+                <p style={{
+                  fontSize: '36px',
+                  fontWeight: 700,
+                  marginBottom: '8px',
+                  background: 'linear-gradient(135deg, #fff 0%, rgba(200,200,255,0.8) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}>
                   {stat.value}
                 </p>
-                <p style={{ fontSize: '12px', opacity: 0.5, letterSpacing: '1px' }}>
-                  {stat.label}
-                </p>
+                <p style={{ fontSize: '12px', opacity: 0.5, letterSpacing: '1px' }}>{stat.label}</p>
               </div>
             ))}
           </div>
 
-          {/* Skills */}
-          <div>
-            <p style={{ fontSize: '12px', letterSpacing: '4px', opacity: 0.4, marginBottom: '16px' }}>
-              SKILLS
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-              {skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="skill-tag"
-                  onMouseEnter={(e) => {
-                    gsap.to(e.currentTarget, {
-                      scale: 1.05,
-                      background: 'rgba(255,255,255,0.15)',
-                      borderColor: 'rgba(255,255,255,0.3)',
-                      duration: 0.3,
-                    });
-                  }}
-                  onMouseLeave={(e) => {
-                    gsap.to(e.currentTarget, {
-                      scale: 1,
-                      background: 'rgba(255,255,255,0.05)',
-                      borderColor: 'rgba(255,255,255,0.1)',
-                      duration: 0.3,
-                    });
-                  }}
-                  style={{
-                    padding: '10px 18px',
-                    borderRadius: '30px',
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    cursor: 'default',
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
+          {/* Download CV Button */}
+          <a
+            href="/12230074_CV.pdf"
+            download
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '16px 32px',
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '50px',
+              color: '#fff',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '1px',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              gsap.to(e.currentTarget, { background: 'rgba(255,255,255,0.2)', borderColor: 'rgba(255,255,255,0.4)', scale: 1.02, duration: 0.3 });
+            }}
+            onMouseLeave={(e) => {
+              gsap.to(e.currentTarget, { background: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.2)', scale: 1, duration: 0.3 });
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            Download CV
+          </a>
         </div>
 
         {/* Right - Avatar */}
-        <div
-          style={{
-            position: 'relative',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {/* Glow behind avatar */}
-          <div
-            style={{
-              position: 'absolute',
-              width: '500px',
-              height: '500px',
-              background: 'rgba(255, 255, 255, 0.2)',
-              borderRadius: '50%',
-              filter: 'blur(100px)',
-            }}
-          />
+        <div style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{
+            position: 'absolute',
+            width: '500px',
+            height: '500px',
+            background: 'rgba(255, 255, 255, 0.15)',
+            borderRadius: '50%',
+            filter: 'blur(100px)',
+          }} />
 
-          {/* Avatar frame */}
           <div
             ref={avatarRef}
             style={{
               position: 'relative',
-              width: '450px',
-              height: '450px',
+              width: '400px',
+              height: '400px',
               borderRadius: '50%',
               background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)',
               border: '1px solid rgba(255,255,255,0.1)',
@@ -356,46 +390,262 @@ export default function AboutPage() {
               alignItems: 'center',
               justifyContent: 'center',
               boxShadow: '0 40px 80px rgba(0,0,0,0.3), 0 0 60px rgba(100,100,255,0.1)',
+              overflow: 'hidden',
             }}
           >
             <img
               src="/me.png"
               alt="Jigme Namgyel"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '50%',
-              }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-
-            {/* Decorative ring */}
-            <div
-              style={{
-                position: 'absolute',
-                inset: '-20px',
-                borderRadius: '50%',
-                border: '1px solid rgba(255,255,255,0.05)',
-                animation: 'spin 30s linear infinite',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                inset: '-40px',
-                borderRadius: '50%',
-                border: '1px dashed rgba(255,255,255,0.03)',
-                animation: 'spin 40s linear infinite reverse',
-              }}
-            />
+            <div style={{
+              position: 'absolute',
+              inset: '-20px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.05)',
+              animation: 'spin 30s linear infinite',
+            }} />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Bubbles */}
+      {/* Video Introduction Section */}
+      <section style={{ padding: '80px 60px', maxWidth: '1200px', margin: '0 auto' }}>
+        <h2 style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '4px', opacity: 0.4, marginBottom: '40px', fontWeight: 600 }}>Video Introduction</h2>
+        <div style={{
+          width: '100%',
+          aspectRatio: '16/9',
+          borderRadius: '20px',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          position: 'relative',
+        }}>
+          {/* Placeholder for video */}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              width: '80px',
+              height: '80px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+            }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </div>
+            <p style={{ fontSize: '14px', opacity: 0.5 }}>Resume Video Coming Soon</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Education Section */}
+      <section className="education-section" style={{ padding: '80px 60px', background: 'rgba(0,0,0,0.1)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '4px', opacity: 0.4, marginBottom: '50px', fontWeight: 600 }}>Education Journey</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
+            {education.map((edu, i) => (
+              <div
+                key={i}
+                className="education-item"
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '30px',
+                  padding: '30px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  position: 'relative',
+                }}
+              >
+                {edu.current && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '20px',
+                    right: '20px',
+                    padding: '6px 14px',
+                    background: 'rgba(100, 200, 100, 0.2)',
+                    borderRadius: '20px',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#8fef8f',
+                    letterSpacing: '1px',
+                  }}>
+                    CURRENT
+                  </div>
+                )}
+                <div style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  fontWeight: 700,
+                  color: 'rgba(255,255,255,0.4)',
+                  flexShrink: 0,
+                }}>
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '8px', color: '#fff' }}>{edu.degree}</h3>
+                  <p style={{ fontSize: '14px', opacity: 0.7, marginBottom: '6px' }}>{edu.school}</p>
+                  <p style={{ fontSize: '13px', opacity: 0.5 }}>{edu.period}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section style={{ padding: '80px 60px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '4px', opacity: 0.4, marginBottom: '40px', fontWeight: 600 }}>Technical Skills</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '50px' }}>
+            {technicalSkills.map((skill) => (
+              <span
+                key={skill}
+                className="skill-tag"
+                onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.05, background: 'rgba(255,255,255,0.15)', duration: 0.3 })}
+                onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, background: 'rgba(255,255,255,0.05)', duration: 0.3 })}
+                style={{
+                  padding: '12px 20px',
+                  borderRadius: '30px',
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  cursor: 'default',
+                }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+
+          <h2 style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '4px', opacity: 0.4, marginBottom: '40px', fontWeight: 600 }}>Soft Skills</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+            {softSkills.map((skill) => (
+              <span
+                key={skill}
+                className="skill-tag"
+                onMouseEnter={(e) => gsap.to(e.currentTarget, { scale: 1.05, background: 'rgba(255,255,255,0.15)', duration: 0.3 })}
+                onMouseLeave={(e) => gsap.to(e.currentTarget, { scale: 1, background: 'rgba(255,255,255,0.05)', duration: 0.3 })}
+                style={{
+                  padding: '12px 20px',
+                  borderRadius: '30px',
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  cursor: 'default',
+                }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section className="experience-section" style={{ padding: '80px 60px', background: 'rgba(0,0,0,0.1)' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '4px', opacity: 0.4, marginBottom: '50px', fontWeight: 600 }}>Experience</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px' }}>
+            {experience.map((exp, i) => (
+              <div
+                key={i}
+                className="experience-item"
+                style={{
+                  padding: '30px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => gsap.to(e.currentTarget, { y: -5, borderColor: 'rgba(255,255,255,0.15)', duration: 0.3 })}
+                onMouseLeave={(e) => gsap.to(e.currentTarget, { y: 0, borderColor: 'rgba(255,255,255,0.08)', duration: 0.3 })}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '6px', color: '#fff' }}>{exp.role}</h3>
+                    <p style={{ fontSize: '14px', opacity: 0.7 }}>{exp.company}</p>
+                  </div>
+                  <span style={{
+                    padding: '6px 12px',
+                    background: 'rgba(255,255,255,0.08)',
+                    borderRadius: '20px',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    opacity: 0.6,
+                  }}>
+                    {exp.period}
+                  </span>
+                </div>
+                <p style={{ fontSize: '13px', lineHeight: 1.7, opacity: 0.6 }}>{exp.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications */}
+      <section className="cert-section" style={{ padding: '80px 60px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '4px', opacity: 0.4, marginBottom: '50px', fontWeight: 600 }}>Certifications & Achievements</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+            {certifications.map((cert, i) => (
+              <div
+                key={i}
+                className="cert-item"
+                style={{
+                  padding: '24px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '14px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{
+                  width: '50px',
+                  height: '50px',
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 16px',
+                }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2">
+                    <circle cx="12" cy="8" r="6"/><path d="M9 14l-4 8 7-3 7 3-4-8"/>
+                  </svg>
+                </div>
+                <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px', color: '#fff' }}>{cert.title}</h3>
+                <p style={{ fontSize: '12px', opacity: 0.5 }}>{cert.issuer}</p>
+                <p style={{ fontSize: '11px', opacity: 0.4, marginTop: '4px' }}>{cert.year}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <ContactSection />
+
       <Bubbles />
-
-      {/* Footer */}
       <Footer />
 
       <style>{`
