@@ -14,7 +14,6 @@ import ContactPage from './components/ContactPage';
 import AboutPage from './components/AboutPage';
 import ProjectDetailPage from './components/ProjectDetailPage';
 import Bubbles from './components/Bubbles';
-import CursorTrail from './components/CursorTrail';
 import Footer from './components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -84,8 +83,7 @@ function HomePage() {
         fontFamily: "'Montserrat', sans-serif"
       }}
     >
-      {/* Cursor Trail Effect */}
-      <CursorTrail />
+
 
       {/* Premium Background */}
       <div style={{

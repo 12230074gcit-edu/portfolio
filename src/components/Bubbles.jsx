@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
+import { trackEvents } from '../utils/analytics';
 
 export default function Bubbles() {
   const containerRef = useRef(null);
@@ -144,6 +145,9 @@ export default function Bubbles() {
     
     // Play pop sound
     playPopSound();
+    
+    // Track bubble pop for analytics
+    trackEvents.bubblePop();
     
     // Pop animation - quick burst outward then disappear
     gsap.to(bubble, {

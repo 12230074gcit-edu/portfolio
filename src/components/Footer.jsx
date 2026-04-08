@@ -386,7 +386,7 @@ export default function Footer() {
             fontWeight: 400,
           }}
         >
-          &copy; 2024 Jigme Namgyel. All rights reserved.
+          &copy; {new Date().getFullYear()} Jigme Namgyel. All rights reserved.
         </p>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
