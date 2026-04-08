@@ -7,7 +7,7 @@ import { Navbar } from './navbar';
 import Footer from './Footer';
 import ContactSection from './Contact';
 import { FloatingTorus, FloatingSphere } from './Interactive3D';
-import PhoneMockup from './PhoneMockup';
+import StickyPhoneMockup from './PhoneMockup';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,8 +24,14 @@ const projectsData = {
     contributors: ['User Interface Design', 'User Research', 'Frontend Developer'],
     heroImage: '/qube.png',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366F1 100%)',
-    // Add your QUBE app screenshots here - e.g. ['/qube-screen1.png', '/qube-screen2.png', ...]
-    appScreens: [],
+    // Add your QUBE app screenshots here - replace these paths with your actual images
+    appScreens: [
+      '/qube-screen-1.png',
+      '/qube-screen-2.png', 
+      '/qube-screen-3.png',
+      '/qube-screen-4.png',
+      '/qube-screen-5.png',
+    ],
     overview: 'QUBE transforms the traditional loyalty program into an engaging, game-like experience. By incorporating interactive elements directly into the dining journey, we created a system that feels less like point collection and more like play.',
     challenge: 'Traditional restaurant loyalty programs fail to excite customers. Points systems feel disconnected from the dining experience, resulting in low engagement and forgotten rewards. Restaurants needed a way to make loyalty feel rewarding in the moment, not just at redemption.',
     approach: [
@@ -104,8 +110,14 @@ const projectsData = {
     contributors: ['User Interface Design', 'Frontend Dev', 'API Integration'],
     heroImage: '/tovo.png',
     gradient: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 50%, #4F46E5 100%)',
-    // Add your TOVO app screenshots here - e.g. ['/tovo-screen1.png', '/tovo-screen2.png', ...]
-    appScreens: [],
+    // Add your TOVO app screenshots here - replace these paths with your actual images
+    appScreens: [
+      '/tovo-screen-1.png',
+      '/tovo-screen-2.png',
+      '/tovo-screen-3.png',
+      '/tovo-screen-4.png',
+      '/tovo-screen-5.png',
+    ],
     overview: 'TOVO brings personality back to food delivery. By combining mood-based recommendations with a visually stunning interface, we turned the mundane task of ordering food into a moment of anticipation and excitement.',
     challenge: 'Food delivery apps have become cluttered, slow, and devoid of personality. Decision fatigue leads to abandoned carts, while generic interfaces strip away the joy of discovering new cuisines. We needed to make ordering feel as satisfying as the first bite.',
     approach: [
@@ -411,6 +423,15 @@ export default function ProjectDetailPage() {
       <Bubbles />
       <Navbar />
 
+      {/* Sticky 3D Phone Mockup - floats on the right as you scroll (only for QUBE and TOVO) */}
+      {(project.id === 'qube' || project.id === 'tovo') && project.appScreens && (
+        <StickyPhoneMockup 
+          images={project.appScreens} 
+          projectName={project.name}
+          containerRef={containerRef}
+        />
+      )}
+
       {/* Hero Section */}
       <section ref={heroRef} style={{
         minHeight: '100vh',
@@ -547,39 +568,6 @@ export default function ProjectDetailPage() {
           </p>
         </div>
       </section>
-
-      {/* App Showcase - 3D Phone Mockup (only for QUBE and TOVO) */}
-      {(project.id === 'qube' || project.id === 'tovo') && (
-        <section className="animate-section" style={{ padding: '80px 40px', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            <h2 style={{ 
-              fontSize: '11px', 
-              textTransform: 'uppercase', 
-              letterSpacing: '4px', 
-              opacity: 0.4, 
-              marginBottom: '20px', 
-              fontWeight: 600,
-              textAlign: 'center',
-            }}>
-              App Experience
-            </h2>
-            <p style={{
-              fontSize: '16px',
-              opacity: 0.6,
-              textAlign: 'center',
-              marginBottom: '20px',
-              maxWidth: '500px',
-              margin: '0 auto 20px',
-            }}>
-              Explore the mobile interface as you scroll
-            </p>
-            <PhoneMockup 
-              images={project.appScreens} 
-              projectName={project.name} 
-            />
-          </div>
-        </section>
-      )}
 
       {/* Approach */}
       <section className="approach-section" style={{ padding: '100px 80px' }}>
