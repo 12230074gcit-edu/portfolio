@@ -142,7 +142,7 @@ export default function ServicesSection() {
       </div>
 
       {/* Development Section */}
-      <div className="dev-block" style={{ marginBottom: "60px" }}>
+      <div className="dev-block" style={{ marginBottom: "60px", width: "700px" }}>
         <div style={glassSlim}>
           <h2 style={sectionTitle}>Development</h2>
         </div>
