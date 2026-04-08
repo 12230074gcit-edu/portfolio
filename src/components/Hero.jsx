@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import RollingText from './RollingText';
 
 gsap.registerPlugin(MotionPathPlugin, ScrollTrigger);
 
@@ -12,6 +13,7 @@ export const Hero = () => {
   const iconRef = useRef(null);
   const glowRef = useRef(null);
   const blocksRef = useRef([]);
+  const titleWordsRef = useRef([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -25,9 +27,9 @@ export const Hero = () => {
         delay: 1,
       });
 
-      // Hat floating motion
-      const hatTl = gsap.timeline({ repeat: -1, yoyo: true });
-      hatTl.to(iconRef.current, {
+      // Hat floating motion in Hero
+      const hatFloat = gsap.timeline({ repeat: -1, yoyo: true });
+      hatFloat.to(iconRef.current, {
         duration: 6,
         ease: 'sine.inOut',
         motionPath: {
@@ -43,6 +45,54 @@ export const Hero = () => {
         },
       });
 
+      // Hat scroll animation - moves through sections
+      ScrollTrigger.create({
+        trigger: '#quote-section',
+        start: 'top 80%',
+        end: 'bottom 20%',
+        scrub: 2,
+        onUpdate: (self) => {
+          hatFloat.pause();
+          const progress = self.progress;
+          gsap.to(iconRef.current, {
+            x: 200 + progress * 300,
+            y: progress * 150,
+            rotation: progress * 30,
+            scale: 0.9 - progress * 0.1,
+            duration: 0.5,
+          });
+        },
+        onLeave: () => {
+          gsap.to(iconRef.current, {
+            opacity: 0,
+            duration: 0.5,
+          });
+        },
+        onEnterBack: () => {
+          gsap.to(iconRef.current, {
+            opacity: 1,
+            duration: 0.5,
+          });
+        },
+      });
+
+      // Continue hat through projects section
+      ScrollTrigger.create({
+        trigger: '#projects-section',
+        start: 'top 50%',
+        end: 'bottom 50%',
+        scrub: 2,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          gsap.to(iconRef.current, {
+            x: 500 + progress * 200,
+            y: 150 + progress * 100,
+            rotation: 30 + progress * 20,
+            duration: 0.5,
+          });
+        },
+      });
+
       // Subtle pulsing glow
       gsap.to(glowRef.current, {
         scale: 1.2,
@@ -53,35 +103,52 @@ export const Hero = () => {
         ease: 'sine.inOut',
       });
 
-      // Text entrance with smooth stagger
-      const textTl = gsap.timeline();
-      textTl
-        .from(titleRef.current, {
-          y: 80,
+      // Title words entrance with stagger
+      titleWordsRef.current.forEach((word, i) => {
+        if (!word) return;
+        gsap.from(word, {
+          y: 100,
           opacity: 0,
-          duration: 1.5,
-          ease: 'power4.out',
-          delay: 0.5
-        })
-        .from(subtitleRef.current, {
-          y: 50,
-          opacity: 0,
+          rotateX: -90,
           duration: 1.2,
-          ease: 'power3.out'
-        }, '-=1');
+          ease: 'power4.out',
+          delay: 0.5 + i * 0.1,
+        });
+      });
 
-      // Floating blocks animation
+      // Subtitle entrance
+      gsap.from(subtitleRef.current, {
+        y: 50,
+        opacity: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+        delay: 1,
+      });
+
+      // Floating blocks animation with varied motion
       blocksRef.current.forEach((block, i) => {
         if (!block) return;
+        
+        // Random floating
         gsap.to(block, {
-          y: gsap.utils.random(-15, 15),
-          x: gsap.utils.random(-10, 10),
-          rotation: gsap.utils.random(-5, 5),
-          duration: gsap.utils.random(3, 5),
+          y: gsap.utils.random(-20, 20),
+          x: gsap.utils.random(-15, 15),
+          rotation: gsap.utils.random(-10, 10),
+          duration: gsap.utils.random(3, 6),
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut',
-          delay: i * 0.2
+          delay: i * 0.3,
+        });
+
+        // Entrance animation
+        gsap.from(block, {
+          scale: 0,
+          opacity: 0,
+          rotation: gsap.utils.random(-180, 180),
+          duration: 1,
+          ease: 'back.out(1.7)',
+          delay: 1.5 + i * 0.15,
         });
       });
     });
@@ -95,6 +162,8 @@ export const Hero = () => {
     { bottom: '25%', left: '20%', size: 45, color: 'rgba(236, 72, 153, 0.25)', rotate: 25 },
     { bottom: '15%', right: '10%', size: 55, color: 'rgba(168, 85, 247, 0.25)', rotate: -20 },
   ];
+
+  const titleWords = ["Retention", "isn't", "luck.", "It's", "designed."];
 
   return (
     <div
@@ -148,7 +217,7 @@ export const Hero = () => {
         />
       </div>
 
-      {/* Main Title */}
+      {/* Main Title with word animation */}
       <h1
         ref={titleRef}
         style={{
@@ -161,15 +230,40 @@ export const Hero = () => {
           fontFamily: "'Montserrat', sans-serif",
           letterSpacing: '-1px',
           textShadow: '0 4px 30px rgba(0,0,0,0.3)',
+          perspective: '1000px',
         }}
       >
-        Retention isn&apos;t luck.
+        {titleWords.slice(0, 3).map((word, i) => (
+          <span
+            key={i}
+            ref={(el) => (titleWordsRef.current[i] = el)}
+            style={{
+              display: 'inline-block',
+              marginRight: '0.25em',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            {word}
+          </span>
+        ))}
         <br />
-        It&apos;s designed.
+        {titleWords.slice(3).map((word, i) => (
+          <span
+            key={i + 3}
+            ref={(el) => (titleWordsRef.current[i + 3] = el)}
+            style={{
+              display: 'inline-block',
+              marginRight: '0.25em',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            {word}
+          </span>
+        ))}
       </h1>
 
-      {/* Subtitle */}
-      <p
+      {/* Rolling text subtitle */}
+      <div
         ref={subtitleRef}
         style={{
           fontSize: 'clamp(16px, 2.5vw, 20px)',
@@ -183,14 +277,18 @@ export const Hero = () => {
       >
         I help product teams boost user retention through
         <br />
-        user-centered gamification design.
-      </p>
+        user-centered{' '}
+        <span style={{ display: 'inline-block', width: '140px', textAlign: 'left' }}>
+          <RollingText words={['gamification', 'interaction', 'engagement', 'design']} />
+        </span>{' '}
+        design.
+      </div>
 
       {/* Decorative floating blocks */}
       {decorativeBlocks.map((block, i) => (
         <div
           key={i}
-          ref={el => blocksRef.current[i] = el}
+          ref={(el) => (blocksRef.current[i] = el)}
           style={{
             position: 'absolute',
             ...block,

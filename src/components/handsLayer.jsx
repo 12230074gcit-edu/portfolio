@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -11,42 +11,28 @@ export default function HandsLayer() {
   const burstRef = useRef(null);
   const particlesRef = useRef([]);
   const ringsRef = useRef([]);
-  const [buttonPos, setButtonPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Get button position for targeting
-    const updateButtonPos = () => {
-      const btn = document.getElementById("contact-btn");
-      if (btn) {
-        const rect = btn.getBoundingClientRect();
-        setButtonPos({
-          x: rect.left + rect.width / 2,
-          y: rect.top + rect.height / 2
-        });
-      }
-    };
-
-    // Update position on scroll and resize
-    window.addEventListener("scroll", updateButtonPos);
-    window.addEventListener("resize", updateButtonPos);
-    updateButtonPos();
-
     const ctx = gsap.context(() => {
-      // Initial state - completely hidden off-screen
+      // Initial state - positioned at corners, hidden
       gsap.set(humanRef.current, {
         opacity: 0,
-        x: "-100vw",
-        y: 0,
-        rotation: -30,
-        scale: 1,
+        left: "0%",
+        top: "100%",
+        xPercent: -50,
+        yPercent: 0,
+        rotation: -45,
+        scale: 1.2,
       });
 
       gsap.set(robotRef.current, {
         opacity: 0,
-        x: "100vw",
-        y: 0,
-        rotation: 30,
-        scale: 1,
+        left: "100%",
+        top: "100%",
+        xPercent: 50,
+        yPercent: 0,
+        rotation: 45,
+        scale: 1.2,
       });
 
       gsap.set([glowRef.current, burstRef.current], {
@@ -59,95 +45,94 @@ export default function HandsLayer() {
         scale: 0,
       });
 
-      // Phase 1: Hands appear from sides when About section enters
+      // Phase 1: Hands appear from corners when Services section enters
       ScrollTrigger.create({
-        trigger: "#about-section",
-        start: "top 80%",
-        end: "top 30%",
-        scrub: 1,
+        trigger: "#services-section",
+        start: "top 90%",
+        end: "top 50%",
+        scrub: 1.2,
         onUpdate: (self) => {
           const progress = self.progress;
-          // Human hand enters from left
+          
+          // Human hand - bottom left corner, moves up and right
           gsap.to(humanRef.current, {
-            opacity: progress,
-            x: -300 + (progress * 200), // Move from far left toward center
-            rotation: -30 + (progress * 15),
+            opacity: Math.min(progress * 1.5, 1),
+            left: `${5 + progress * 15}%`,
+            top: `${90 - progress * 20}%`,
+            rotation: -45 + progress * 20,
+            scale: 1.2 - progress * 0.2,
             duration: 0.1,
           });
-          // Robot hand enters from right
+          
+          // Robot hand - bottom right corner, moves up and left
           gsap.to(robotRef.current, {
-            opacity: progress,
-            x: 300 - (progress * 200), // Move from far right toward center
-            rotation: 30 - (progress * 15),
+            opacity: Math.min(progress * 1.5, 1),
+            left: `${95 - progress * 15}%`,
+            top: `${90 - progress * 20}%`,
+            rotation: 45 - progress * 20,
+            scale: 1.2 - progress * 0.2,
             duration: 0.1,
           });
         },
       });
 
-      // Phase 2: Main scroll animation - hands converge toward Contact button
-      const mainTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#services-section",
-          start: "top 80%",
-          endTrigger: "#contact",
-          end: "center center",
-          scrub: 1.5,
+      // Phase 2: Hands continue converging through Services
+      ScrollTrigger.create({
+        trigger: "#services-section",
+        start: "top 50%",
+        end: "bottom 50%",
+        scrub: 1.5,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          
+          // Human hand converges toward center
+          gsap.to(humanRef.current, {
+            left: `${20 + progress * 15}%`,
+            top: `${70 - progress * 15}%`,
+            rotation: -25 + progress * 15,
+            duration: 0.1,
+          });
+          
+          // Robot hand converges toward center
+          gsap.to(robotRef.current, {
+            left: `${80 - progress * 15}%`,
+            top: `${70 - progress * 15}%`,
+            rotation: 25 - progress * 15,
+            duration: 0.1,
+          });
         },
       });
 
-      // Human hand moves toward center-right (near button)
-      mainTl.to(
-        humanRef.current,
-        {
-          x: -60,
-          y: 0,
-          rotation: -5,
-          ease: "power2.inOut",
-        },
-        0
-      );
-
-      // Robot hand moves toward center-left (near button)
-      mainTl.to(
-        robotRef.current,
-        {
-          x: 60,
-          y: 0,
-          rotation: 5,
-          ease: "power2.inOut",
-        },
-        0
-      );
-
-      // Phase 3: Final convergence and glow effect at Contact button
+      // Phase 3: Final convergence at Contact button - hands point to it
       const finalTl = gsap.timeline({
         scrollTrigger: {
           trigger: "#contact",
-          start: "top 60%",
+          start: "top 80%",
           end: "center center",
           scrub: 1,
         },
       });
 
-      // Hands converge to touch point
+      // Human hand points to button
       finalTl.to(
         humanRef.current,
         {
-          x: 20,
-          y: 50,
-          rotation: 0,
+          left: "38%",
+          top: "50%",
+          rotation: 15,
           scale: 0.9,
           ease: "power3.inOut",
         },
         0
       );
 
+      // Robot hand points to button
       finalTl.to(
         robotRef.current,
         {
-          x: -20,
-          y: 50,
-          rotation: 0,
+          left: "62%",
+          top: "50%",
+          rotation: -15,
           scale: 0.9,
           ease: "power3.inOut",
         },
@@ -158,11 +143,11 @@ export default function HandsLayer() {
       finalTl.to(
         glowRef.current,
         {
-          opacity: 0.5,
-          scale: 1,
+          opacity: 0.4,
+          scale: 0.8,
           ease: "power2.out",
         },
-        0.3
+        0.4
       );
 
       // Glow intensifies as hands meet
@@ -170,7 +155,7 @@ export default function HandsLayer() {
         glowRef.current,
         {
           opacity: 1,
-          scale: 2,
+          scale: 2.5,
           ease: "power2.out",
         },
         0.7
@@ -181,7 +166,7 @@ export default function HandsLayer() {
         burstRef.current,
         {
           opacity: 1,
-          scale: 2.5,
+          scale: 3,
           ease: "expo.out",
         },
         0.8
@@ -193,21 +178,22 @@ export default function HandsLayer() {
         finalTl.to(
           ring,
           {
-            opacity: 0.6 - (i * 0.15),
-            scale: 1.5 + (i * 0.5),
+            opacity: 0.7 - i * 0.2,
+            scale: 1.5 + i * 0.6,
             ease: "power2.out",
           },
-          0.8 + (i * 0.05)
+          0.8 + i * 0.05
         );
       });
 
-      // Button glow effect - make it stand out
+      // Button glow effect - make it really stand out
       finalTl.to(
         "#contact-btn",
         {
-          boxShadow: "0 0 60px rgba(255,255,255,0.9), 0 0 120px rgba(100,100,255,0.6), 0 0 180px rgba(255,255,255,0.4)",
-          scale: 1.15,
-          ease: "elastic.out(1, 0.5)",
+          boxShadow:
+            "0 0 80px rgba(255,255,255,1), 0 0 150px rgba(100,100,255,0.7), 0 0 200px rgba(255,255,255,0.5)",
+          scale: 1.2,
+          ease: "elastic.out(1, 0.4)",
         },
         0.85
       );
@@ -215,8 +201,8 @@ export default function HandsLayer() {
       // Particles burst outward
       particlesRef.current.forEach((particle, i) => {
         if (!particle) return;
-        const angle = (i / 12) * Math.PI * 2;
-        const distance = 100 + Math.random() * 60;
+        const angle = (i / 16) * Math.PI * 2;
+        const distance = 120 + Math.random() * 80;
 
         finalTl.fromTo(
           particle,
@@ -228,7 +214,7 @@ export default function HandsLayer() {
           },
           {
             opacity: 1,
-            scale: 1 + Math.random() * 0.5,
+            scale: 1.5 + Math.random(),
             x: Math.cos(angle) * distance,
             y: Math.sin(angle) * distance,
             ease: "power2.out",
@@ -247,34 +233,31 @@ export default function HandsLayer() {
         );
       });
 
-      // Fade effects and settle button
+      // Fade effects
       finalTl.to(
         [glowRef.current, burstRef.current, ...ringsRef.current],
         {
           opacity: 0,
-          scale: 3,
+          scale: 4,
           ease: "power2.in",
         },
         0.95
       );
 
-      // Button settles with premium glow
+      // Button settles with premium persistent glow
       finalTl.to(
         "#contact-btn",
         {
-          boxShadow: "0 0 30px rgba(255,255,255,0.4), 0 0 60px rgba(100,100,255,0.2), 0 10px 40px rgba(0,0,0,0.3)",
-          scale: 1.05,
+          boxShadow:
+            "0 0 40px rgba(255,255,255,0.5), 0 0 80px rgba(100,100,255,0.3), 0 15px 50px rgba(0,0,0,0.3)",
+          scale: 1.08,
           ease: "power2.out",
         },
         1
       );
     });
 
-    return () => {
-      ctx.revert();
-      window.removeEventListener("scroll", updateButtonPos);
-      window.removeEventListener("resize", updateButtonPos);
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -287,19 +270,20 @@ export default function HandsLayer() {
         overflow: "hidden",
       }}
     >
-      {/* Central glow - positioned at button area */}
+      {/* Central glow */}
       <div
         ref={glowRef}
         style={{
           position: "absolute",
           left: "50%",
           top: "50%",
-          width: "300px",
-          height: "300px",
+          width: "350px",
+          height: "350px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(150,150,255,0.5) 30%, transparent 70%)",
+          background:
+            "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(150,150,255,0.6) 30%, transparent 70%)",
           transform: "translate(-50%, -50%)",
-          filter: "blur(25px)",
+          filter: "blur(30px)",
         }}
       />
 
@@ -310,17 +294,18 @@ export default function HandsLayer() {
           position: "absolute",
           left: "50%",
           top: "50%",
-          width: "200px",
-          height: "200px",
+          width: "250px",
+          height: "250px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(200,200,255,0.7) 25%, transparent 60%)",
+          background:
+            "radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(200,200,255,0.8) 25%, transparent 60%)",
           transform: "translate(-50%, -50%)",
-          filter: "blur(15px)",
+          filter: "blur(20px)",
         }}
       />
 
       {/* Expanding rings */}
-      {[...Array(3)].map((_, i) => (
+      {[...Array(4)].map((_, i) => (
         <div
           key={`ring-${i}`}
           ref={(el) => (ringsRef.current[i] = el)}
@@ -328,18 +313,18 @@ export default function HandsLayer() {
             position: "absolute",
             left: "50%",
             top: "50%",
-            width: `${150 + i * 50}px`,
-            height: `${150 + i * 50}px`,
+            width: `${120 + i * 40}px`,
+            height: `${120 + i * 40}px`,
             borderRadius: "50%",
-            border: "2px solid rgba(255,255,255,0.5)",
+            border: `${3 - i * 0.5}px solid rgba(255,255,255,${0.7 - i * 0.15})`,
             transform: "translate(-50%, -50%)",
-            boxShadow: "0 0 20px rgba(255,255,255,0.3)",
+            boxShadow: `0 0 ${25 - i * 5}px rgba(255,255,255,${0.4 - i * 0.1})`,
           }}
         />
       ))}
 
       {/* Particles */}
-      {[...Array(12)].map((_, i) => (
+      {[...Array(16)].map((_, i) => (
         <div
           key={i}
           ref={(el) => (particlesRef.current[i] = el)}
@@ -347,11 +332,12 @@ export default function HandsLayer() {
             position: "absolute",
             left: "50%",
             top: "50%",
-            width: `${6 + Math.random() * 6}px`,
-            height: `${6 + Math.random() * 6}px`,
+            width: `${6 + Math.random() * 8}px`,
+            height: `${6 + Math.random() * 8}px`,
             borderRadius: "50%",
-            background: "rgba(255,255,255,0.95)",
-            boxShadow: "0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(100,100,255,0.5)",
+            background: "rgba(255,255,255,1)",
+            boxShadow:
+              "0 0 20px rgba(255,255,255,1), 0 0 40px rgba(100,100,255,0.6)",
             transform: "translate(-50%, -50%)",
           }}
         />
@@ -364,11 +350,9 @@ export default function HandsLayer() {
         alt=""
         style={{
           position: "absolute",
-          left: "50%",
-          top: "50%",
-          width: "320px",
+          width: "350px",
           transformOrigin: "center center",
-          filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.5))",
+          filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.6))",
         }}
       />
 
@@ -379,11 +363,9 @@ export default function HandsLayer() {
         alt=""
         style={{
           position: "absolute",
-          left: "50%",
-          top: "50%",
-          width: "320px",
+          width: "350px",
           transformOrigin: "center center",
-          filter: "drop-shadow(0 25px 50px rgba(0,0,0,0.5))",
+          filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.6))",
         }}
       />
     </div>

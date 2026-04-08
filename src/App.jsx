@@ -9,7 +9,10 @@ import ProjectsSection from './components/ProjectSection';
 import AboutMe from './components/aboutMeSection';
 import ServicesSection from './components/ServicesSection';
 import ContactSection from './components/Contact';
+import ContactPage from './components/ContactPage';
 import HandsLayer from './components/handsLayer';
+import CursorTrail from './components/CursorTrail';
+import Footer from './components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -64,7 +67,6 @@ export default function App() {
     { top: '15%', right: '-2%', color: '#1A64BA', size: 300 },
     { bottom: '5%', left: '5%', color: '#6048B7', size: 340 },
     { bottom: '1%', right: '1%', color: '#6A44F4', size: 310 },
-    // { top: '50%', left: '50%', color: '#7C0BB4', size: 380, center: true }
   ];
 
   return (
@@ -79,6 +81,9 @@ export default function App() {
         fontFamily: "'Montserrat', sans-serif"
       }}
     >
+      {/* Cursor Trail Effect */}
+      <CursorTrail />
+
       {/* Premium Background */}
       <div style={{
         position: 'fixed',
@@ -203,8 +208,14 @@ export default function App() {
       {/* Services Section */}
       <ServicesSection />
 
-      {/* Contact Section */}
+      {/* Contact CTA Section */}
       <ContactSection />
+
+      {/* Full Contact Page */}
+      <ContactPage />
+
+      {/* Footer */}
+      <Footer />
     </main>
   );
 }

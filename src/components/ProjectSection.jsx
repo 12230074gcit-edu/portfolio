@@ -138,7 +138,7 @@ export default function ProjectsSection() {
 
   return (
     <section
-      id="projects"
+      id="projects-section"
       ref={sectionRef}
       style={{
         height: "100vh",

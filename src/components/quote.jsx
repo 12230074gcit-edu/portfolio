@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import HorizontalText from './HorizontalText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -8,50 +9,50 @@ export const QuoteSection = () => {
   const sectionRef = useRef(null);
   const cubeRef = useRef(null);
   const chessRef = useRef(null);
-  const hatTargetRef = useRef(null);
   const titleRef = useRef(null);
   const wordsRef = useRef([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Animate hat into this section
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 70%',
-        onEnter: () => {
-          const hat = document.getElementById('shared-hat');
-          if (!hat || !hatTargetRef.current) return;
-
-          // Get target position
-          const targetRect = hatTargetRef.current.getBoundingClientRect();
-          
-          gsap.killTweensOf(hat);
-          gsap.to(hat, {
-            x: targetRect.left + targetRect.width / 2 - window.innerWidth / 2,
-            y: targetRect.top + targetRect.height / 2 - 100,
-            scale: 0.8,
-            duration: 1.5,
-            ease: 'power3.inOut',
-            onComplete: () => {
-              // Gentle floating
-              gsap.to(hat, {
-                duration: 4,
-                y: '+=15',
-                rotation: 5,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.inOut',
-              });
-            },
-          });
+      // Cube animation - 3D rotation on scroll
+      const cubeTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.5,
         },
       });
 
-      // Parallax for decorative elements
+      cubeTl.fromTo(
+        cubeRef.current,
+        {
+          y: 100,
+          x: -50,
+          rotation: -30,
+          scale: 0.8,
+          opacity: 0.5,
+        },
+        {
+          y: -200,
+          x: 100,
+          rotation: 45,
+          scale: 1.1,
+          opacity: 1,
+          ease: 'none',
+        }
+      );
+
+      // Add 3D rotation effect on cube
       gsap.to(cubeRef.current, {
-        y: -150,
-        x: 80,
-        rotation: 30,
+        rotateY: 360,
+        duration: 20,
+        repeat: -1,
+        ease: 'none',
+      });
+
+      // Chess piece animation
+      const chessTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top bottom',
@@ -60,27 +61,50 @@ export const QuoteSection = () => {
         },
       });
 
+      chessTl.fromTo(
+        chessRef.current,
+        {
+          y: 50,
+          x: 80,
+          rotation: 20,
+          scale: 0.7,
+          opacity: 0.5,
+        },
+        {
+          y: -250,
+          x: -120,
+          rotation: -25,
+          scale: 1.2,
+          opacity: 1,
+          ease: 'none',
+        }
+      );
+
+      // Chess piece subtle bounce
       gsap.to(chessRef.current, {
-        y: -180,
-        x: -100,
-        rotation: -20,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.5,
-        },
+        y: '+=15',
+        duration: 2.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
       });
 
-      // Word-by-word reveal
+      // Word-by-word reveal with blur effect
       wordsRef.current.forEach((word, i) => {
+        if (!word) return;
         gsap.fromTo(
           word,
-          { opacity: 0, y: 40, filter: 'blur(10px)' },
+          { 
+            opacity: 0, 
+            y: 60, 
+            filter: 'blur(15px)',
+            rotateX: -45,
+          },
           {
             opacity: 1,
             y: 0,
             filter: 'blur(0px)',
+            rotateX: 0,
             duration: 0.8,
             ease: 'power3.out',
             scrollTrigger: {
@@ -104,17 +128,24 @@ export const QuoteSection = () => {
 
   return (
     <section
+      id="quote-section"
       ref={sectionRef}
       style={{
         position: 'relative',
-        minHeight: '60vh',
-        padding: '100px 20px',
+        minHeight: '70vh',
+        padding: '80px 20px',
         overflow: 'hidden',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
+      {/* Horizontal scrolling text - top */}
+      <div style={{ position: 'absolute', top: '5%', left: 0, right: 0, opacity: 0.5 }}>
+        <HorizontalText text="DESIGN DEVELOP CREATE INNOVATE " direction="left" speed={0.8} />
+      </div>
+
       {/* Ambient glow */}
       <div
         style={{
@@ -122,8 +153,8 @@ export const QuoteSection = () => {
           left: '50%',
           top: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '600px',
-          height: '400px',
+          width: '700px',
+          height: '500px',
           background: 'radial-gradient(ellipse, rgba(100, 100, 255, 0.15), transparent 70%)',
           filter: 'blur(60px)',
           pointerEvents: 'none',
@@ -144,15 +175,17 @@ export const QuoteSection = () => {
           fontFamily: "'Montserrat', sans-serif",
           fontWeight: 600,
           letterSpacing: '-0.5px',
+          perspective: '1000px',
         }}
       >
         {quoteWords.map((word, i) => (
           <span
             key={i}
-            ref={el => wordsRef.current[i] = el}
+            ref={(el) => (wordsRef.current[i] = el)}
             style={{
               display: 'inline-block',
               marginRight: '0.3em',
+              transformStyle: 'preserve-3d',
             }}
           >
             {word}
@@ -161,50 +194,60 @@ export const QuoteSection = () => {
         ))}
       </h2>
 
-      {/* Hat target */}
-      <div
-        ref={hatTargetRef}
-        style={{
-          position: 'absolute',
-          top: '10%',
-          right: '20%',
-          width: '100px',
-          height: '100px',
-          zIndex: 10,
-        }}
-      />
+      {/* Horizontal scrolling text - bottom */}
+      <div style={{ position: 'absolute', bottom: '5%', left: 0, right: 0, opacity: 0.5 }}>
+        <HorizontalText text="ENGAGE RETAIN DELIGHT INSPIRE " direction="right" speed={0.6} />
+      </div>
 
-      {/* Floating cube */}
-      <img
+      {/* Floating cube with 3D effect */}
+      <div
         ref={cubeRef}
-        src="/cube.png"
-        alt=""
         style={{
           position: 'absolute',
           top: '15%',
           left: '8%',
-          width: '140px',
+          width: '160px',
+          height: '160px',
           zIndex: 5,
-          opacity: 0.8,
-          filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))',
+          transformStyle: 'preserve-3d',
+          perspective: '1000px',
         }}
-      />
+      >
+        <img
+          src="/cube.png"
+          alt=""
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.4))',
+          }}
+        />
+      </div>
 
       {/* Floating chess piece */}
-      <img
+      <div
         ref={chessRef}
-        src="/chess.png"
-        alt=""
         style={{
           position: 'absolute',
-          top: '40%',
+          top: '35%',
           right: '8%',
-          width: '120px',
+          width: '140px',
+          height: '140px',
           zIndex: 5,
-          opacity: 0.8,
-          filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.3))',
         }}
-      />
+      >
+        <img
+          src="/chess.png"
+          alt=""
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.4))',
+          }}
+        />
+      </div>
     </section>
   );
 };

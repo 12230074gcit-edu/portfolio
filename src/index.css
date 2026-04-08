@@ -185,3 +185,153 @@ a:focus, button:focus {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* Rolling text animation */
+@keyframes rollIn {
+  0% {
+    transform: translateY(100%) rotateX(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) rotateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes rollOut {
+  0% {
+    transform: translateY(0) rotateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%) rotateX(-90deg);
+    opacity: 0;
+  }
+}
+
+/* Horizontal scroll text */
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scrollRight {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Card flip */
+@keyframes flipIn {
+  0% {
+    transform: perspective(1000px) rotateY(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: perspective(1000px) rotateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes flipOut {
+  0% {
+    transform: perspective(1000px) rotateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(1000px) rotateY(-90deg);
+    opacity: 0;
+  }
+}
+
+/* Cursor trail fade */
+@keyframes trailFade {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+/* Burst effect */
+@keyframes burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+/* Ring expand */
+@keyframes ringExpand {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Smooth section transitions */
+section {
+  transition: opacity 0.5s ease;
+}
+
+/* Input focus styles */
+input:focus, textarea:focus {
+  outline: none;
+}
+
+/* Link hover underline animation */
+.link-hover {
+  position: relative;
+}
+
+.link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: width 0.3s ease;
+}
+
+.link-hover:hover::after {
+  width: 100%;
+}
+
+/* Stagger animation utility */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* 3D hover effect */
+.hover-3d {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.hover-3d:hover {
+  transform: translateZ(20px) rotateX(5deg) rotateY(5deg);
+}
