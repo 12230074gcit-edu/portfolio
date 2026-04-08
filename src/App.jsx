@@ -20,21 +20,21 @@ export default function App() {
 
   useEffect(() => {
     // Smooth reveal on load
-    gsap.to(mainRef.current, { 
-      opacity: 1, 
-      duration: 1.5, 
-      ease: 'power2.inOut' 
+    gsap.to(mainRef.current, {
+      opacity: 1,
+      duration: 1.5,
+      ease: 'power2.inOut'
     });
 
     // Parallax grid movement
     const handleMouseMove = (e) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 15;
       const y = (e.clientY / window.innerHeight - 0.5) * 15;
-      gsap.to(gridRef.current, { 
-        x, 
-        y, 
-        duration: 1.5, 
-        ease: 'power2.out' 
+      gsap.to(gridRef.current, {
+        x,
+        y,
+        duration: 1.5,
+        ease: 'power2.out'
       });
     };
 
@@ -46,13 +46,13 @@ export default function App() {
       const randomX = gsap.utils.random(-20, 20);
       const randomY = gsap.utils.random(-20, 20);
       const duration = gsap.utils.random(5, 10);
-      gsap.to(circle, { 
-        x: randomX, 
-        y: randomY, 
-        duration, 
-        repeat: -1, 
-        yoyo: true, 
-        ease: 'sine.inOut' 
+      gsap.to(circle, {
+        x: randomX,
+        y: randomY,
+        duration,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
       });
     });
 
@@ -64,43 +64,43 @@ export default function App() {
     { top: '15%', right: '-2%', color: '#1A64BA', size: 300 },
     { bottom: '5%', left: '5%', color: '#6048B7', size: 340 },
     { bottom: '1%', right: '1%', color: '#6A44F4', size: 310 },
-    { top: '50%', left: '50%', color: '#7C0BB4', size: 380, center: true }
+    // { top: '50%', left: '50%', color: '#7C0BB4', size: 380, center: true }
   ];
 
   return (
-    <main 
-      ref={mainRef} 
-      style={{ 
-        position: 'relative', 
-        width: '100%', 
-        minHeight: '100vh', 
-        opacity: 0, 
+    <main
+      ref={mainRef}
+      style={{
+        position: 'relative',
+        width: '100%',
+        minHeight: '100vh',
+        opacity: 0,
         overflowX: 'hidden',
         fontFamily: "'Montserrat', sans-serif"
       }}
     >
       {/* Premium Background */}
-      <div style={{ 
-        position: 'fixed', 
-        inset: 0, 
-        zIndex: -1, 
-        pointerEvents: 'none' 
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: -1,
+        pointerEvents: 'none'
       }}>
         {/* Base gradient */}
-        <div style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          background: 'linear-gradient(180deg, #080C72 0%, #0a0e5c 50%, #080C72 100%)' 
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(180deg, #080C72 0%, #0a0e5c 50%, #080C72 100%)'
         }} />
-        
+
         {/* Soft blur overlay */}
-        <div style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          backgroundColor: 'rgba(255,255,255,0.02)', 
-          backdropFilter: 'blur(150px)' 
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundColor: 'rgba(255,255,255,0.02)',
+          backdropFilter: 'blur(150px)'
         }} />
-        
+
         {/* Animated grid with soft edges */}
         <div
           ref={gridRef}
@@ -128,16 +128,16 @@ export default function App() {
       </div>
 
       {/* Hero Section */}
-      <section 
+      <section
         id="home"
-        style={{ 
-          position: 'relative', 
-          height: '100vh', 
-          zIndex: 20, 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          overflow: 'hidden' 
+        style={{
+          position: 'relative',
+          height: '100vh',
+          zIndex: 20,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden'
         }}
       >
         {/* Floating gradient circles */}
@@ -146,22 +146,22 @@ export default function App() {
             <div
               key={i}
               ref={el => circlesRef.current[i] = el}
-              onMouseEnter={e => gsap.to(e.currentTarget, { 
-                scale: 1.15, 
-                opacity: 0.9, 
+              onMouseEnter={e => gsap.to(e.currentTarget, {
+                scale: 1.15,
+                opacity: 0.9,
                 duration: 0.5,
                 ease: 'power2.out'
               })}
-              onMouseLeave={e => gsap.to(e.currentTarget, { 
-                scale: 1, 
-                opacity: 0.7, 
+              onMouseLeave={e => gsap.to(e.currentTarget, {
+                scale: 1,
+                opacity: 0.7,
                 duration: 0.5,
                 ease: 'power2.out'
               })}
               style={{
                 position: 'absolute',
-                ...(c.center 
-                  ? { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' } 
+                ...(c.center
+                  ? { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }
                   : c),
                 width: `${c.size}px`,
                 height: `${c.size}px`,
@@ -176,11 +176,11 @@ export default function App() {
         </div>
 
         {/* Tetris background */}
-        <div style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          zIndex: 1, 
-          pointerEvents: 'none' 
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'none'
         }}>
           <TetrisCanvas />
         </div>

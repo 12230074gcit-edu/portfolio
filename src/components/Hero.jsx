@@ -56,18 +56,18 @@ export const Hero = () => {
       // Text entrance with smooth stagger
       const textTl = gsap.timeline();
       textTl
-        .from(titleRef.current, { 
-          y: 80, 
-          opacity: 0, 
-          duration: 1.5, 
-          ease: 'power4.out', 
-          delay: 0.5 
+        .from(titleRef.current, {
+          y: 80,
+          opacity: 0,
+          duration: 1.5,
+          ease: 'power4.out',
+          delay: 0.5
         })
-        .from(subtitleRef.current, { 
-          y: 50, 
-          opacity: 0, 
-          duration: 1.2, 
-          ease: 'power3.out' 
+        .from(subtitleRef.current, {
+          y: 50,
+          opacity: 0,
+          duration: 1.2,
+          ease: 'power3.out'
         }, '-=1');
 
       // Floating blocks animation
@@ -90,7 +90,7 @@ export const Hero = () => {
   }, []);
 
   const decorativeBlocks = [
-    { top: '10%', left: '10%', size: 50, color: 'rgba(59, 130, 246, 0.25)', rotate: 15 },
+    { top: '-10%', left: '10%', size: 50, color: 'rgba(59, 130, 246, 0.25)', rotate: 15 },
     { top: '20%', right: '15%', size: 40, color: 'rgba(34, 197, 94, 0.25)', rotate: -10 },
     { bottom: '25%', left: '20%', size: 45, color: 'rgba(236, 72, 153, 0.25)', rotate: 25 },
     { bottom: '15%', right: '10%', size: 55, color: 'rgba(168, 85, 247, 0.25)', rotate: -20 },
