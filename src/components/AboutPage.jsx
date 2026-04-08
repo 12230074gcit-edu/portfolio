@@ -5,6 +5,7 @@ import Bubbles from './Bubbles';
 import { Navbar } from './navbar';
 import Footer from './Footer';
 import ContactSection from './Contact';
+import { FloatingTorus, FloatingCrystal, FloatingSphere, FloatingCubeGrid } from './Interactive3D';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -245,6 +246,10 @@ export default function AboutPage() {
             }}
           />
         ))}
+
+        {/* 3D Interactive Elements */}
+        <FloatingTorus size={180} position={{ right: '5%', top: '60%' }} />
+        <FloatingCrystal size={100} position={{ left: '3%', top: '40%' }} />
       </div>
 
       <Navbar />

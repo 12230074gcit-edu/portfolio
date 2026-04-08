@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Bubbles from './Bubbles';
 import { Navbar } from './navbar';
 import Footer from './Footer';
+import { FloatingSphere, FloatingCubeGrid } from './Interactive3D';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -119,33 +120,52 @@ export default function ContactPage() {
 
   const handleInputFocus = (e, fieldName) => {
     setFocusedField(fieldName);
+    const label = e.currentTarget.parentElement.querySelector('.field-label');
+    const isTextarea = fieldName === 'message';
+    
     gsap.to(e.currentTarget, {
       borderColor: 'rgba(100,150,255,0.6)',
-      boxShadow: '0 0 50px rgba(100,150,255,0.2), 0 0 100px rgba(100,150,255,0.1), inset 0 0 30px rgba(100,150,255,0.05)',
+      boxShadow: '0 0 50px rgba(100,150,255,0.2), 0 0 100px rgba(100,150,255,0.1)',
+      background: 'rgba(255,255,255,0.05)',
       duration: 0.5,
       ease: 'power2.out'
     });
-    gsap.to(e.currentTarget.parentElement.querySelector('.field-label'), {
-      y: -30,
-      scale: 0.85,
-      color: 'rgba(100,150,255,1)',
-      duration: 0.3
-    });
+    
+    if (label) {
+      gsap.to(label, {
+        top: isTextarea ? '-10px' : '-10px',
+        transform: 'translateY(0)',
+        scale: 0.85,
+        color: 'rgba(100,150,255,1)',
+        background: 'linear-gradient(135deg, #080C72 0%, #0a0e5c 100%)',
+        padding: '4px 10px',
+        borderRadius: '6px',
+        duration: 0.3
+      });
+    }
   };
 
   const handleInputBlur = (e, fieldName) => {
     setFocusedField(null);
     const hasValue = e.currentTarget.value.length > 0;
+    const label = e.currentTarget.parentElement.querySelector('.field-label');
+    const isTextarea = fieldName === 'message';
+    
     gsap.to(e.currentTarget, {
-      borderColor: 'rgba(255,255,255,0.1)',
+      borderColor: 'rgba(255,255,255,0.15)',
       boxShadow: '0 0 0 rgba(255,255,255,0)',
+      background: 'rgba(255,255,255,0.03)',
       duration: 0.4,
     });
-    if (!hasValue) {
-      gsap.to(e.currentTarget.parentElement.querySelector('.field-label'), {
-        y: 0,
+    
+    if (!hasValue && label) {
+      gsap.to(label, {
+        top: isTextarea ? '26px' : '50%',
+        transform: isTextarea ? 'translateY(0)' : 'translateY(-50%)',
         scale: 1,
-        color: 'rgba(255,255,255,0.4)',
+        color: 'rgba(255,255,255,0.5)',
+        background: 'transparent',
+        padding: '0',
         duration: 0.3
       });
     }
@@ -228,17 +248,18 @@ export default function ContactPage() {
 
   const inputStyle = {
     width: '100%',
-    padding: '22px 24px',
-    paddingTop: '32px',
+    padding: '20px 24px',
     borderRadius: '16px',
-    border: '1px solid rgba(255,255,255,0.1)',
-    background: 'rgba(255,255,255,0.02)',
+    border: '1px solid rgba(255,255,255,0.15)',
+    background: 'rgba(255,255,255,0.03)',
     backdropFilter: 'blur(20px)',
     color: '#fff',
     fontSize: '16px',
     fontFamily: "'Montserrat', sans-serif",
     outline: 'none',
     transition: 'all 0.4s ease',
+    position: 'relative',
+    zIndex: 1,
   };
 
   return (
@@ -363,6 +384,10 @@ export default function ContactPage() {
             boxShadow: '0 0 20px rgba(100,150,255,0.6)',
           }} />
         </div>
+
+        {/* 3D Interactive Elements */}
+        <FloatingSphere size={200} position={{ right: '8%', bottom: '15%' }} />
+        <FloatingCubeGrid size={150} position={{ left: '5%', bottom: '25%' }} />
       </div>
 
       {/* Navbar */}
@@ -436,12 +461,15 @@ export default function ContactPage() {
                   style={{
                     position: 'absolute',
                     left: '24px',
-                    top: '22px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
                     fontSize: '14px',
-                    color: 'rgba(255,255,255,0.4)',
+                    color: 'rgba(255,255,255,0.5)',
                     pointerEvents: 'none',
                     transition: 'all 0.3s ease',
                     transformOrigin: 'left',
+                    zIndex: 5,
+                    background: 'transparent',
                   }}
                 >
                   Your Name
@@ -464,12 +492,15 @@ export default function ContactPage() {
                   style={{
                     position: 'absolute',
                     left: '24px',
-                    top: '22px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
                     fontSize: '14px',
-                    color: 'rgba(255,255,255,0.4)',
+                    color: 'rgba(255,255,255,0.5)',
                     pointerEvents: 'none',
                     transition: 'all 0.3s ease',
                     transformOrigin: 'left',
+                    zIndex: 5,
+                    background: 'transparent',
                   }}
                 >
                   Your Email
@@ -493,12 +524,15 @@ export default function ContactPage() {
                 style={{
                   position: 'absolute',
                   left: '24px',
-                  top: '22px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
                   fontSize: '14px',
-                  color: 'rgba(255,255,255,0.4)',
+                  color: 'rgba(255,255,255,0.5)',
                   pointerEvents: 'none',
                   transition: 'all 0.3s ease',
                   transformOrigin: 'left',
+                  zIndex: 5,
+                  background: 'transparent',
                 }}
               >
                 Subject
@@ -521,12 +555,14 @@ export default function ContactPage() {
                 style={{
                   position: 'absolute',
                   left: '24px',
-                  top: '22px',
+                  top: '26px',
                   fontSize: '14px',
-                  color: 'rgba(255,255,255,0.4)',
+                  color: 'rgba(255,255,255,0.5)',
                   pointerEvents: 'none',
                   transition: 'all 0.3s ease',
                   transformOrigin: 'left',
+                  zIndex: 5,
+                  background: 'transparent',
                 }}
               >
                 Your Message

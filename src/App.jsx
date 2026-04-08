@@ -15,6 +15,7 @@ import AboutPage from './components/AboutPage';
 import ProjectDetailPage from './components/ProjectDetailPage';
 import Bubbles from './components/Bubbles';
 import Footer from './components/Footer';
+import { FloatingCrystal, FloatingCubeGrid } from './components/Interactive3D';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -187,6 +188,10 @@ function HomePage() {
             />
           ))}
         </div>
+
+        {/* 3D Interactive Elements */}
+        <FloatingCrystal size={100} position={{ right: '8%', top: '25%' }} />
+        <FloatingCubeGrid size={120} position={{ left: '5%', bottom: '20%' }} />
 
         {/* Hero content */}
         <div style={{ position: 'relative', zIndex: 10 }}>
