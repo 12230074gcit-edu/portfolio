@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,6 +10,7 @@ const AboutMe = () => {
   const avatarRef = useRef(null);
   const buttonRef = useRef(null);
   const contentRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -112,6 +114,9 @@ const AboutMe = () => {
       duration: 0.1,
       yoyo: true,
       repeat: 1,
+      onComplete: () => {
+        navigate('/about');
+      }
     });
   };
 

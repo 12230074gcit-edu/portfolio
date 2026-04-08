@@ -11,7 +11,8 @@ import AboutMe from './components/aboutMeSection';
 import ServicesSection from './components/ServicesSection';
 import ContactSection from './components/Contact';
 import ContactPage from './components/ContactPage';
-import HandsLayer from './components/handsLayer';
+import AboutPage from './components/AboutPage';
+import Bubbles from './components/Bubbles';
 import CursorTrail from './components/CursorTrail';
 import Footer from './components/Footer';
 
@@ -85,6 +86,9 @@ function HomePage() {
       {/* Cursor Trail Effect */}
       <CursorTrail />
 
+      {/* Interactive Bubbles Background */}
+      <Bubbles />
+
       {/* Premium Background */}
       <div style={{
         position: 'fixed',
@@ -124,9 +128,6 @@ function HomePage() {
           }}
         />
       </div>
-
-      {/* Hands Layer - Fixed position for scroll animation */}
-      <HandsLayer />
 
       {/* Navbar */}
       <div style={{ position: 'relative', zIndex: 100 }}>
@@ -231,6 +232,7 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </main>
   );

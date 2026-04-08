@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import HorizontalText from './HorizontalText';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,79 +13,48 @@ export const QuoteSection = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Cube animation - 3D rotation on scroll
-      const cubeTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.5,
-        },
-      });
-
-      cubeTl.fromTo(
-        cubeRef.current,
-        {
-          y: 100,
-          x: -50,
-          rotation: -30,
-          scale: 0.8,
-          opacity: 0.5,
-        },
-        {
-          y: -200,
-          x: 100,
-          rotation: 45,
-          scale: 1.1,
-          opacity: 1,
-          ease: 'none',
-        }
-      );
-
-      // Add 3D rotation effect on cube
+      // Cube animation - simple smooth float with subtle rotation
+      gsap.set(cubeRef.current, { y: 0, x: 0, rotation: 0 });
+      
+      // Gentle floating animation
       gsap.to(cubeRef.current, {
-        rotateY: 360,
-        duration: 20,
+        y: -20,
+        duration: 3,
         repeat: -1,
-        ease: 'none',
+        yoyo: true,
+        ease: 'sine.inOut',
       });
 
-      // Chess piece animation
-      const chessTl = gsap.timeline({
+      // Slow rotation on scroll
+      gsap.to(cubeRef.current, {
+        rotation: 15,
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top bottom',
           end: 'bottom top',
-          scrub: 1.5,
+          scrub: 2,
         },
       });
 
-      chessTl.fromTo(
-        chessRef.current,
-        {
-          y: 50,
-          x: 80,
-          rotation: 20,
-          scale: 0.7,
-          opacity: 0.5,
-        },
-        {
-          y: -250,
-          x: -120,
-          rotation: -25,
-          scale: 1.2,
-          opacity: 1,
-          ease: 'none',
-        }
-      );
-
-      // Chess piece subtle bounce
+      // Chess piece animation - floating
       gsap.to(chessRef.current, {
-        y: '+=15',
+        y: -15,
         duration: 2.5,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
+        delay: 0.5,
+      });
+
+      // Chess slight rotation on scroll
+      gsap.to(chessRef.current, {
+        rotation: -10,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 2,
+        },
       });
 
       // Word-by-word reveal with blur effect
@@ -141,11 +109,6 @@ export const QuoteSection = () => {
         justifyContent: 'center',
       }}
     >
-      {/* Horizontal scrolling text - top */}
-      <div style={{ position: 'absolute', top: '5%', left: 0, right: 0, opacity: 0.5 }}>
-        <HorizontalText text="DESIGN DEVELOP CREATE INNOVATE " direction="left" speed={0.8} />
-      </div>
-
       {/* Ambient glow */}
       <div
         style={{
@@ -194,23 +157,16 @@ export const QuoteSection = () => {
         ))}
       </h2>
 
-      {/* Horizontal scrolling text - bottom */}
-      <div style={{ position: 'absolute', bottom: '5%', left: 0, right: 0, opacity: 0.5 }}>
-        <HorizontalText text="ENGAGE RETAIN DELIGHT INSPIRE " direction="right" speed={0.6} />
-      </div>
-
-      {/* Floating cube with 3D effect */}
+      {/* Floating cube - simple float, no squeeze */}
       <div
         ref={cubeRef}
         style={{
           position: 'absolute',
           top: '15%',
           left: '8%',
-          width: '160px',
-          height: '160px',
+          width: '140px',
+          height: '140px',
           zIndex: 5,
-          transformStyle: 'preserve-3d',
-          perspective: '1000px',
         }}
       >
         <img
@@ -232,8 +188,8 @@ export const QuoteSection = () => {
           position: 'absolute',
           top: '35%',
           right: '8%',
-          width: '140px',
-          height: '140px',
+          width: '120px',
+          height: '120px',
           zIndex: 5,
         }}
       >

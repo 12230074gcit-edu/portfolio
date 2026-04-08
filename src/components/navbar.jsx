@@ -1,17 +1,27 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 
 const NAV_ITEMS = [
-  { label: 'Home', href: '#home' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'About Me', href: '#about-section' },
-  { label: 'Contact', href: '#contact' }
+  { label: 'Home', href: '/', type: 'route' },
+  { label: 'Projects', href: '#projects-section', type: 'scroll' },
+  { label: 'About', href: '/about', type: 'route' },
+  { label: 'Contact', href: '/contact', type: 'route' }
 ];
 
 export const Navbar = () => {
   const navRef = useRef(null);
   const linksRef = useRef([]);
   const [activeItem, setActiveItem] = useState('Home');
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Set active based on current route
+    if (location.pathname === '/') setActiveItem('Home');
+    else if (location.pathname === '/about') setActiveItem('About');
+    else if (location.pathname === '/contact') setActiveItem('Contact');
+  }, [location]);
 
   useEffect(() => {
     // Entrance animation
@@ -52,13 +62,28 @@ export const Navbar = () => {
   };
 
   const handleClick = (e, item) => {
-    setActiveItem(item.label);
-    
-    // Smooth scroll
     e.preventDefault();
-    const target = document.querySelector(item.href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+    setActiveItem(item.label);
+
+    if (item.type === 'route') {
+      navigate(item.href);
+    } else {
+      // If on home page, scroll to section
+      if (location.pathname === '/') {
+        const target = document.querySelector(item.href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        // Navigate to home first, then scroll
+        navigate('/');
+        setTimeout(() => {
+          const target = document.querySelector(item.href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      }
     }
   };
 
@@ -87,6 +112,7 @@ export const Navbar = () => {
     >
       {/* Logo */}
       <div
+        onClick={() => navigate('/')}
         style={{
           width: '44px',
           height: '44px',
@@ -94,6 +120,7 @@ export const Navbar = () => {
           alignItems: 'center',
           justifyContent: 'center',
           marginRight: '48px',
+          cursor: 'pointer',
         }}
       >
         <img
