@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -9,6 +10,7 @@ export default function ContactSection() {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const buttonRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -92,6 +94,9 @@ export default function ContactSection() {
       duration: 0.1,
       yoyo: true,
       repeat: 1,
+      onComplete: () => {
+        navigate('/contact');
+      }
     });
   };
 

@@ -9,12 +9,14 @@ export default function Footer() {
   const linksRef = useRef([]);
   const projectsRef = useRef([]);
   const quoteRef = useRef(null);
+  const logoRef = useRef(null);
+  const lineRef = useRef(null);
 
   const quickLinks = [
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about-section' },
     { name: 'Services', href: '#services-section' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Projects', href: '#projects-section' },
   ];
 
   const projects = [
@@ -24,45 +26,92 @@ export default function Footer() {
     { name: 'UI/UX Design', href: '#' },
   ];
 
+  const socials = [
+    { name: 'LinkedIn', href: '#' },
+    { name: 'GitHub', href: '#' },
+    { name: 'Dribbble', href: '#' },
+    { name: 'Twitter', href: '#' },
+  ];
+
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Line drawing animation
+      gsap.fromTo(lineRef.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 1.5,
+          ease: 'power3.inOut',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 90%',
+          },
+        }
+      );
+
+      // Logo entrance
+      gsap.fromTo(logoRef.current,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 85%',
+          },
+        }
+      );
+
       // Quote entrance
-      gsap.from(quoteRef.current, {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 90%',
-        },
-      });
+      gsap.fromTo(quoteRef.current,
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: 'power3.out',
+          delay: 0.2,
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 85%',
+          },
+        }
+      );
 
       // Links stagger animation
-      gsap.from(linksRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 85%',
-        },
-      });
+      gsap.fromTo(linksRef.current,
+        { y: 25, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power3.out',
+          delay: 0.3,
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
 
-      gsap.from(projectsRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        delay: 0.2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 85%',
-        },
-      });
+      gsap.fromTo(projectsRef.current,
+        { y: 25, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.08,
+          delay: 0.4,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
     });
 
     return () => ctx.revert();
@@ -70,8 +119,14 @@ export default function Footer() {
 
   const handleLinkHover = (e) => {
     gsap.to(e.currentTarget, {
-      x: 8,
+      x: 10,
       color: '#fff',
+      duration: 0.3,
+      ease: 'power2.out',
+    });
+    gsap.to(e.currentTarget.querySelector('.link-arrow'), {
+      opacity: 1,
+      x: 0,
       duration: 0.3,
       ease: 'power2.out',
     });
@@ -80,7 +135,13 @@ export default function Footer() {
   const handleLinkLeave = (e) => {
     gsap.to(e.currentTarget, {
       x: 0,
-      color: 'rgba(255,255,255,0.6)',
+      color: 'rgba(255,255,255,0.5)',
+      duration: 0.3,
+      ease: 'power2.out',
+    });
+    gsap.to(e.currentTarget.querySelector('.link-arrow'), {
+      opacity: 0,
+      x: -10,
       duration: 0.3,
       ease: 'power2.out',
     });
@@ -91,80 +152,89 @@ export default function Footer() {
       ref={footerRef}
       style={{
         position: 'relative',
-        padding: '80px 60px 40px',
-        background: 'linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%)',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
+        padding: '0 60px 50px',
         fontFamily: "'Montserrat', sans-serif",
         color: '#fff',
         zIndex: 10,
       }}
     >
-      {/* Background glow */}
+      {/* Top line */}
       <div
+        ref={lineRef}
         style={{
-          position: 'absolute',
-          left: '50%',
-          bottom: '50%',
-          transform: 'translateX(-50%)',
-          width: '600px',
-          height: '300px',
-          background: 'radial-gradient(ellipse, rgba(100, 100, 255, 0.08), transparent 70%)',
-          filter: 'blur(60px)',
-          pointerEvents: 'none',
+          width: '100%',
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0.2) 80%, transparent 100%)',
+          transformOrigin: 'center',
+          marginBottom: '80px',
         }}
       />
 
+      {/* Main Grid */}
       <div
         style={{
-          maxWidth: '1200px',
+          maxWidth: '1300px',
           margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
+          gridTemplateColumns: '2fr 1fr 1fr 1fr',
           gap: '60px',
           position: 'relative',
           zIndex: 2,
         }}
       >
-        {/* Quote Section */}
-        <div ref={quoteRef} style={{ gridColumn: 'span 1' }}>
-          <h3
-            style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              letterSpacing: '3px',
-              marginBottom: '20px',
-              opacity: 0.5,
+        {/* Brand & Quote Column */}
+        <div>
+          {/* Logo/Name */}
+          <div ref={logoRef} style={{ marginBottom: '30px' }}>
+            <h2 style={{
+              fontSize: '28px',
+              fontWeight: 700,
+              letterSpacing: '-1px',
+              marginBottom: '8px',
+            }}>
+              Jigme Namgyel
+            </h2>
+            <p style={{
+              fontSize: '13px',
+              opacity: 0.4,
+              fontWeight: 500,
+              letterSpacing: '2px',
               textTransform: 'uppercase',
-            }}
-          >
-            Philosophy
-          </h3>
-          <p
-            style={{
-              fontSize: 'clamp(18px, 2vw, 24px)',
-              fontWeight: 600,
-              lineHeight: 1.5,
-              background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            Built for engagement.
-            <br />
-            Designed for retention.
-          </p>
+            }}>
+              Interactive Designer
+            </p>
+          </div>
+
+          {/* Philosophy Quote */}
+          <div ref={quoteRef}>
+            <p
+              style={{
+                fontSize: 'clamp(20px, 2.5vw, 28px)',
+                fontWeight: 600,
+                lineHeight: 1.4,
+                maxWidth: '380px',
+                background: 'linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              Built for engagement.
+              <br />
+              Designed for retention.
+            </p>
+          </div>
         </div>
 
         {/* Quick Links */}
         <div>
           <h3
             style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              letterSpacing: '3px',
-              marginBottom: '24px',
-              opacity: 0.5,
+              fontSize: '11px',
+              fontWeight: 700,
+              letterSpacing: '4px',
+              marginBottom: '28px',
+              opacity: 0.3,
               textTransform: 'uppercase',
             }}
           >
@@ -172,22 +242,33 @@ export default function Footer() {
           </h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {quickLinks.map((link, i) => (
-              <li key={link.name} style={{ marginBottom: '14px' }}>
+              <li key={link.name} style={{ marginBottom: '16px' }}>
                 <a
                   ref={(el) => (linksRef.current[i] = el)}
                   href={link.href}
                   onMouseEnter={handleLinkHover}
                   onMouseLeave={handleLinkLeave}
                   style={{
-                    color: 'rgba(255,255,255,0.6)',
+                    color: 'rgba(255,255,255,0.5)',
                     textDecoration: 'none',
                     fontSize: '15px',
                     fontWeight: 500,
-                    display: 'inline-block',
-                    transition: 'color 0.3s ease',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
                   }}
                 >
                   {link.name}
+                  <span
+                    className="link-arrow"
+                    style={{
+                      opacity: 0,
+                      transform: 'translateX(-10px)',
+                      fontSize: '12px',
+                    }}
+                  >
+                    &#8594;
+                  </span>
                 </a>
               </li>
             ))}
@@ -198,11 +279,11 @@ export default function Footer() {
         <div>
           <h3
             style={{
-              fontSize: '14px',
-              fontWeight: 600,
-              letterSpacing: '3px',
-              marginBottom: '24px',
-              opacity: 0.5,
+              fontSize: '11px',
+              fontWeight: 700,
+              letterSpacing: '4px',
+              marginBottom: '28px',
+              opacity: 0.3,
               textTransform: 'uppercase',
             }}
           >
@@ -210,22 +291,73 @@ export default function Footer() {
           </h3>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
             {projects.map((project, i) => (
-              <li key={project.name} style={{ marginBottom: '14px' }}>
+              <li key={project.name} style={{ marginBottom: '16px' }}>
                 <a
                   ref={(el) => (projectsRef.current[i] = el)}
                   href={project.href}
                   onMouseEnter={handleLinkHover}
                   onMouseLeave={handleLinkLeave}
                   style={{
-                    color: 'rgba(255,255,255,0.6)',
+                    color: 'rgba(255,255,255,0.5)',
+                    textDecoration: 'none',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                  }}
+                >
+                  {project.name}
+                  <span
+                    className="link-arrow"
+                    style={{
+                      opacity: 0,
+                      transform: 'translateX(-10px)',
+                      fontSize: '12px',
+                    }}
+                  >
+                    &#8594;
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Social */}
+        <div>
+          <h3
+            style={{
+              fontSize: '11px',
+              fontWeight: 700,
+              letterSpacing: '4px',
+              marginBottom: '28px',
+              opacity: 0.3,
+              textTransform: 'uppercase',
+            }}
+          >
+            Connect
+          </h3>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {socials.map((social) => (
+              <li key={social.name} style={{ marginBottom: '16px' }}>
+                <a
+                  href={social.href}
+                  onMouseEnter={(e) => {
+                    gsap.to(e.currentTarget, { x: 8, color: '#fff', duration: 0.3 });
+                  }}
+                  onMouseLeave={(e) => {
+                    gsap.to(e.currentTarget, { x: 0, color: 'rgba(255,255,255,0.5)', duration: 0.3 });
+                  }}
+                  style={{
+                    color: 'rgba(255,255,255,0.5)',
                     textDecoration: 'none',
                     fontSize: '15px',
                     fontWeight: 500,
                     display: 'inline-block',
-                    transition: 'color 0.3s ease',
                   }}
                 >
-                  {project.name}
+                  {social.name}
                 </a>
               </li>
             ))}
@@ -236,10 +368,10 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div
         style={{
-          maxWidth: '1200px',
-          margin: '60px auto 0',
+          maxWidth: '1300px',
+          margin: '80px auto 0',
           paddingTop: '30px',
-          borderTop: '1px solid rgba(255,255,255,0.08)',
+          borderTop: '1px solid rgba(255,255,255,0.06)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -250,34 +382,43 @@ export default function Footer() {
         <p
           style={{
             fontSize: '13px',
-            opacity: 0.4,
+            opacity: 0.3,
             fontWeight: 400,
           }}
         >
-          2024 Jigme Namgyel. All rights reserved.
+          &copy; 2024 Jigme Namgyel. All rights reserved.
         </p>
 
-        <div style={{ display: 'flex', gap: '24px' }}>
-          {['LinkedIn', 'GitHub', 'Dribbble'].map((social) => (
-            <a
-              key={social}
-              href="#"
-              onMouseEnter={(e) => gsap.to(e.currentTarget, { y: -3, opacity: 1, duration: 0.3 })}
-              onMouseLeave={(e) => gsap.to(e.currentTarget, { y: 0, opacity: 0.5, duration: 0.3 })}
-              style={{
-                color: '#fff',
-                textDecoration: 'none',
-                fontSize: '13px',
-                fontWeight: 500,
-                opacity: 0.5,
-                transition: 'opacity 0.3s ease',
-              }}
-            >
-              {social}
-            </a>
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+          <span style={{ fontSize: '13px', opacity: 0.3 }}>
+            Crafted with passion
+          </span>
+          <div
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: 'rgba(100,255,150,0.8)',
+              boxShadow: '0 0 10px rgba(100,255,150,0.5)',
+            }}
+          />
         </div>
       </div>
+
+      {/* Background glow */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          bottom: '0',
+          transform: 'translateX(-50%)',
+          width: '800px',
+          height: '400px',
+          background: 'radial-gradient(ellipse, rgba(100, 100, 255, 0.06), transparent 70%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
+        }}
+      />
     </footer>
   );
 }

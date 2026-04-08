@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from './components/navbar';
@@ -16,7 +17,7 @@ import Footer from './components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function App() {
+function HomePage() {
   const mainRef = useRef(null);
   const gridRef = useRef(null);
   const circlesRef = useRef([]);
@@ -70,7 +71,7 @@ export default function App() {
   ];
 
   return (
-    <main
+    <div
       ref={mainRef}
       style={{
         position: 'relative',
@@ -211,11 +212,34 @@ export default function App() {
       {/* Contact CTA Section */}
       <ContactSection />
 
-      {/* Full Contact Page */}
-      <ContactPage />
-
       {/* Footer */}
       <Footer />
+    </div>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  
+  useEffect(() => {
+    // Scroll to top on route change
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  return (
+    <main style={{ fontFamily: "'Montserrat', sans-serif" }}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Routes>
     </main>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }
