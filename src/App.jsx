@@ -62,23 +62,6 @@ function HomePage() {
       });
     });
 
-    // Section reveal animations
-    gsap.utils.toArray('.home-section').forEach((section) => {
-      gsap.fromTo(section,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: section,
-            start: 'top 85%',
-          }
-        }
-      );
-    });
-
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
@@ -217,29 +200,19 @@ function HomePage() {
       <Bubbles />
 
       {/* Quote Section */}
-      <div className="home-section" style={{ position: 'relative' }}>
-        <QuoteSection />
-      </div>
+      <QuoteSection />
 
       {/* Projects Section */}
-      <div className="home-section" style={{ position: 'relative', background: 'rgba(0,0,0,0.1)' }}>
-        <ProjectsSection />
-      </div>
+      <ProjectsSection />
 
       {/* About Me Section */}
-      <div className="home-section" style={{ position: 'relative' }}>
-        <AboutMe />
-      </div>
+      <AboutMe />
 
       {/* Services Section */}
-      <div className="home-section" style={{ position: 'relative', background: 'rgba(0,0,0,0.1)' }}>
-        <ServicesSection />
-      </div>
+      <ServicesSection />
 
       {/* Contact CTA Section */}
-      <div className="home-section" style={{ position: 'relative' }}>
-        <ContactSection />
-      </div>
+      <ContactSection />
 
       {/* Footer */}
       <Footer />
