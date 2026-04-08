@@ -58,7 +58,7 @@ export default function ProjectsSection() {
         }
       );
 
-      // Marquee animation - continuous scroll
+      // Marquee animation
       if (marqueeRef.current) {
         gsap.to(marqueeRef.current, {
           xPercent: -50,
@@ -109,7 +109,6 @@ export default function ProjectsSection() {
 
         const baseTime = i * 1.5;
 
-        // Flip out previous card - smooth 3D rotation
         tl.to(
           flips[i - 1],
           {
@@ -120,7 +119,6 @@ export default function ProjectsSection() {
           baseTime
         );
 
-        // Fade out previous card
         tl.to(
           cards[i - 1],
           {
@@ -131,7 +129,6 @@ export default function ProjectsSection() {
           baseTime + 0.3
         );
 
-        // Bring in current card
         tl.to(
           cards[i],
           {
@@ -142,12 +139,9 @@ export default function ProjectsSection() {
           baseTime + 0.5
         );
 
-        // Flip in current card - smooth 3D rotation
         tl.fromTo(
           flips[i],
-          {
-            rotateY: 90,
-          },
+          { rotateY: 90 },
           {
             rotateY: 0,
             duration: 1,
@@ -160,6 +154,10 @@ export default function ProjectsSection() {
 
     return () => ctx.revert();
   }, []);
+
+  const handleCardClick = (projectId) => {
+    navigate(`/project/${projectId}`);
+  };
 
   return (
     <section
@@ -273,7 +271,7 @@ export default function ProjectsSection() {
         Projects
       </h2>
 
-      {/* Cards container - 700px width */}
+      {/* Cards container */}
       <div
         style={{
           position: "relative",
@@ -289,11 +287,13 @@ export default function ProjectsSection() {
           <div
             key={project.id}
             ref={(el) => (cardsRef.current[i] = el)}
+            onClick={() => handleCardClick(project.id)}
             style={{
               position: "absolute",
               width: "100%",
               height: "100%",
               zIndex: 10,
+              cursor: "pointer",
             }}
           >
             {/* Flip wrapper */}
@@ -306,9 +306,24 @@ export default function ProjectsSection() {
                 transformStyle: "preserve-3d",
                 transformOrigin: "center",
                 willChange: "transform",
+                transition: "box-shadow 0.4s ease",
+              }}
+              onMouseEnter={(e) => {
+                gsap.to(e.currentTarget, {
+                  scale: 1.02,
+                  duration: 0.4,
+                  ease: "power2.out",
+                });
+              }}
+              onMouseLeave={(e) => {
+                gsap.to(e.currentTarget, {
+                  scale: 1,
+                  duration: 0.4,
+                  ease: "power2.out",
+                });
               }}
             >
-              {/* Card front - ALL cards have glow effect */}
+              {/* Card front */}
               <div
                 style={{
                   position: "absolute",
@@ -344,16 +359,28 @@ export default function ProjectsSection() {
 
                 {/* Project info */}
                 <div style={{ padding: "0 24px 24px", color: "#080C72" }}>
-                  <h3
-                    style={{
-                      marginBottom: "12px",
-                      fontSize: "20px",
-                      fontWeight: 700,
-                      fontFamily: "'Montserrat', sans-serif",
-                    }}
-                  >
-                    {project.name}
-                  </h3>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                    <h3
+                      style={{
+                        fontSize: "20px",
+                        fontWeight: 700,
+                        fontFamily: "'Montserrat', sans-serif",
+                      }}
+                    >
+                      {project.name}
+                    </h3>
+                    <svg 
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="#080C72" 
+                      strokeWidth="2"
+                      style={{ opacity: 0.5 }}
+                    >
+                      <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                    </svg>
+                  </div>
 
                   <p
                     style={{
@@ -366,59 +393,49 @@ export default function ProjectsSection() {
                     {project.desc}
                   </p>
 
-                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
-                    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          style={{
-                            background: "#080C72",
-                            color: "#fff",
-                            padding: "8px 16px",
-                            borderRadius: "20px",
-                            fontSize: "12px",
-                            fontWeight: 500,
-                            fontFamily: "'Montserrat', sans-serif",
-                            boxShadow: "0 4px 15px rgba(8, 12, 114, 0.3)",
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => navigate(`/project/${project.id}`)}
-                      style={{
-                        background: "linear-gradient(135deg, #080C72 0%, #1a1f7a 100%)",
-                        color: "#fff",
-                        padding: "12px 24px",
-                        borderRadius: "25px",
-                        fontSize: "13px",
-                        fontWeight: 600,
-                        fontFamily: "'Montserrat', sans-serif",
-                        border: "none",
-                        cursor: "pointer",
-                        boxShadow: "0 4px 20px rgba(8, 12, 114, 0.4)",
-                        transition: "all 0.3s ease",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "translateY(-2px)";
-                        e.currentTarget.style.boxShadow = "0 8px 30px rgba(8, 12, 114, 0.5)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "translateY(0)";
-                        e.currentTarget.style.boxShadow = "0 4px 20px rgba(8, 12, 114, 0.4)";
-                      }}
-                    >
-                      View Project
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                      </svg>
-                    </button>
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        style={{
+                          background: "#080C72",
+                          color: "#fff",
+                          padding: "8px 16px",
+                          borderRadius: "20px",
+                          fontSize: "12px",
+                          fontWeight: 500,
+                          fontFamily: "'Montserrat', sans-serif",
+                          boxShadow: "0 4px 15px rgba(8, 12, 114, 0.3)",
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
+                </div>
+
+                {/* Click indicator overlay */}
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "20px",
+                    right: "20px",
+                    padding: "8px 16px",
+                    background: "rgba(8, 12, 114, 0.1)",
+                    borderRadius: "20px",
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    color: "#080C72",
+                    fontFamily: "'Montserrat', sans-serif",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  Click to view
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
                 </div>
               </div>
             </div>

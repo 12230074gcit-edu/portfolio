@@ -10,16 +10,18 @@ export const QuoteSection = () => {
   const chessRef = useRef(null);
   const titleRef = useRef(null);
   const wordsRef = useRef([]);
+  const highlightWordsRef = useRef([]);
+  const lineRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Cube animation - simple smooth float with subtle rotation
-      gsap.set(cubeRef.current, { y: 0, x: 0, rotation: 0 });
+      // Cube animation - simple smooth float
+      gsap.set(cubeRef.current, { y: 0, rotation: 0 });
       
       // Gentle floating animation
       gsap.to(cubeRef.current, {
         y: -20,
-        duration: 3,
+        duration: 4,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -39,7 +41,7 @@ export const QuoteSection = () => {
       // Chess piece animation - floating
       gsap.to(chessRef.current, {
         y: -15,
-        duration: 2.5,
+        duration: 3,
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
@@ -57,31 +59,80 @@ export const QuoteSection = () => {
         },
       });
 
-      // Word-by-word reveal with blur effect
+      // Line drawing animation
+      gsap.fromTo(
+        lineRef.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          duration: 1.5,
+          ease: 'power3.inOut',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          },
+        }
+      );
+
+      // Word-by-word reveal with 3D flip and blur effect
       wordsRef.current.forEach((word, i) => {
         if (!word) return;
         gsap.fromTo(
           word,
           { 
             opacity: 0, 
-            y: 60, 
-            filter: 'blur(15px)',
-            rotateX: -45,
+            y: 80, 
+            filter: 'blur(20px)',
+            rotateX: -90,
+            scale: 0.8,
           },
           {
             opacity: 1,
             y: 0,
             filter: 'blur(0px)',
             rotateX: 0,
-            duration: 0.8,
-            ease: 'power3.out',
+            scale: 1,
+            duration: 1,
+            ease: 'power4.out',
             scrollTrigger: {
               trigger: sectionRef.current,
               start: 'top 75%',
             },
-            delay: i * 0.08,
+            delay: i * 0.1,
           }
         );
+      });
+
+      // Highlight words color animation
+      highlightWordsRef.current.forEach((word, i) => {
+        if (!word) return;
+        gsap.fromTo(
+          word,
+          { 
+            backgroundSize: '0% 100%',
+          },
+          {
+            backgroundSize: '100% 100%',
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: 'top 60%',
+            },
+            delay: 0.8 + i * 0.2,
+          }
+        );
+      });
+
+      // Title subtle parallax
+      gsap.to(titleRef.current, {
+        y: -30,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
       });
     });
 
@@ -89,10 +140,20 @@ export const QuoteSection = () => {
   }, []);
 
   const quoteWords = [
-    'Designing', 'experiences', 'that', 'turn',
-    'interaction', 'into', 'engagement',
-    'and', 'engagement', 'into', 'loyalty.'
+    { text: 'Designing', highlight: false },
+    { text: 'experiences', highlight: false },
+    { text: 'that', highlight: false },
+    { text: 'turn', highlight: false },
+    { text: 'interaction', highlight: true, index: 0 },
+    { text: 'into', highlight: false },
+    { text: 'engagement', highlight: true, index: 1 },
+    { text: 'and', highlight: false },
+    { text: 'engagement', highlight: false },
+    { text: 'into', highlight: false },
+    { text: 'loyalty.', highlight: true, index: 2 },
   ];
+
+  let highlightIndex = 0;
 
   return (
     <section
@@ -101,7 +162,7 @@ export const QuoteSection = () => {
       style={{
         position: 'relative',
         minHeight: '70vh',
-        padding: '80px 20px',
+        padding: '100px 20px',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -124,6 +185,20 @@ export const QuoteSection = () => {
         }}
       />
 
+      {/* Decorative line */}
+      <div
+        ref={lineRef}
+        style={{
+          position: 'absolute',
+          top: '30%',
+          left: '10%',
+          width: '80%',
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+          transformOrigin: 'left center',
+        }}
+      />
+
       {/* Quote text */}
       <h2
         ref={titleRef}
@@ -133,31 +208,57 @@ export const QuoteSection = () => {
           textAlign: 'center',
           color: 'white',
           fontSize: 'clamp(36px, 6vw, 64px)',
-          lineHeight: 1.3,
-          maxWidth: '900px',
+          lineHeight: 1.4,
+          maxWidth: '950px',
           fontFamily: "'Montserrat', sans-serif",
           fontWeight: 600,
           letterSpacing: '-0.5px',
           perspective: '1000px',
         }}
       >
-        {quoteWords.map((word, i) => (
-          <span
-            key={i}
-            ref={(el) => (wordsRef.current[i] = el)}
-            style={{
-              display: 'inline-block',
-              marginRight: '0.3em',
-              transformStyle: 'preserve-3d',
-            }}
-          >
-            {word}
-            {(i === 3 || i === 6) && <br />}
-          </span>
-        ))}
+        {quoteWords.map((word, i) => {
+          const isHighlight = word.highlight;
+          
+          return (
+            <span
+              key={i}
+              ref={(el) => (wordsRef.current[i] = el)}
+              style={{
+                display: 'inline-block',
+                marginRight: '0.3em',
+                transformStyle: 'preserve-3d',
+                position: 'relative',
+              }}
+            >
+              {isHighlight ? (
+                <span
+                  ref={(el) => {
+                    if (word.index !== undefined) {
+                      highlightWordsRef.current[word.index] = el;
+                    }
+                  }}
+                  style={{
+                    background: 'linear-gradient(90deg, rgba(100, 100, 255, 0.4) 0%, rgba(150, 100, 255, 0.4) 100%)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: '0 0',
+                    backgroundSize: '0% 100%',
+                    padding: '0 0.15em',
+                    borderRadius: '8px',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  {word.text}
+                </span>
+              ) : (
+                word.text
+              )}
+              {(i === 3 || i === 6) && <br />}
+            </span>
+          );
+        })}
       </h2>
 
-      {/* Floating cube - simple float, no squeeze */}
+      {/* Floating cube - simple float */}
       <div
         ref={cubeRef}
         style={{
@@ -203,6 +304,29 @@ export const QuoteSection = () => {
             filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.4))',
           }}
         />
+      </div>
+
+      {/* Decorative dots */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '20%',
+          left: '15%',
+          display: 'flex',
+          gap: '8px',
+        }}
+      >
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.2)',
+            }}
+          />
+        ))}
       </div>
     </section>
   );

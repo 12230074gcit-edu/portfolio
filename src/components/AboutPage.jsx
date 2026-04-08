@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import Bubbles from './Bubbles';
+import { Navbar } from './navbar';
+import Footer from './Footer';
 
 export default function AboutPage() {
   const pageRef = useRef(null);
@@ -143,29 +144,8 @@ export default function AboutPage() {
         }} />
       </div>
 
-      {/* Back button */}
-      <Link
-        to="/"
-        onMouseEnter={(e) => gsap.to(e.currentTarget, { x: -5, opacity: 1, duration: 0.3 })}
-        onMouseLeave={(e) => gsap.to(e.currentTarget, { x: 0, opacity: 0.7, duration: 0.3 })}
-        style={{
-          position: 'fixed',
-          top: '40px',
-          left: '40px',
-          color: '#fff',
-          textDecoration: 'none',
-          fontSize: '14px',
-          fontWeight: 600,
-          opacity: 0.7,
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          letterSpacing: '1px',
-        }}
-      >
-        <span style={{ fontSize: '20px' }}>&#8592;</span> Back
-      </Link>
+      {/* Navbar */}
+      <Navbar />
 
       {/* Main Content */}
       <div
@@ -414,6 +394,9 @@ export default function AboutPage() {
 
       {/* Bubbles */}
       <Bubbles />
+
+      {/* Footer */}
+      <Footer />
 
       <style>{`
         @keyframes spin {

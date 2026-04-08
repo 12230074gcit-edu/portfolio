@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Bubbles from './Bubbles';
+import { Navbar } from './navbar';
+import Footer from './Footer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,86 +12,80 @@ const projectsData = {
   qube: {
     id: 'qube',
     name: 'QUBE',
-    tagline: 'Turning rewards into a seamless experience.',
-    year: '2024',
-    role: 'Lead Designer',
-    contributors: ['UI/UX Design', 'Frontend Dev', 'Gamification'],
+    tagline: 'Scan, play, and unlock rewards while you dine.',
+    year: '2026',
+    contributors: ['User Interface Design', 'User Research', 'Frontend Developer'],
     heroImage: '/qube.png',
+    heroImages: ['/qube.png', '/qube.png', '/qube.png', '/qube.png', '/qube.png', '/qube.png'],
+    video: null,
     challenge: {
-      title: 'The Challenge',
-      text: 'Traditional reward systems fail to engage users meaningfully. Points accumulate without excitement, redemption feels tedious, and users eventually disengage. QUBE needed to transform mundane point collection into an addictive, game-like experience that keeps users coming back.',
-    },
-    approach: {
-      title: 'The Approach',
-      text: 'I designed an interactive gamification layer that makes every interaction feel rewarding. Quick unlock mechanics, streak bonuses, and visual feedback create dopamine-driven engagement. The UI celebrates small wins while building toward meaningful rewards.',
+      title: 'Challenge',
+      text: 'Traditional restaurant loyalty programs fail to excite customers. Points systems feel disconnected from the dining experience, resulting in low engagement and forgotten rewards. QUBE needed to transform how diners interact with rewards by making the experience as enjoyable as the meal itself.',
     },
     result: {
-      title: 'The Result',
+      title: 'Result',
       stats: [
         { value: '340%', label: 'Increase in daily active users' },
         { value: '89%', label: 'User retention after 30 days' },
         { value: '4.8', label: 'App store rating' },
       ],
-      text: 'QUBE transformed user engagement metrics across the board. The gamified approach created genuine excitement around rewards, turning passive users into active participants.',
+      text: 'QUBE revolutionized restaurant engagement by turning rewards into an interactive dining companion. Users now actively seek out QUBE-enabled restaurants, creating a new standard for F&B loyalty programs.',
     },
-    screens: ['/qube.png', '/qube.png', '/qube.png'],
+    screens: ['/qube.png', '/qube.png', '/qube.png', '/qube.png'],
     color: '#6366F1',
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366F1 100%)',
   },
   inneed: {
     id: 'inneed',
     name: 'INNEED',
     tagline: 'Turning job search into a seamless experience.',
-    year: '2024',
-    role: 'Product Designer',
-    contributors: ['UI/UX Design', 'React Development', 'Animation'],
+    year: '2026',
+    contributors: ['User Interface Design', 'User Research', 'Frontend Developer'],
     heroImage: '/inneed.png',
+    heroImages: ['/inneed.png', '/inneed.png', '/inneed.png', '/inneed.png', '/inneed.png', '/inneed.png'],
+    video: null,
     challenge: {
-      title: 'The Challenge',
-      text: 'Job searching is inherently stressful and overwhelming. Candidates face endless scrolling, impersonal applications, and zero feedback. INNEED needed to humanize the job search experience while making it more efficient and less anxiety-inducing.',
-    },
-    approach: {
-      title: 'The Approach',
-      text: 'I created an opportunity-first interface that surfaces relevant matches proactively. Real-time status updates, personalized recommendations, and micro-interactions reduce uncertainty. The design focuses on progress visualization to maintain motivation.',
+      title: 'Challenge',
+      text: 'Job searching is inherently stressful and overwhelming. Candidates face endless scrolling through irrelevant listings, impersonal application processes, and the dreaded silence after submitting. INNEED needed to humanize the journey while making it remarkably efficient.',
     },
     result: {
-      title: 'The Result',
+      title: 'Result',
       stats: [
         { value: '67%', label: 'Faster time to hire' },
         { value: '92%', label: 'User satisfaction score' },
         { value: '2.5x', label: 'Application completion rate' },
       ],
-      text: 'INNEED redefined job searching as an empowering journey rather than a frustrating chore. Users report feeling more in control and optimistic throughout their search.',
+      text: 'INNEED redefined job searching as an empowering journey. Users report feeling more in control and optimistic throughout their search, with significantly reduced job search anxiety.',
     },
-    screens: ['/inneed.png', '/inneed.png', '/inneed.png'],
+    screens: ['/inneed.png', '/inneed.png', '/inneed.png', '/inneed.png'],
     color: '#3B82F6',
+    gradient: 'linear-gradient(135deg, #3B82F6 0%, #1e40af 50%, #3B82F6 100%)',
   },
   tovo: {
     id: 'tovo',
     name: 'TOVO',
     tagline: 'Turning food ordering into a delightful experience.',
-    year: '2023',
-    role: 'UX Designer',
-    contributors: ['UI/UX Design', 'Frontend Dev', 'API Integration'],
+    year: '2025',
+    contributors: ['User Interface Design', 'Frontend Dev', 'API Integration'],
     heroImage: '/tovo.png',
+    heroImages: ['/tovo.png', '/tovo.png', '/tovo.png', '/tovo.png', '/tovo.png', '/tovo.png'],
+    video: null,
     challenge: {
-      title: 'The Challenge',
-      text: 'Food delivery apps are cluttered, slow, and impersonal. Decision fatigue leads to abandoned carts, while generic interfaces fail to capture the joy of food. TOVO needed to make ordering as enjoyable as eating.',
-    },
-    approach: {
-      title: 'The Approach',
-      text: 'I designed a visually rich, fast-loading interface with smart defaults and AI-powered recommendations. Animated food photography, playful micro-interactions, and streamlined checkout reduce friction while increasing appetite appeal.',
+      title: 'Challenge',
+      text: 'Food delivery apps have become cluttered, slow, and devoid of personality. Decision fatigue leads to abandoned carts, while generic interfaces strip away the joy of discovering new cuisines. TOVO needed to make ordering feel as satisfying as the first bite.',
     },
     result: {
-      title: 'The Result',
+      title: 'Result',
       stats: [
         { value: '45%', label: 'Increase in order value' },
         { value: '78%', label: 'Reduction in cart abandonment' },
         { value: '12s', label: 'Average time to order' },
       ],
-      text: 'TOVO proved that food apps can be both beautiful and functional. The design drives conversions while creating genuine delight at every tap.',
+      text: 'TOVO proved that food apps can spark joy. The design drives conversions while creating genuine delight at every tap, making users crave the app almost as much as the food.',
     },
-    screens: ['/tovo.png', '/tovo.png', '/tovo.png'],
+    screens: ['/tovo.png', '/tovo.png', '/tovo.png', '/tovo.png'],
     color: '#F59E0B',
+    gradient: 'linear-gradient(135deg, #F59E0B 0%, #d97706 50%, #F59E0B 100%)',
   },
 };
 
@@ -105,98 +101,119 @@ export default function ProjectDetailPage() {
   const metaRef = useRef(null);
   const imageRef = useRef(null);
   const challengeRef = useRef(null);
-  const approachRef = useRef(null);
   const resultRef = useRef(null);
   const statsRef = useRef([]);
   const screensRef = useRef(null);
   const ctaRef = useRef(null);
-  const tabsRef = useRef(null);
+  const scrollIndicatorRef = useRef(null);
+  const hatRef = useRef(null);
+  const carouselRef = useRef(null);
 
   const currentIndex = projectOrder.indexOf(projectId);
-  const prevProject = currentIndex > 0 ? projectOrder[currentIndex - 1] : null;
-  const nextProject = currentIndex < projectOrder.length - 1 ? projectOrder[currentIndex + 1] : null;
+  const nextProject = projectOrder[(currentIndex + 1) % projectOrder.length];
+  const prevProject = projectOrder[(currentIndex - 1 + projectOrder.length) % projectOrder.length];
 
   useEffect(() => {
     window.scrollTo(0, 0);
     
     const ctx = gsap.context(() => {
-      // Hero animations
+      // Hat floating animation
+      if (hatRef.current) {
+        gsap.to(hatRef.current, {
+          y: -15,
+          rotation: 5,
+          duration: 3,
+          repeat: -1,
+          yoyo: true,
+          ease: 'sine.inOut',
+        });
+      }
+
+      // Scroll indicator rotation
+      if (scrollIndicatorRef.current) {
+        gsap.to(scrollIndicatorRef.current, {
+          rotation: 360,
+          duration: 15,
+          repeat: -1,
+          ease: 'none',
+        });
+      }
+
+      // Hero animations - staggered entrance
       gsap.fromTo(titleRef.current,
-        { y: 80, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, ease: 'power4.out', delay: 0.2 }
+        { y: 100, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.4, ease: 'power4.out', delay: 0.3 }
       );
 
       gsap.fromTo(metaRef.current,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.5 }
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.6 }
       );
 
       gsap.fromTo(imageRef.current,
-        { y: 60, opacity: 0, scale: 0.95 },
-        { y: 0, opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out', delay: 0.7 }
+        { y: 80, opacity: 0, scale: 0.95 },
+        { y: 0, opacity: 1, scale: 1, duration: 1.4, ease: 'power3.out', delay: 0.9 }
       );
 
-      // Tabs animation
-      gsap.fromTo(tabsRef.current?.children || [],
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: 'power2.out', delay: 0.9 }
-      );
-
-      // Scroll-triggered sections
+      // Challenge section
       gsap.fromTo(challengeRef.current,
-        { y: 80, opacity: 0 },
+        { y: 100, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: challengeRef.current, start: 'top 80%' }
+          y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+          scrollTrigger: { trigger: challengeRef.current, start: 'top 85%' }
         }
       );
 
-      gsap.fromTo(approachRef.current,
-        { y: 80, opacity: 0 },
-        {
-          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: approachRef.current, start: 'top 80%' }
-        }
-      );
-
+      // Result section
       gsap.fromTo(resultRef.current,
-        { y: 80, opacity: 0 },
+        { y: 100, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: resultRef.current, start: 'top 80%' }
+          y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+          scrollTrigger: { trigger: resultRef.current, start: 'top 85%' }
         }
       );
 
-      // Stats counter animation
+      // Stats counter animation with scale
       statsRef.current.forEach((stat, i) => {
         if (!stat) return;
         gsap.fromTo(stat,
-          { y: 40, opacity: 0, scale: 0.9 },
+          { y: 60, opacity: 0, scale: 0.8 },
           {
-            y: 0, opacity: 1, scale: 1, duration: 0.8, ease: 'back.out(1.5)',
-            delay: i * 0.15,
-            scrollTrigger: { trigger: resultRef.current, start: 'top 70%' }
+            y: 0, opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.7)',
+            delay: i * 0.2,
+            scrollTrigger: { trigger: resultRef.current, start: 'top 75%' }
           }
         );
       });
 
-      // Screens parallax
+      // Screens gallery
       gsap.fromTo(screensRef.current,
-        { y: 100, opacity: 0 },
+        { y: 120, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
-          scrollTrigger: { trigger: screensRef.current, start: 'top 85%' }
+          y: 0, opacity: 1, duration: 1.4, ease: 'power3.out',
+          scrollTrigger: { trigger: screensRef.current, start: 'top 90%' }
         }
       );
 
       // CTA section
       gsap.fromTo(ctaRef.current,
-        { y: 80, opacity: 0 },
+        { y: 100, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: ctaRef.current, start: 'top 80%' }
+          y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+          scrollTrigger: { trigger: ctaRef.current, start: 'top 85%' }
         }
       );
+
+      // Carousel entrance
+      if (carouselRef.current) {
+        gsap.fromTo(carouselRef.current,
+          { y: 80, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
+            scrollTrigger: { trigger: carouselRef.current, start: 'top 85%' }
+          }
+        );
+      }
     });
 
     return () => ctx.revert();
@@ -205,131 +222,81 @@ export default function ProjectDetailPage() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(180deg, #080C72 0%, #0a0e5c 50%, #080C72 100%)',
+      background: 'linear-gradient(180deg, #080C72 0%, #0a0e5c 100%)',
       fontFamily: "'Montserrat', sans-serif",
       color: '#fff',
       overflowX: 'hidden',
     }}>
-      {/* Bubbles */}
       <Bubbles />
-
-      {/* Navigation */}
-      <nav style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        padding: '20px 40px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        background: 'rgba(8, 12, 114, 0.8)',
-        backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.1)',
-      }}>
-        <Link to="/" style={{
-          color: '#fff',
-          textDecoration: 'none',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          fontSize: '14px',
-          fontWeight: 500,
-          opacity: 0.8,
-          transition: 'opacity 0.3s',
-        }}
-        onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-        onMouseLeave={e => e.currentTarget.style.opacity = '0.8'}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-          Back to Home
-        </Link>
-
-        {/* Project Tabs */}
-        <div ref={tabsRef} style={{ display: 'flex', gap: '8px' }}>
-          {projectOrder.map((pid) => (
-            <button
-              key={pid}
-              onClick={() => navigate(`/project/${pid}`)}
-              style={{
-                padding: '10px 24px',
-                borderRadius: '30px',
-                border: 'none',
-                background: projectId === pid 
-                  ? 'rgba(255,255,255,0.95)' 
-                  : 'rgba(255,255,255,0.1)',
-                color: projectId === pid ? '#080C72' : 'rgba(255,255,255,0.7)',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                fontFamily: "'Montserrat', sans-serif",
-              }}
-              onMouseEnter={e => {
-                if (projectId !== pid) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
-                  e.currentTarget.style.color = '#fff';
-                }
-              }}
-              onMouseLeave={e => {
-                if (projectId !== pid) {
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-                  e.currentTarget.style.color = 'rgba(255,255,255,0.7)';
-                }
-              }}
-            >
-              {projectsData[pid].name}
-            </button>
-          ))}
-        </div>
-
-        <Link to="/contact" style={{
-          padding: '10px 24px',
-          borderRadius: '30px',
-          background: 'transparent',
-          border: '1px solid rgba(255,255,255,0.3)',
-          color: '#fff',
-          fontSize: '13px',
-          fontWeight: 500,
-          textDecoration: 'none',
-          transition: 'all 0.3s ease',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.background = 'transparent';
-          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
-        }}
-        >
-          Contact
-        </Link>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section ref={heroRef} style={{
         minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '140px 40px 80px',
-        textAlign: 'center',
+        padding: '160px 60px 80px',
+        position: 'relative',
       }}>
-        {/* Title */}
+        {/* Hat mascot */}
+        <div
+          ref={hatRef}
+          style={{
+            position: 'absolute',
+            top: '140px',
+            right: '80px',
+            width: '100px',
+            height: '100px',
+            zIndex: 20,
+          }}
+        >
+          <img src="/hat.svg" alt="" style={{ width: '100%', height: '100%' }} />
+        </div>
+
+        {/* Scroll indicator */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: '40px',
+            transform: 'translateY(-50%)',
+            width: '80px',
+            height: '80px',
+          }}
+        >
+          <svg
+            ref={scrollIndicatorRef}
+            viewBox="0 0 100 100"
+            style={{ width: '100%', height: '100%' }}
+          >
+            <defs>
+              <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"/>
+            </defs>
+            <text fill="rgba(255,255,255,0.4)" fontSize="10" fontFamily="Montserrat" letterSpacing="3">
+              <textPath href="#circlePath">
+                SCROLL DOWN SCROLL DOWN 
+              </textPath>
+            </text>
+          </svg>
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            background: '#fff',
+          }}/>
+        </div>
+
+        {/* Tagline */}
         <h1 ref={titleRef} style={{
-          fontSize: 'clamp(36px, 6vw, 72px)',
-          fontWeight: 700,
-          lineHeight: 1.1,
-          maxWidth: '900px',
-          marginBottom: '50px',
-          background: 'linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.8) 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
+          fontSize: 'clamp(40px, 6vw, 72px)',
+          fontWeight: 400,
+          fontStyle: 'italic',
+          fontFamily: "'Georgia', serif",
+          lineHeight: 1.2,
+          maxWidth: '800px',
+          marginBottom: '60px',
         }}>
           {project.tagline}
         </h1>
@@ -337,108 +304,113 @@ export default function ProjectDetailPage() {
         {/* Meta Info */}
         <div ref={metaRef} style={{
           display: 'flex',
-          gap: '60px',
+          gap: '80px',
           marginBottom: '60px',
           flexWrap: 'wrap',
-          justifyContent: 'center',
         }}>
-          <div style={{ textAlign: 'left' }}>
-            <div style={{ fontSize: '12px', opacity: 0.5, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Title</div>
-            <div style={{ fontSize: '16px', fontWeight: 600 }}>{project.name}</div>
+          <div>
+            <div style={{ fontSize: '11px', opacity: 0.4, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600 }}>Title</div>
+            <div style={{ fontSize: '14px', fontWeight: 500 }}>{project.name}</div>
           </div>
-          <div style={{ textAlign: 'left' }}>
-            <div style={{ fontSize: '12px', opacity: 0.5, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Year</div>
-            <div style={{ fontSize: '16px', fontWeight: 600 }}>{project.year}</div>
+          <div>
+            <div style={{ fontSize: '11px', opacity: 0.4, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600 }}>Year</div>
+            <div style={{ fontSize: '14px', fontWeight: 500 }}>{project.year}</div>
           </div>
-          <div style={{ textAlign: 'left' }}>
-            <div style={{ fontSize: '12px', opacity: 0.5, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '1px' }}>Contributors</div>
-            <div style={{ fontSize: '16px', fontWeight: 600 }}>{project.contributors.join(' / ')}</div>
+          <div>
+            <div style={{ fontSize: '11px', opacity: 0.4, marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600 }}>Contributions</div>
+            <div style={{ fontSize: '14px', fontWeight: 500 }}>
+              {project.contributors.map((c, i) => (
+                <div key={i} style={{ opacity: 0.9 }}>{c}</div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Hero Image */}
+        {/* Hero Image Grid */}
         <div ref={imageRef} style={{
           width: '100%',
-          maxWidth: '1000px',
           borderRadius: '24px',
           overflow: 'hidden',
-          boxShadow: '0 40px 100px rgba(0,0,0,0.4), 0 0 60px rgba(255,255,255,0.1)',
+          background: project.gradient,
+          padding: '40px',
         }}>
-          <img 
-            src={project.heroImage} 
-            alt={project.name}
-            style={{
-              width: '100%',
-              height: 'auto',
-              display: 'block',
-            }}
-          />
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateRows: 'repeat(2, 1fr)',
+            gap: '20px',
+            maxHeight: '600px',
+          }}>
+            {project.heroImages.map((img, i) => (
+              <div
+                key={i}
+                style={{
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+                  transition: 'transform 0.4s ease',
+                }}
+                onMouseEnter={(e) => {
+                  gsap.to(e.currentTarget, { scale: 1.03, duration: 0.4 });
+                }}
+                onMouseLeave={(e) => {
+                  gsap.to(e.currentTarget, { scale: 1, duration: 0.4 });
+                }}
+              >
+                <img
+                  src={img}
+                  alt={`${project.name} screen ${i + 1}`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Challenge Section */}
       <section ref={challengeRef} style={{
-        padding: '100px 40px',
-        maxWidth: '800px',
+        padding: '120px 60px',
+        maxWidth: '900px',
         margin: '0 auto',
       }}>
         <h2 style={{
-          fontSize: '14px',
+          fontSize: '12px',
           textTransform: 'uppercase',
-          letterSpacing: '3px',
-          opacity: 0.5,
-          marginBottom: '20px',
+          letterSpacing: '4px',
+          opacity: 0.4,
+          marginBottom: '30px',
+          fontWeight: 600,
         }}>Challenge</h2>
         <p style={{
-          fontSize: 'clamp(18px, 2.5vw, 24px)',
-          lineHeight: 1.8,
+          fontSize: 'clamp(20px, 3vw, 28px)',
+          lineHeight: 1.7,
           opacity: 0.9,
+          fontWeight: 300,
         }}>
           {project.challenge.text}
         </p>
       </section>
 
-      {/* Approach Section */}
-      <section ref={approachRef} style={{
-        padding: '100px 40px',
-        maxWidth: '800px',
-        margin: '0 auto',
-      }}>
-        <h2 style={{
-          fontSize: '14px',
-          textTransform: 'uppercase',
-          letterSpacing: '3px',
-          opacity: 0.5,
-          marginBottom: '20px',
-        }}>Approach</h2>
-        <p style={{
-          fontSize: 'clamp(18px, 2.5vw, 24px)',
-          lineHeight: 1.8,
-          opacity: 0.9,
-        }}>
-          {project.approach.text}
-        </p>
-      </section>
-
       {/* Result Section */}
       <section ref={resultRef} style={{
-        padding: '100px 40px',
-        background: 'rgba(0,0,0,0.2)',
+        padding: '120px 60px',
+        background: 'rgba(0,0,0,0.15)',
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <h2 style={{
-            fontSize: 'clamp(32px, 5vw, 56px)',
+            fontSize: 'clamp(40px, 6vw, 64px)',
             fontWeight: 700,
             textAlign: 'center',
-            marginBottom: '60px',
+            marginBottom: '80px',
           }}>Result</h2>
 
           {/* Stats Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
             gap: '40px',
-            marginBottom: '60px',
+            marginBottom: '80px',
           }}>
             {project.result.stats.map((stat, i) => (
               <div
@@ -446,27 +418,37 @@ export default function ProjectDetailPage() {
                 ref={el => statsRef.current[i] = el}
                 style={{
                   textAlign: 'center',
-                  padding: '40px',
-                  background: 'rgba(255,255,255,0.05)',
-                  borderRadius: '20px',
-                  border: '1px solid rgba(255,255,255,0.1)',
+                  padding: '50px 30px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '24px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  transition: 'all 0.4s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                  e.currentTarget.style.transform = 'translateY(-5px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                  e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
                 <div style={{
-                  fontSize: 'clamp(40px, 6vw, 64px)',
+                  fontSize: 'clamp(48px, 8vw, 72px)',
                   fontWeight: 800,
                   background: `linear-gradient(135deg, ${project.color} 0%, #fff 100%)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                  marginBottom: '10px',
+                  marginBottom: '15px',
                 }}>
                   {stat.value}
                 </div>
                 <div style={{
-                  fontSize: '14px',
-                  opacity: 0.7,
+                  fontSize: '13px',
+                  opacity: 0.6,
                   textTransform: 'uppercase',
-                  letterSpacing: '1px',
+                  letterSpacing: '2px',
+                  fontWeight: 500,
                 }}>
                   {stat.label}
                 </div>
@@ -477,7 +459,7 @@ export default function ProjectDetailPage() {
           <p style={{
             fontSize: '18px',
             lineHeight: 1.8,
-            opacity: 0.8,
+            opacity: 0.7,
             textAlign: 'center',
             maxWidth: '700px',
             margin: '0 auto',
@@ -489,7 +471,7 @@ export default function ProjectDetailPage() {
 
       {/* Screens Gallery */}
       <section ref={screensRef} style={{
-        padding: '100px 40px',
+        padding: '120px 60px',
         overflow: 'hidden',
       }}>
         <div style={{
@@ -502,25 +484,21 @@ export default function ProjectDetailPage() {
             <div
               key={i}
               style={{
-                width: 'min(350px, 90vw)',
+                width: 'min(280px, 45vw)',
                 borderRadius: '20px',
                 overflow: 'hidden',
-                boxShadow: '0 30px 80px rgba(0,0,0,0.3)',
-                transform: `rotate(${i === 1 ? 0 : i === 0 ? -3 : 3}deg)`,
-                transition: 'transform 0.5s ease',
+                boxShadow: '0 30px 80px rgba(0,0,0,0.4)',
+                transform: `rotate(${i % 2 === 0 ? -2 : 2}deg)`,
+                transition: 'all 0.5s ease',
               }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = 'rotate(0deg) scale(1.05)';
+              onMouseEnter={(e) => {
+                gsap.to(e.currentTarget, { rotation: 0, scale: 1.08, y: -10, duration: 0.4 });
               }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = `rotate(${i === 1 ? 0 : i === 0 ? -3 : 3}deg) scale(1)`;
+              onMouseLeave={(e) => {
+                gsap.to(e.currentTarget, { rotation: i % 2 === 0 ? -2 : 2, scale: 1, y: 0, duration: 0.4 });
               }}
             >
-              <img
-                src={screen}
-                alt={`${project.name} screen ${i + 1}`}
-                style={{ width: '100%', display: 'block' }}
-              />
+              <img src={screen} alt={`${project.name} screen ${i + 1}`} style={{ width: '100%', display: 'block' }} />
             </div>
           ))}
         </div>
@@ -528,150 +506,212 @@ export default function ProjectDetailPage() {
 
       {/* CTA Section */}
       <section ref={ctaRef} style={{
-        padding: '120px 40px',
-        background: project.color,
+        padding: '140px 60px',
+        background: project.gradient,
         textAlign: 'center',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
         <h2 style={{
-          fontSize: 'clamp(24px, 4vw, 40px)',
+          fontSize: 'clamp(28px, 4vw, 44px)',
           fontWeight: 300,
           marginBottom: '10px',
+          opacity: 0.9,
         }}>Your Path To</h2>
         <h3 style={{
-          fontSize: 'clamp(40px, 7vw, 80px)',
+          fontSize: 'clamp(48px, 8vw, 100px)',
           fontWeight: 800,
           textTransform: 'uppercase',
           marginBottom: '10px',
+          letterSpacing: '-2px',
         }}>OPPORTUNITY</h3>
         <p style={{
-          fontSize: '20px',
-          marginBottom: '40px',
+          fontSize: '22px',
+          marginBottom: '50px',
+          opacity: 0.9,
         }}>Starts Here</p>
         
-        <Link to="/contact" style={{
-          display: 'inline-block',
-          padding: '18px 50px',
-          background: '#fff',
-          color: project.color,
-          borderRadius: '50px',
-          fontSize: '16px',
-          fontWeight: 700,
-          textDecoration: 'none',
-          transition: 'all 0.3s ease',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.2)',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.transform = 'translateY(-3px)';
-          e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.3)';
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 10px 40px rgba(0,0,0,0.2)';
-        }}
+        <button
+          onClick={() => navigate('/contact')}
+          style={{
+            display: 'inline-block',
+            padding: '20px 60px',
+            background: '#fff',
+            color: project.color,
+            borderRadius: '50px',
+            fontSize: '16px',
+            fontWeight: 700,
+            textDecoration: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'all 0.4s ease',
+            boxShadow: '0 15px 50px rgba(0,0,0,0.25)',
+            fontFamily: "'Montserrat', sans-serif",
+          }}
+          onMouseEnter={(e) => {
+            gsap.to(e.currentTarget, { y: -5, scale: 1.05, boxShadow: '0 25px 60px rgba(0,0,0,0.35)', duration: 0.3 });
+          }}
+          onMouseLeave={(e) => {
+            gsap.to(e.currentTarget, { y: 0, scale: 1, boxShadow: '0 15px 50px rgba(0,0,0,0.25)', duration: 0.3 });
+          }}
         >
           Start a Project
-        </Link>
+        </button>
       </section>
 
-      {/* Project Navigation */}
-      <section style={{
-        padding: '60px 40px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        borderTop: '1px solid rgba(255,255,255,0.1)',
-        maxWidth: '1200px',
-        margin: '0 auto',
-      }}>
-        {prevProject ? (
-          <Link
-            to={`/project/${prevProject}`}
-            style={{
-              color: '#fff',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              opacity: 0.7,
-              transition: 'opacity 0.3s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '0.7'}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-            <span style={{ fontSize: '14px' }}>Previous: {projectsData[prevProject].name}</span>
-          </Link>
-        ) : <div />}
-
-        {nextProject ? (
-          <Link
-            to={`/project/${nextProject}`}
-            style={{
-              color: '#fff',
-              textDecoration: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              opacity: 0.7,
-              transition: 'opacity 0.3s',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '0.7'}
-          >
-            <span style={{ fontSize: '14px' }}>Next: {projectsData[nextProject].name}</span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </Link>
-        ) : <div />}
-      </section>
-
-      {/* Footer CTA */}
-      <section style={{
-        padding: '100px 40px',
-        textAlign: 'center',
-        borderTop: '1px solid rgba(255,255,255,0.1)',
+      {/* Other Projects Carousel */}
+      <section ref={carouselRef} style={{
+        padding: '100px 60px',
       }}>
         <h2 style={{
-          fontSize: 'clamp(36px, 6vw, 64px)',
+          fontSize: '14px',
+          textTransform: 'uppercase',
+          letterSpacing: '4px',
+          opacity: 0.4,
+          marginBottom: '50px',
+          textAlign: 'center',
+          fontWeight: 600,
+        }}>Other Projects</h2>
+
+        <div style={{
+          display: 'flex',
+          gap: '30px',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+        }}>
+          {projectOrder.filter(pid => pid !== projectId).map((pid) => {
+            const p = projectsData[pid];
+            return (
+              <div
+                key={pid}
+                onClick={() => navigate(`/project/${pid}`)}
+                style={{
+                  width: '350px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: '24px',
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  transition: 'all 0.4s ease',
+                }}
+                onMouseEnter={(e) => {
+                  gsap.to(e.currentTarget, { y: -10, scale: 1.02, duration: 0.4 });
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.4 });
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                }}
+              >
+                <div style={{
+                  height: '200px',
+                  background: p.gradient,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                }}>
+                  <img
+                    src={p.heroImage}
+                    alt={p.name}
+                    style={{ width: '80%', height: '80%', objectFit: 'cover', borderRadius: '12px' }}
+                  />
+                </div>
+                <div style={{ padding: '25px' }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '8px' }}>{p.name}</h3>
+                  <p style={{ fontSize: '14px', opacity: 0.6, lineHeight: 1.5 }}>{p.tagline}</p>
+                  <div style={{
+                    marginTop: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    opacity: 0.7,
+                  }}>
+                    View Project
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Let's Join Forces Section */}
+      <section style={{
+        padding: '120px 40px',
+        textAlign: 'center',
+        position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '600px',
+          height: '400px',
+          background: 'radial-gradient(ellipse, rgba(100, 100, 255, 0.12), transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }} />
+
+        <h2 style={{
+          fontSize: 'clamp(48px, 10vw, 80px)',
           fontWeight: 700,
-          marginBottom: '30px',
-        }}>Lets Join Forces</h2>
+          lineHeight: 1.1,
+          marginBottom: '24px',
+          position: 'relative',
+          zIndex: 10,
+        }}>
+          Let&apos;s Join<br />Forces
+        </h2>
+
         <p style={{
-          fontSize: '18px',
-          opacity: 0.7,
-          marginBottom: '40px',
+          opacity: 0.6,
+          fontSize: 'clamp(14px, 2vw, 18px)',
           maxWidth: '500px',
           margin: '0 auto 40px',
+          lineHeight: 1.6,
+          position: 'relative',
+          zIndex: 10,
         }}>
-          Ready to create something extraordinary together?
+          As long as there&apos;s room to turn things up a notch, we&apos;re in.
+          Let&apos;s create something extraordinary together.
         </p>
-        <Link to="/contact" id="contact-btn" style={{
-          display: 'inline-block',
-          padding: '20px 60px',
-          background: 'rgba(255,255,255,0.95)',
-          color: '#080C72',
-          borderRadius: '50px',
-          fontSize: '18px',
-          fontWeight: 700,
-          textDecoration: 'none',
-          transition: 'all 0.4s ease',
-          boxShadow: '0 0 30px rgba(255,255,255,0.3), 0 20px 50px rgba(0,0,0,0.3)',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.transform = 'translateY(-5px) scale(1.05)';
-          e.currentTarget.style.boxShadow = '0 0 50px rgba(255,255,255,0.5), 0 30px 60px rgba(0,0,0,0.4)';
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.transform = 'translateY(0) scale(1)';
-          e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.3), 0 20px 50px rgba(0,0,0,0.3)';
-        }}
+
+        <button
+          onClick={() => navigate('/contact')}
+          style={{
+            padding: '18px 40px',
+            borderRadius: '16px',
+            border: 'none',
+            background: '#fff',
+            color: '#080C72',
+            fontWeight: 700,
+            fontSize: '16px',
+            cursor: 'pointer',
+            boxShadow: '0 8px 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1)',
+            position: 'relative',
+            zIndex: 10,
+            fontFamily: "'Montserrat', sans-serif",
+            transition: 'all 0.3s ease',
+          }}
+          onMouseEnter={(e) => {
+            gsap.to(e.currentTarget, { scale: 1.05, y: -3, duration: 0.3 });
+          }}
+          onMouseLeave={(e) => {
+            gsap.to(e.currentTarget, { scale: 1, y: 0, duration: 0.3 });
+          }}
         >
           Contact Me
-        </Link>
+        </button>
       </section>
+
+      <Footer />
     </div>
   );
 }
