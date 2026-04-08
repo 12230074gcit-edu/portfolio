@@ -86,9 +86,6 @@ function HomePage() {
       {/* Cursor Trail Effect */}
       <CursorTrail />
 
-      {/* Interactive Bubbles Background */}
-      <Bubbles />
-
       {/* Premium Background */}
       <div style={{
         position: 'fixed',
@@ -197,6 +194,9 @@ function HomePage() {
           <Hero />
         </div>
       </section>
+
+      {/* Interactive Bubbles - below hero */}
+      <Bubbles />
 
       {/* Quote Section */}
       <QuoteSection />
