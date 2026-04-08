@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from './components/navbar';
 import { Hero } from './components/Hero';
-
+import { TetrisCanvas } from './components/tetris';
 import { QuoteSection } from './components/quote';
 import ProjectsSection from './components/ProjectSection';
 import AboutMe from './components/aboutMeSection';
@@ -145,6 +145,16 @@ function HomePage() {
           overflow: 'hidden'
         }}
       >
+        {/* Tetris background */}
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'none'
+        }}>
+          <TetrisCanvas />
+        </div>
+
         {/* Floating gradient circles */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0 }}>
           {circleConfigs.map((c, i) => (
