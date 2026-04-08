@@ -1,33 +1,85 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 
 export default function Bubbles() {
   const containerRef = useRef(null);
   const [bubbles, setBubbles] = useState([]);
+  const audioContextRef = useRef(null);
 
-  // Generate initial bubbles - fewer and smaller
+  // Create pop sound using Web Audio API
+  const playPopSound = useCallback(() => {
+    try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      
+      const ctx = audioContextRef.current;
+      if (ctx.state === 'suspended') {
+        ctx.resume();
+      }
+
+      // Create oscillator for pop sound
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
+      
+      // Pop sound characteristics - short high frequency burst
+      oscillator.frequency.setValueAtTime(800, ctx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.08);
+      
+      gainNode.gain.setValueAtTime(0.15, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+      
+      oscillator.type = 'sine';
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + 0.1);
+    } catch (e) {
+      // Audio not supported, fail silently
+    }
+  }, []);
+
+  // Generate initial bubbles with varied sizes
   useEffect(() => {
     const initialBubbles = [];
-    const count = 8; // Reduced from 20
+    const count = 12;
 
     for (let i = 0; i < count; i++) {
-      initialBubbles.push({
-        id: i,
-        x: 10 + Math.random() * 80,
-        y: 20 + Math.random() * 70, // Start below hero (20% from top)
-        size: 15 + Math.random() * 25, // Smaller: 15-40px
-        opacity: 0.15 + Math.random() * 0.1,
-        speedX: (Math.random() - 0.5) * 0.15,
-        speedY: -0.05 - Math.random() * 0.1,
-        wobble: Math.random() * Math.PI * 2,
-        popped: false,
-      });
+      initialBubbles.push(createBubble(i));
     }
 
     setBubbles(initialBubbles);
   }, []);
 
-  // Animate bubbles floating with gentle wobble
+  const createBubble = (id) => {
+    // Varied sizes - small, medium, large
+    const sizeCategory = Math.random();
+    let size;
+    if (sizeCategory < 0.5) {
+      size = 12 + Math.random() * 10; // Small: 12-22px
+    } else if (sizeCategory < 0.85) {
+      size = 22 + Math.random() * 15; // Medium: 22-37px
+    } else {
+      size = 37 + Math.random() * 18; // Large: 37-55px
+    }
+
+    return {
+      id,
+      x: 5 + Math.random() * 90,
+      y: 60 + Math.random() * 35, // Start from bottom portion
+      size,
+      opacity: 0.08 + Math.random() * 0.12,
+      speedX: (Math.random() - 0.5) * 0.08,
+      speedY: -0.03 - Math.random() * 0.06,
+      wobbleSpeed: 0.01 + Math.random() * 0.015,
+      wobbleAmount: 0.02 + Math.random() * 0.03,
+      wobble: Math.random() * Math.PI * 2,
+      popped: false,
+    };
+  };
+
+  // Animate bubbles floating with realistic gentle wobble
   useEffect(() => {
     if (bubbles.length === 0) return;
 
@@ -36,23 +88,29 @@ export default function Bubbles() {
         prev.map(bubble => {
           if (bubble.popped) return bubble;
 
-          let newX = bubble.x + bubble.speedX + Math.sin(bubble.wobble) * 0.05;
+          let newX = bubble.x + bubble.speedX + Math.sin(bubble.wobble) * bubble.wobbleAmount;
           let newY = bubble.y + bubble.speedY;
-          let newWobble = bubble.wobble + 0.02;
+          let newWobble = bubble.wobble + bubble.wobbleSpeed;
 
-          // Keep within bounds, respecting hero section (top 15%)
-          if (newX < 5) newX = 5;
-          if (newX > 95) newX = 95;
-          if (newY < 15) {
-            // Reset to bottom when reaching top
-            newY = 95;
-            newX = 10 + Math.random() * 80;
+          // Soft boundary bounce
+          if (newX < 3) {
+            newX = 3;
+            bubble.speedX = Math.abs(bubble.speedX) * 0.5;
+          }
+          if (newX > 97) {
+            newX = 97;
+            bubble.speedX = -Math.abs(bubble.speedX) * 0.5;
+          }
+          
+          // Reset when reaching top
+          if (newY < 5) {
+            return createBubble(bubble.id);
           }
 
           return { ...bubble, x: newX, y: newY, wobble: newWobble };
         })
       );
-    }, 60);
+    }, 50);
 
     return () => clearInterval(interval);
   }, [bubbles.length]);
@@ -66,19 +124,12 @@ export default function Bubbles() {
       setBubbles(prev => 
         prev.map(bubble => {
           if (bubble.popped) {
-            return {
-              ...bubble,
-              popped: false,
-              x: 10 + Math.random() * 80,
-              y: 90 + Math.random() * 10, // Respawn near bottom
-              size: 15 + Math.random() * 25,
-              opacity: 0.15 + Math.random() * 0.1,
-            };
+            return createBubble(bubble.id);
           }
           return bubble;
         })
       );
-    }, 3000);
+    }, 2500);
 
     return () => clearTimeout(timeout);
   }, [bubbles]);
@@ -89,40 +140,48 @@ export default function Bubbles() {
     const rect = bubble.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
+    const bubbleSize = rect.width;
     
-    // Quick pop animation
+    // Play pop sound
+    playPopSound();
+    
+    // Pop animation - quick burst outward then disappear
     gsap.to(bubble, {
-      scale: 1.3,
+      scale: 1.4,
       opacity: 0,
-      duration: 0.15,
+      duration: 0.12,
       ease: 'power2.out',
     });
 
-    // Small pop particles
-    for (let i = 0; i < 5; i++) {
+    // Create pop particles - small water droplets effect
+    const particleCount = Math.min(Math.floor(bubbleSize / 8) + 3, 8);
+    for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
+      const particleSize = 2 + Math.random() * 3;
       particle.style.cssText = `
         position: fixed;
         left: ${centerX}px;
         top: ${centerY}px;
-        width: 4px;
-        height: 4px;
+        width: ${particleSize}px;
+        height: ${particleSize}px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
         pointer-events: none;
-        z-index: 5;
+        z-index: 100;
       `;
       document.body.appendChild(particle);
 
-      const angle = (i / 5) * Math.PI * 2;
-      const distance = 15 + Math.random() * 15;
+      const angle = (i / particleCount) * Math.PI * 2 + Math.random() * 0.5;
+      const distance = 10 + Math.random() * 20;
+      const gravity = 30 + Math.random() * 20;
 
       gsap.to(particle, {
         x: Math.cos(angle) * distance,
-        y: Math.sin(angle) * distance,
+        y: Math.sin(angle) * distance + gravity,
         opacity: 0,
-        scale: 0,
-        duration: 0.3,
+        scale: 0.3,
+        duration: 0.35,
         ease: 'power2.out',
         onComplete: () => particle.remove(),
       });
@@ -139,12 +198,12 @@ export default function Bubbles() {
       ref={containerRef}
       style={{
         position: 'fixed',
-        top: '15vh', // Start below hero
+        top: 0,
         left: 0,
         right: 0,
         bottom: 0,
         pointerEvents: 'none',
-        zIndex: 2,
+        zIndex: 3,
         overflow: 'hidden',
       }}
     >
@@ -160,46 +219,66 @@ export default function Bubbles() {
               width: `${bubble.size}px`,
               height: `${bubble.size}px`,
               borderRadius: '50%',
-              background: `radial-gradient(circle at 30% 30%, 
-                rgba(255, 255, 255, ${bubble.opacity + 0.15}), 
-                rgba(255, 255, 255, ${bubble.opacity * 0.4}) 50%,
-                transparent 100%)`,
-              border: `1px solid rgba(255, 255, 255, ${bubble.opacity * 0.6})`,
+              // Realistic bubble gradient with light refraction
+              background: `
+                radial-gradient(circle at 30% 25%, 
+                  rgba(255, 255, 255, ${bubble.opacity + 0.2}) 0%,
+                  rgba(255, 255, 255, ${bubble.opacity * 0.5}) 20%,
+                  rgba(200, 220, 255, ${bubble.opacity * 0.3}) 40%,
+                  transparent 70%
+                )
+              `,
+              border: `1px solid rgba(255, 255, 255, ${bubble.opacity * 0.4})`,
               boxShadow: `
-                inset 0 -2px 4px rgba(255, 255, 255, ${bubble.opacity * 0.2}),
-                inset 2px 2px 4px rgba(255, 255, 255, ${bubble.opacity * 0.3})
+                inset 0 -${bubble.size * 0.1}px ${bubble.size * 0.2}px rgba(255, 255, 255, ${bubble.opacity * 0.15}),
+                inset ${bubble.size * 0.05}px ${bubble.size * 0.05}px ${bubble.size * 0.15}px rgba(255, 255, 255, ${bubble.opacity * 0.2}),
+                0 0 ${bubble.size * 0.3}px rgba(255, 255, 255, ${bubble.opacity * 0.1})
               `,
               pointerEvents: 'auto',
               cursor: 'pointer',
               transform: 'translate(-50%, -50%)',
-              transition: 'transform 0.2s ease',
+              transition: 'transform 0.15s ease',
             }}
             onMouseEnter={(e) => {
               gsap.to(e.currentTarget, {
-                scale: 1.1,
-                duration: 0.2,
+                scale: 1.08,
+                duration: 0.15,
                 ease: 'power2.out',
               });
             }}
             onMouseLeave={(e) => {
               gsap.to(e.currentTarget, {
                 scale: 1,
-                duration: 0.2,
+                duration: 0.15,
                 ease: 'power2.out',
               });
             }}
           >
-            {/* Small highlight reflection */}
+            {/* Primary highlight - top left */}
             <div
               style={{
                 position: 'absolute',
-                top: '20%',
-                left: '25%',
-                width: '25%',
-                height: '15%',
+                top: '15%',
+                left: '20%',
+                width: '30%',
+                height: '20%',
                 borderRadius: '50%',
-                background: 'rgba(255, 255, 255, 0.5)',
+                background: `rgba(255, 255, 255, ${bubble.opacity + 0.25})`,
                 filter: 'blur(1px)',
+                transform: 'rotate(-40deg)',
+              }}
+            />
+            {/* Secondary smaller highlight */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '40%',
+                left: '15%',
+                width: '12%',
+                height: '8%',
+                borderRadius: '50%',
+                background: `rgba(255, 255, 255, ${bubble.opacity + 0.15})`,
+                filter: 'blur(0.5px)',
                 transform: 'rotate(-30deg)',
               }}
             />

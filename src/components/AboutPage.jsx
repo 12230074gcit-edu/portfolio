@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
+import Bubbles from './Bubbles';
 
 export default function AboutPage() {
   const pageRef = useRef(null);
@@ -410,6 +411,9 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
+      {/* Bubbles */}
+      <Bubbles />
 
       <style>{`
         @keyframes spin {

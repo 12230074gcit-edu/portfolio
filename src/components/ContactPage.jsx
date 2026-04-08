@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
+import Bubbles from './Bubbles';
 
 export default function ContactPage() {
   const pageRef = useRef(null);
@@ -444,6 +445,9 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+
+      {/* Bubbles */}
+      <Bubbles />
 
       <style>{`
         @keyframes shimmer {
