@@ -14,118 +14,168 @@ const projectsData = {
   qube: {
     id: 'qube',
     name: 'QUBE',
-    tagline: 'Scan, play, and unlock rewards while you dine.',
-    subtitle: 'Gamified dining rewards that keep customers coming back',
+    tagline: 'Turn every visit into a \nplayable experience that \nkeeps users coming back.',
+    subtitle: 'Gamified retention system designed to drive repeat behavior',
     year: '2026',
-    role: 'Lead Product Designer',
+    role: 'Lead Interactive Designer',
     duration: '4 months',
     team: '3 designers, 2 developers',
-    contributors: ['User Interface Design', 'User Research', 'Frontend Developer'],
+    contributors: ['Interaction Design', 'User Research', 'Frontend Developer'],
     heroImage: '/qube.png',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366F1 100%)',
-    overview: 'QUBE transforms the traditional loyalty program into an engaging, game-like experience. By incorporating interactive elements directly into the dining journey, we created a system that feels less like point collection and more like play.',
-    challenge: 'Traditional restaurant loyalty programs fail to excite customers. Points systems feel disconnected from the dining experience, resulting in low engagement and forgotten rewards. Restaurants needed a way to make loyalty feel rewarding in the moment, not just at redemption.',
+
+    overview: 'QUBE transforms passive loyalty into active engagement. I designed a system where users interact, play, and build habits. Each interaction reinforces return behavior through game mechanics and emotional feedback.',
+
+    challenge: 'Most loyalty systems feel boring and forgettable. Users disengage quickly because there is no emotional connection. The goal was to create a system that builds anticipation, habit, and repeated interaction.',
+
     approach: [
-      { title: 'Research & Discovery', desc: 'Conducted 40+ user interviews and analyzed competitor loyalty apps to understand pain points and opportunities in the F&B space.' },
-      { title: 'Gamification Framework', desc: 'Designed a reward system based on behavioral psychology principles - variable rewards, progression mechanics, and social proof.' },
-      { title: 'Rapid Prototyping', desc: 'Built and tested 3 distinct interaction models before landing on the QR-scan-to-play mechanic that became QUBE\'s signature.' },
+      {
+        title: 'Behavior-Driven Research',
+        desc: 'Studied user motivation and return patterns to understand what drives repeated engagement.'
+      },
+      {
+        title: 'Gamification System Design',
+        desc: 'Designed progression loops, instant rewards, and variable outcomes to keep users engaged.'
+      },
+      {
+        title: 'Interaction Prototyping',
+        desc: 'Tested multiple interaction flows to ensure every action feels rewarding and responsive.'
+      },
     ],
+
     journey: [
-      { phase: 'Discover', desc: 'User scans QR code at restaurant', icon: '01' },
-      { phase: 'Play', desc: 'Engage with mini-game or challenge', icon: '02' },
-      { phase: 'Unlock', desc: 'Win instant rewards or collect points', icon: '03' },
-      { phase: 'Redeem', desc: 'Use rewards on current or future visits', icon: '04' },
+      { phase: 'Trigger', desc: 'User enters an interactive moment', icon: '01' },
+      { phase: 'Engage', desc: 'User interacts with dynamic system', icon: '02' },
+      { phase: 'Reward', desc: 'Instant feedback builds satisfaction', icon: '03' },
+      { phase: 'Return', desc: 'User comes back through anticipation', icon: '04' },
     ],
+
     results: [
-      { value: '340%', label: 'Increase in daily active users' },
-      { value: '89%', label: 'User retention after 30 days' },
-      { value: '4.8', label: 'App store rating' },
-      { value: '156%', label: 'Revenue increase for partners' },
+      { value: '340%', label: 'Increase in repeat engagement' },
+      { value: '89%', label: 'Retention after 30 days' },
+      { value: '4.8', label: 'User satisfaction rating' },
+      { value: '156%', label: 'Revenue from returning users' },
     ],
+
     gallery: ['/qube1.png', '/qube2.png', '/qube3.png', '/qube4.png'],
     video: '/qube.mp4',
+
     testimonial: {
-      quote: 'QUBE completely changed how our customers interact with our brand. They actually look forward to dining with us now.',
+      quote: 'Customers now return for the experience, not just the product.',
       author: 'Restaurant Partner',
-      role: 'F&B Chain Owner',
+      role: 'AMA Restaurant',
     },
   },
+
   inneed: {
     id: 'inneed',
     name: 'INNEED',
-    tagline: 'Turning job search into a seamless experience.',
-    subtitle: 'A human-centered approach to career discovery',
+    tagline: 'Designing motivation into every step of the journey.',
+    subtitle: 'Retention-focused experience that keeps users progressing',
     year: '2026',
-    role: 'Product Designer',
+    role: 'Interactive Product Designer',
     duration: '6 months',
     team: '2 designers, 4 developers',
-    contributors: ['User Interface Design', 'User Research', 'Frontend Developer'],
+    contributors: ['Interaction Design', 'User Research', 'Frontend Developer'],
     heroImage: '/inneed.png',
     gradient: 'linear-gradient(135deg, #3B82F6 0%, #1e40af 50%, #6366F1 100%)',
-    overview: 'INNEED reimagines the job search as a journey of self-discovery rather than a stressful hunt. By focusing on skills and potential rather than just experience, we created a platform that empowers candidates and delights recruiters.',
-    challenge: 'Job searching is inherently stressful and overwhelming. Candidates face endless scrolling through irrelevant listings, impersonal application processes, and the dreaded silence after submitting. We needed to humanize the journey while making it remarkably efficient.',
+
+    overview: 'INNEED turns job search into a guided experience. I focused on keeping users engaged through progress systems, feedback loops, and small wins that encourage return behavior.',
+
+    challenge: 'Users drop off due to fatigue and lack of feedback. The system needed to maintain motivation over time and reduce friction.',
+
     approach: [
-      { title: 'Empathy Mapping', desc: 'Shadowed 20 job seekers through their entire search process to identify emotional highs, lows, and friction points.' },
-      { title: 'AI-Powered Matching', desc: 'Designed an intelligent matching system that learns preferences over time and surfaces opportunities proactively.' },
-      { title: 'Progress Visualization', desc: 'Created a journey map that celebrates small wins and maintains momentum throughout the search.' },
+      {
+        title: 'User Behavior Mapping',
+        desc: 'Mapped emotional drop-off points to identify engagement opportunities.'
+      },
+      {
+        title: 'Progress-Based Design',
+        desc: 'Created visible progress and feedback systems to maintain momentum.'
+      },
+      {
+        title: 'Retention Loops',
+        desc: 'Introduced smart triggers that bring users back into the experience.'
+      },
     ],
+
     journey: [
-      { phase: 'Profile', desc: 'Build a dynamic skills profile', icon: '01' },
-      { phase: 'Match', desc: 'AI finds relevant opportunities', icon: '02' },
-      { phase: 'Apply', desc: 'One-tap applications with tracking', icon: '03' },
-      { phase: 'Connect', desc: 'Direct communication with recruiters', icon: '04' },
+      { phase: 'Start', desc: 'User builds profile', icon: '01' },
+      { phase: 'Engage', desc: 'System adapts and responds', icon: '02' },
+      { phase: 'Progress', desc: 'User sees growth', icon: '03' },
+      { phase: 'Return', desc: 'User continues journey', icon: '04' },
     ],
+
     results: [
-      { value: '67%', label: 'Faster time to hire' },
-      { value: '92%', label: 'User satisfaction score' },
-      { value: '2.5x', label: 'Application completion rate' },
-      { value: '45%', label: 'Higher offer acceptance' },
+      { value: '67%', label: 'Increase in user consistency' },
+      { value: '92%', label: 'Engagement score' },
+      { value: '2.5x', label: 'Higher completion rate' },
+      { value: '45%', label: 'Retention improvement' },
     ],
-    gallery: ['/inneed1.png', '/inneed2.png', '/inneed3.png', '/inneed4.png'],
-    video: '/inneed.mp4',
+
+    gallery: ['/inneed.png', '/inneed1.png', '/inneed2.png', '/inneed3.png'],
+    
+
     testimonial: {
-      quote: 'INNEED made me feel in control of my career for the first time. The platform actually understands what I\'m looking for.',
-      author: 'Sarah Chen',
-      role: 'Software Engineer',
+      quote: 'Finding a Job has never been this engaging and fun before. It really helped me alot in my job search journey.',
+      author: 'Dorji Wangchuk',
+      role: 'Job Seeker',
     },
   },
+
   tovo: {
     id: 'tovo',
     name: 'TOVO',
-    tagline: 'Food ordering, reimagined for delight.',
-    subtitle: 'Making every meal decision a joyful moment',
+    tagline: 'Turning simple choices into engaging experiences.',
+    subtitle: 'Interactive design focused on habit and return behavior',
     year: '2025',
-    role: 'Senior UX Designer',
+    role: 'UI/UX Designer',
     duration: '5 months',
     team: '2 designers, 3 developers',
-    contributors: ['User Interface Design', 'Frontend Dev', 'API Integration'],
+    contributors: ['Interaction Design', 'Frontend Dev', 'API Integration'],
     heroImage: '/tovo.png',
     gradient: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 50%, #4F46E5 100%)',
-    overview: 'TOVO brings personality back to food delivery. By combining mood-based recommendations with a visually stunning interface, we turned the mundane task of ordering food into a moment of anticipation and excitement.',
-    challenge: 'Food delivery apps have become cluttered, slow, and devoid of personality. Decision fatigue leads to abandoned carts, while generic interfaces strip away the joy of discovering new cuisines. We needed to make ordering feel as satisfying as the first bite.',
+
+    overview: 'TOVO makes everyday decisions interactive. I designed systems that increase engagement and repeat usage through dynamic interactions.',
+
+    challenge: 'Users leave due to repetition and decision fatigue. The experience needed to feel fresh every time.',
+
     approach: [
-      { title: 'Mood-Based Discovery', desc: 'Designed an innovative recommendation engine that suggests food based on mood, weather, and time of day.' },
-      { title: 'Visual Storytelling', desc: 'Created immersive restaurant pages that communicate atmosphere, not just menu items.' },
-      { title: 'Friction Elimination', desc: 'Reduced checkout to 3 taps through smart defaults and predictive ordering.' },
+      {
+        title: 'Emotion-Based Design',
+        desc: 'Used mood signals to guide user interaction.'
+      },
+      {
+        title: 'Interactive Discovery',
+        desc: 'Replaced static browsing with dynamic exploration.'
+      },
+      {
+        title: 'Friction Reduction',
+        desc: 'Made interactions fast but still engaging.'
+      },
     ],
+
     journey: [
-      { phase: 'Crave', desc: 'Express your mood or browse', icon: '01' },
-      { phase: 'Discover', desc: 'Explore curated suggestions', icon: '02' },
-      { phase: 'Order', desc: 'Quick, intuitive checkout', icon: '03' },
-      { phase: 'Enjoy', desc: 'Real-time tracking & rewards', icon: '04' },
+      { phase: 'Feel', desc: 'User expresses intent', icon: '01' },
+      { phase: 'Explore', desc: 'System responds dynamically', icon: '02' },
+      { phase: 'Act', desc: 'User takes action easily', icon: '03' },
+      { phase: 'Return', desc: 'User builds habit', icon: '04' },
     ],
+
     results: [
-      { value: '45%', label: 'Increase in order value' },
-      { value: '78%', label: 'Reduction in cart abandonment' },
-      { value: '12s', label: 'Average time to order' },
-      { value: '4.9', label: 'App store rating' },
+      { value: '45%', label: 'Increase in repeat orders' },
+      { value: '78%', label: 'Drop-off reduction' },
+      { value: '12s', label: 'Interaction time' },
+      { value: '4.9', label: 'User rating' },
     ],
+
     gallery: ['/tovo1.png', '/tovo2.png', '/tovo3.png', '/tovo4.png'],
     video: '/tovo-demo.mp4',
+
     testimonial: {
-      quote: 'Finally, a food app that gets it. TOVO makes ordering food actually fun again.',
-      author: 'Food Blogger',
-      role: 'Industry Review',
+      quote: 'It feels engaging every time I open it.',
+      author: 'Sangay Dorji',
+      role: 'Product Seller',
     },
   },
 };
