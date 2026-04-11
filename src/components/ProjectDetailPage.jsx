@@ -377,9 +377,27 @@ export default function ProjectDetailPage() {
   }, [projectId]);
 
   const splitText = (text) => {
-    return text.split('').map((char, i) => (
-      <span key={i} className="char" style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}>
-        {char}
+    // Split by words first to preserve word integrity
+    const words = text.split(' ');
+    let charIndex = 0;
+    
+    return words.map((word, wordIndex) => (
+      <span key={wordIndex} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+        {word.split('').map((char, i) => (
+          <span 
+            key={charIndex++} 
+            className="char" 
+            style={{ 
+              display: 'inline-block',
+              whiteSpace: char === '\n' ? 'pre-wrap' : 'normal'
+            }}
+          >
+            {char === '\n' ? <br /> : char}
+          </span>
+        ))}
+        {wordIndex < words.length - 1 && (
+          <span className="char" style={{ display: 'inline-block', width: '0.3em' }}>&nbsp;</span>
+        )}
       </span>
     ));
   };
@@ -499,6 +517,8 @@ export default function ProjectDetailPage() {
             position: 'relative',
             zIndex: 10,
             perspective: '1000px',
+            wordBreak: 'keep-all',
+            overflowWrap: 'normal',
           }}
         >
           {splitText(project.tagline)}

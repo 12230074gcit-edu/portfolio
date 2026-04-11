@@ -516,7 +516,7 @@ export default function AboutPage() {
           </a>
         </div>
 
-        {/* Right - Avatar */}
+        {/* Right - Avatar with Clipping Mask */}
         <div
           style={{
             position: "relative",
@@ -525,6 +525,7 @@ export default function AboutPage() {
             alignItems: "center",
           }}
         >
+          {/* Background glow */}
           <div
             style={{
               position: "absolute",
@@ -536,52 +537,133 @@ export default function AboutPage() {
             }}
           />
 
+          {/* Avatar Container with Clipping Mask and Hover Glow */}
           <div
             ref={avatarRef}
+            className="avatar-container"
             style={{
               position: "relative",
               width: "400px",
               height: "400px",
-              borderRadius: "50%",
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow:
-                "0 40px 80px rgba(0,0,0,0.3), 0 0 60px rgba(100,100,255,0.1)",
-              overflow: "visible", // ✅ FIX (was hidden)
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              const container = e.currentTarget;
+              const glow = container.querySelector('.avatar-glow');
+              const pulse = container.querySelector('.avatar-pulse');
+              const ring = container.querySelector('.avatar-ring');
+              
+              gsap.to(glow, { opacity: 1, scale: 1.1, duration: 0.4, ease: 'power2.out' });
+              gsap.to(pulse, { scale: 2, opacity: 0, duration: 0.8, ease: 'power2.out' });
+              gsap.to(ring, { borderColor: 'rgba(100,150,255,0.4)', boxShadow: '0 0 40px rgba(100,150,255,0.3)', duration: 0.4 });
+              gsap.to(container.querySelector('.avatar-clip'), { scale: 1.02, duration: 0.4, ease: 'power2.out' });
+            }}
+            onMouseLeave={(e) => {
+              const container = e.currentTarget;
+              const glow = container.querySelector('.avatar-glow');
+              const pulse = container.querySelector('.avatar-pulse');
+              const ring = container.querySelector('.avatar-ring');
+              
+              gsap.to(glow, { opacity: 0, scale: 1, duration: 0.4 });
+              gsap.to(pulse, { scale: 1, opacity: 0.3, duration: 0.4 });
+              gsap.to(ring, { borderColor: 'rgba(255,255,255,0.15)', boxShadow: 'none', duration: 0.4 });
+              gsap.to(container.querySelector('.avatar-clip'), { scale: 1, duration: 0.4 });
             }}
           >
-            {/* ✅ FIXED IMAGE */}
-            <img
-              ref={imgRef}
-              src="/Me1.png"
-              alt="Jigme Namgyel"
+            {/* Hover Glow Effect */}
+            <div
+              className="avatar-glow"
               style={{
                 position: "absolute",
-                bottom: "10px", // push outside circle
-                left: "50%",
-                transform: "translateX(-50%)",
-                width: "520px",
-                height: "520px",
-                objectFit: "cover",
+                inset: "-30px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(100,150,255,0.4) 0%, transparent 70%)",
+                opacity: 0,
                 pointerEvents: "none",
-                filter: "drop-shadow(0 30px 50px rgba(0,0,0,0.4))",
+                zIndex: 0,
               }}
             />
 
-            {/* Ring */}
+            {/* Pulse Ring on Hover */}
             <div
+              className="avatar-pulse"
+              style={{
+                position: "absolute",
+                inset: 0,
+                borderRadius: "50%",
+                border: "2px solid rgba(100,150,255,0.3)",
+                opacity: 0.3,
+                pointerEvents: "none",
+              }}
+            />
+
+            {/* Outer Ring */}
+            <div
+              className="avatar-ring"
               style={{
                 position: "absolute",
                 inset: "-20px",
                 borderRadius: "50%",
-                border: "1px solid rgba(255,255,255,0.05)",
+                border: "2px solid rgba(255,255,255,0.15)",
+                transition: "all 0.4s ease",
                 animation: "spin 30s linear infinite",
               }}
             />
+
+            {/* Clipping Mask Container */}
+            <div
+              className="avatar-clip"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                overflow: "hidden",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                boxShadow: "0 40px 80px rgba(0,0,0,0.3), 0 0 60px rgba(100,100,255,0.1)",
+              }}
+            >
+              {/* Image inside clipping mask */}
+              <img
+                ref={imgRef}
+                src="/Me1.png"
+                alt="Jigme Namgyel"
+                style={{
+                  position: "absolute",
+                  bottom: "-40px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "450px",
+                  height: "450px",
+                  objectFit: "cover",
+                  objectPosition: "top center",
+                  pointerEvents: "none",
+                }}
+              />
+            </div>
+
+            {/* Decorative dots */}
+            <div style={{
+              position: "absolute",
+              top: "10%",
+              right: "-10px",
+              width: "8px",
+              height: "8px",
+              borderRadius: "50%",
+              background: "rgba(100,150,255,0.6)",
+              boxShadow: "0 0 15px rgba(100,150,255,0.5)",
+            }} />
+            <div style={{
+              position: "absolute",
+              bottom: "20%",
+              left: "-15px",
+              width: "6px",
+              height: "6px",
+              borderRadius: "50%",
+              background: "rgba(150,100,255,0.6)",
+              boxShadow: "0 0 12px rgba(150,100,255,0.5)",
+            }} />
           </div>
         </div>
       </section>
