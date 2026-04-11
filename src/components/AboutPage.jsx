@@ -631,13 +631,13 @@ export default function AboutPage() {
                 alt="Jigme Namgyel"
                 style={{
                   position: "absolute",
-                  bottom: "-40px",
+                  bottom: "0",
                   left: "50%",
                   transform: "translateX(-50%)",
-                  width: "450px",
-                  height: "450px",
+                  width: "480px",
+                  height: "480px",
                   objectFit: "cover",
-                  objectPosition: "top center",
+                  objectPosition: "center 20%",
                   pointerEvents: "none",
                 }}
               />

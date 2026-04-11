@@ -17,6 +17,8 @@ export default function Footer() {
     { name: 'About', href: '#about-section' },
     { name: 'Services', href: '#services-section' },
     { name: 'Projects', href: '#projects-section' },
+    { name: 'Download CV', href: '/12230074_CV.pdf', download: true },
+    { name: 'Resume Video', href: '/about#video-section' },
   ];
 
   const projects = [
@@ -246,6 +248,7 @@ export default function Footer() {
                 <a
                   ref={(el) => (linksRef.current[i] = el)}
                   href={link.href}
+                  {...(link.download ? { download: true, target: '_blank' } : {})}
                   onMouseEnter={handleLinkHover}
                   onMouseLeave={handleLinkLeave}
                   style={{
