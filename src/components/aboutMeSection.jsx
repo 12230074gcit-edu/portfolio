@@ -229,20 +229,6 @@ const AboutMe = () => {
             }}
           />
 
-          {/* Hat on avatar */}
-          <img
-            src="/hat.svg"
-            alt=""
-            style={{
-              position: "absolute",
-              top: "-40px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "200px",
-              zIndex: 3,
-              filter: "drop-shadow(0 10px 30px rgba(0,0,0,0.3))",
-            }}
-          />
         </div>
 
         {/* Right - Content */}
