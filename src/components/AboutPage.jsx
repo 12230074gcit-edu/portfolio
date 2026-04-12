@@ -329,6 +329,7 @@ export default function AboutPage() {
 
       {/* Hero Section */}
       <section
+        className="about-hero-grid"
         style={{
           minHeight: "100vh",
           display: "grid",
@@ -1112,6 +1113,34 @@ export default function AboutPage() {
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
+        }
+        @media (max-width: 1024px) {
+          .about-hero-grid {
+            grid-template-columns: 1fr !important;
+            gap: 60px !important;
+            padding: 120px 40px 60px !important;
+            text-align: center !important;
+          }
+          .about-hero-grid > div:first-child {
+            order: 2;
+          }
+          .about-hero-grid > div:last-child {
+            order: 1;
+          }
+        }
+        @media (max-width: 768px) {
+          .about-hero-grid {
+            padding: 100px 24px 40px !important;
+            gap: 40px !important;
+          }
+          .avatar-container {
+            width: 280px !important;
+            height: 280px !important;
+          }
+          .avatar-clip img {
+            width: 340px !important;
+            height: 340px !important;
+          }
         }
       `}</style>
     </div>

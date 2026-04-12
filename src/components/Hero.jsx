@@ -90,6 +90,7 @@ export const Hero = () => {
   return (
     <div
       ref={contentRef}
+      className="hero-content"
       style={{
         position: 'relative',
         zIndex: 10,

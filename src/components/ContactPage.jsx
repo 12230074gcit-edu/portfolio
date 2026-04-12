@@ -171,9 +171,12 @@ export default function ContactPage() {
     }
   };
 
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus({ type: '', message: '' });
     
     // Button animation
     gsap.to(formRef.current.querySelector('button'), {
@@ -181,8 +184,40 @@ export default function ContactPage() {
       duration: 0.15,
     });
 
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitStatus({ type: 'success', message: data.message || 'Message sent successfully!' });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        
+        // Reset labels to initial state
+        document.querySelectorAll('.field-label').forEach(label => {
+          gsap.to(label, {
+            top: label.closest('[style*="minHeight"]') ? '26px' : '50%',
+            transform: label.closest('[style*="minHeight"]') ? 'translateY(0)' : 'translateY(-50%)',
+            scale: 1,
+            color: 'rgba(255,255,255,0.5)',
+            background: 'transparent',
+            padding: '0',
+            duration: 0.3
+          });
+        });
+      } else {
+        setSubmitStatus({ type: 'error', message: data.error || 'Failed to send message. Please try again.' });
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus({ type: 'error', message: 'Network error. Please check your connection and try again.' });
+    }
     
     gsap.to(formRef.current.querySelector('button'), {
       scale: 1,
@@ -191,7 +226,6 @@ export default function ContactPage() {
     });
 
     setIsSubmitting(false);
-    setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
   const titleText = "Let's Connect";
@@ -657,6 +691,45 @@ export default function ContactPage() {
                 )}
               </span>
             </button>
+
+            {/* Status Message */}
+            {submitStatus.message && (
+              <div
+                style={{
+                  marginTop: '20px',
+                  padding: '16px 24px',
+                  borderRadius: '12px',
+                  background: submitStatus.type === 'success' 
+                    ? 'rgba(100, 255, 150, 0.1)' 
+                    : 'rgba(255, 100, 100, 0.1)',
+                  border: `1px solid ${submitStatus.type === 'success' 
+                    ? 'rgba(100, 255, 150, 0.3)' 
+                    : 'rgba(255, 100, 100, 0.3)'}`,
+                  color: submitStatus.type === 'success' 
+                    ? 'rgba(100, 255, 150, 0.9)' 
+                    : 'rgba(255, 100, 100, 0.9)',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}
+              >
+                {submitStatus.type === 'success' ? (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                )}
+                {submitStatus.message}
+              </div>
+            )}
           </form>
         </div>
 
@@ -861,6 +934,9 @@ export default function ContactPage() {
         @media (max-width: 768px) {
           .contact-grid {
             padding: 100px 20px 60px !important;
+          }
+          .contact-grid form > div:first-child {
+            grid-template-columns: 1fr !important;
           }
         }
       `}</style>
