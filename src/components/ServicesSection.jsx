@@ -225,6 +225,7 @@ export default function ServicesSection() {
     <section
       ref={sectionRef}
       id="services-section"
+      className="services-section"
       style={{
         minHeight: "auto",
         padding: "80px 80px 40px",
@@ -278,7 +279,7 @@ export default function ServicesSection() {
       </div>
 
       {/* Development Section */}
-      <div className="dev-block" style={{ marginBottom: "60px", width: "700px" }}>
+      <div className="dev-block services-dev-block" style={{ marginBottom: "60px", width: "700px", maxWidth: "100%" }}>
         <div style={glassSlim}>
           <h2 style={sectionTitle}>Development</h2>
         </div>
@@ -315,13 +316,13 @@ export default function ServicesSection() {
 
       {/* Design Section - Aligned right */}
       <div
-        className="design-block"
+        className="design-block services-design-wrapper"
         style={{
           display: "flex",
           justifyContent: "flex-end",
         }}
       >
-        <div style={{ width: "60%", maxWidth: "600px" }}>
+        <div className="services-design-block" style={{ width: "60%", maxWidth: "600px" }}>
           <div style={glassSlim}>
             <h2 style={sectionTitle}>Design</h2>
           </div>
@@ -400,7 +401,7 @@ const tagStyle = {
   transition: "background 0.3s ease",
 };
 
-// Add pulse keyframes via style injection
+// Add pulse keyframes and responsive styles via style injection
 if (typeof document !== 'undefined' && !document.getElementById('services-keyframes')) {
   const style = document.createElement('style');
   style.id = 'services-keyframes';
@@ -408,6 +409,29 @@ if (typeof document !== 'undefined' && !document.getElementById('services-keyfra
     @keyframes pulse {
       0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
       50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
+    }
+    @media (max-width: 1024px) {
+      .services-section {
+        padding: 60px 40px 40px !important;
+      }
+      .services-section > div:nth-child(3) {
+        display: none !important;
+      }
+      .services-dev-block {
+        width: 100% !important;
+      }
+      .services-design-wrapper {
+        justify-content: flex-start !important;
+      }
+      .services-design-block {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+    }
+    @media (max-width: 768px) {
+      .services-section {
+        padding: 50px 24px 30px !important;
+      }
     }
   `;
   document.head.appendChild(style);

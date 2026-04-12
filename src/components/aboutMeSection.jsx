@@ -152,6 +152,7 @@ const AboutMe = () => {
     <section
       id="about-section"
       ref={containerRef}
+      className="about-me-section"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -180,6 +181,7 @@ const AboutMe = () => {
       />
 
       <div
+        className="about-me-container"
         style={{
           display: "flex",
           width: "100%",
@@ -191,6 +193,7 @@ const AboutMe = () => {
       >
         {/* Left - Avatar */}
         <div
+          className="about-me-avatar"
           onMouseMove={handleMouseMove}
           onMouseLeave={resetTilt}
           style={{
@@ -232,7 +235,7 @@ const AboutMe = () => {
         </div>
 
         {/* Right - Content */}
-        <div ref={contentRef} style={{ width: "50%" }}>
+        <div ref={contentRef} className="about-me-content" style={{ width: "50%" }}>
           <p
             className="about-subtitle"
             style={{
@@ -303,5 +306,51 @@ const AboutMe = () => {
     </section>
   );
 };
+
+// Add responsive styles
+if (typeof document !== 'undefined' && !document.getElementById('about-me-responsive')) {
+  const style = document.createElement('style');
+  style.id = 'about-me-responsive';
+  style.textContent = `
+    @media (max-width: 1024px) {
+      .about-me-section {
+        padding: 80px 40px !important;
+      }
+      .about-me-container {
+        flex-direction: column !important;
+        gap: 50px !important;
+        text-align: center !important;
+      }
+      .about-me-avatar {
+        width: 100% !important;
+        order: 1;
+      }
+      .about-me-avatar img {
+        max-width: 350px !important;
+      }
+      .about-me-content {
+        width: 100% !important;
+        order: 2;
+      }
+      .about-me-content p {
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+    }
+    @media (max-width: 768px) {
+      .about-me-section {
+        padding: 60px 24px !important;
+        min-height: auto !important;
+      }
+      .about-me-container {
+        gap: 40px !important;
+      }
+      .about-me-avatar img {
+        max-width: 280px !important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 export default AboutMe;

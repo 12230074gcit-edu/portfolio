@@ -46,7 +46,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         from: 'Portfolio Contact <onboarding@resend.dev>',
-        to: ['jigmenamgyel.dev@gmail.com'],
+        to: ['jigmenamgyeldev022@gmail.com'],
         reply_to: email,
         subject: `Portfolio Contact: ${subject}`,
         html: `

@@ -475,7 +475,7 @@ export default function ProjectDetailPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section ref={heroRef} style={{
+      <section ref={heroRef} className="project-detail-hero" style={{
         minHeight: '100vh',
         padding: '140px 80px 80px',
         position: 'relative',
@@ -783,6 +783,31 @@ export default function ProjectDetailPage() {
             25% { transform: translateY(-20px) translateX(10px); }
             50% { transform: translateY(-10px) translateX(-10px); }
             75% { transform: translateY(-25px) translateX(5px); }
+          }
+          @media (max-width: 1024px) {
+            .project-detail-hero {
+              padding: 120px 40px 80px !important;
+            }
+            .animate-section, .approach-section, .gallery-section, .results-section, .journey-section {
+              padding: 60px 40px !important;
+            }
+            .journey-path {
+              display: none !important;
+            }
+          }
+          @media (max-width: 768px) {
+            .project-detail-hero {
+              padding: 100px 24px 60px !important;
+            }
+            .animate-section, .approach-section, .gallery-section, .results-section, .journey-section {
+              padding: 40px 24px !important;
+            }
+            .journey-item {
+              flex: 1 1 100% !important;
+            }
+            .results-section > div > div {
+              flex-direction: column !important;
+            }
           }
         `}</style>
       </section>

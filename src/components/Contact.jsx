@@ -104,6 +104,7 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={sectionRef}
+      className="contact-cta-section"
       style={{
         minHeight: "80vh",
         position: "relative",
@@ -229,11 +230,17 @@ export default function ContactSection() {
         }}
       />
 
-      {/* Add shimmer keyframes */}
+      {/* Add shimmer keyframes and responsive styles */}
       <style>{`
         @keyframes shimmer {
           0% { background-position: 200% center; }
           100% { background-position: -200% center; }
+        }
+        @media (max-width: 768px) {
+          .contact-cta-section {
+            padding: 50px 24px !important;
+            min-height: 60vh !important;
+          }
         }
       `}</style>
     </section>
