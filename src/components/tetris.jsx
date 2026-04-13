@@ -506,6 +506,7 @@ export const TetrisCanvas = () => {
               boxShadow: '0 0 60px rgba(0,0,0,0.3)',
             }}
           />
+        </div>
       </div>
 
       {/* Keyframe animation for flash */}
