@@ -25,17 +25,135 @@ const COLORS = [
   'rgba(240, 0, 0, 0.7)',
 ];
 
+// Sound effects using Web Audio API
+const createAudioContext = () => {
+  if (typeof window !== 'undefined') {
+    return new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return null;
+};
+
+const playSound = (audioCtx, type = 'clear') => {
+  if (!audioCtx) return;
+  
+  try {
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    if (type === 'clear') {
+      // Line clear sound - ascending sweep
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.1);
+      oscillator.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.15);
+      gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.2);
+    } else if (type === 'drop') {
+      // Piece drop sound - soft thud
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(150, audioCtx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.1);
+    } else if (type === 'combo') {
+      // Multi-line clear - celebratory sound
+      oscillator.type = 'square';
+      oscillator.frequency.setValueAtTime(400, audioCtx.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.1);
+      oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.2);
+      gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + 0.3);
+    }
+  } catch (e) {
+    // Silently fail if audio not supported
+  }
+};
+
+// Particle class for blast effects
+class Particle {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.size = Math.random() * 8 + 4;
+    this.speedX = (Math.random() - 0.5) * 12;
+    this.speedY = (Math.random() - 0.5) * 12 - 4;
+    this.gravity = 0.3;
+    this.life = 1;
+    this.decay = Math.random() * 0.02 + 0.015;
+    this.rotation = Math.random() * Math.PI * 2;
+    this.rotationSpeed = (Math.random() - 0.5) * 0.3;
+  }
+
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.speedY += this.gravity;
+    this.speedX *= 0.98;
+    this.life -= this.decay;
+    this.rotation += this.rotationSpeed;
+    this.size *= 0.97;
+  }
+
+  draw(ctx) {
+    if (this.life <= 0) return;
+    
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = this.life;
+    ctx.fillStyle = this.color;
+    ctx.shadowColor = this.color;
+    ctx.shadowBlur = 15;
+    
+    // Draw a small square particle
+    ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+    
+    ctx.restore();
+  }
+}
+
 export const TetrisCanvas = () => {
   const canvasRef = useRef(null);
   const [score, setScore] = useState(0);
   const [time, setTime] = useState(0);
   const [scale, setScale] = useState(1);
+  const [screenFlash, setScreenFlash] = useState(false);
 
   const gridRef = useRef(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
   const activePieceRef = useRef(null);
   const lastTimeRef = useRef(0);
   const dropCounterRef = useRef(0);
   const dropIntervalRef = useRef(900);
+  const particlesRef = useRef([]);
+  const audioCtxRef = useRef(null);
+  const clearedRowsRef = useRef([]);
+
+  // Initialize audio context on first interaction
+  useEffect(() => {
+    const initAudio = () => {
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = createAudioContext();
+      }
+    };
+    
+    window.addEventListener('keydown', initAudio, { once: true });
+    window.addEventListener('click', initAudio, { once: true });
+    
+    return () => {
+      window.removeEventListener('keydown', initAudio);
+      window.removeEventListener('click', initAudio);
+    };
+  }, []);
 
   // Responsive scale
   useEffect(() => {
@@ -106,15 +224,59 @@ export const TetrisCanvas = () => {
       });
     });
 
+    // Play drop sound
+    playSound(audioCtxRef.current, 'drop');
+
     clearLines();
   };
 
   const clearLines = () => {
     let linesCleared = 0;
+    const rowsToClear = [];
 
+    // Find full rows first
+    gridRef.current.forEach((row, y) => {
+      const full = row.every(cell => cell !== 0);
+      if (full) {
+        rowsToClear.push({ y, cells: [...row] });
+        linesCleared++;
+      }
+    });
+
+    // Create blast particles for cleared rows
+    if (linesCleared > 0) {
+      rowsToClear.forEach(({ y, cells }) => {
+        cells.forEach((colorIndex, x) => {
+          if (colorIndex !== 0) {
+            const particleX = x * BLOCK_SIZE + BLOCK_SIZE / 2;
+            const particleY = y * BLOCK_SIZE + BLOCK_SIZE / 2;
+            const color = COLORS[colorIndex];
+            
+            // Create multiple particles per cell for more impact
+            for (let i = 0; i < 6; i++) {
+              particlesRef.current.push(new Particle(particleX, particleY, color));
+            }
+          }
+        });
+      });
+
+      // Play sound effect
+      if (linesCleared >= 4) {
+        playSound(audioCtxRef.current, 'combo');
+      } else if (linesCleared > 1) {
+        playSound(audioCtxRef.current, 'combo');
+      } else {
+        playSound(audioCtxRef.current, 'clear');
+      }
+
+      // Screen flash effect
+      setScreenFlash(true);
+      setTimeout(() => setScreenFlash(false), 150);
+    }
+
+    // Remove cleared rows
     gridRef.current = gridRef.current.filter(row => {
       const full = row.every(cell => cell !== 0);
-      if (full) linesCleared++;
       return !full;
     });
 
@@ -123,7 +285,9 @@ export const TetrisCanvas = () => {
     }
 
     if (linesCleared > 0) {
-      setScore(prev => prev + linesCleared * 100);
+      // Bonus points for multiple lines
+      const bonus = linesCleared === 4 ? 800 : linesCleared * 100;
+      setScore(prev => prev + bonus);
     }
   };
 
@@ -224,6 +388,13 @@ export const TetrisCanvas = () => {
     }
 
     ctx.shadowBlur = 0;
+
+    // Update and draw particles
+    particlesRef.current = particlesRef.current.filter(particle => {
+      particle.update();
+      particle.draw(ctx);
+      return particle.life > 0;
+    });
   }, []);
 
   useEffect(() => {
@@ -279,6 +450,18 @@ export const TetrisCanvas = () => {
 
   return (
     <>
+      {/* Screen flash effect on line clear */}
+      {screenFlash && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(circle, rgba(100,150,255,0.3) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 5,
+          animation: 'flashPulse 0.15s ease-out',
+        }} />
+      )}
+
       {/* HUD */}
       <div style={{
         position: 'absolute',
@@ -321,10 +504,17 @@ export const TetrisCanvas = () => {
               backgroundColor: 'rgba(0,0,0,0.2)',
               backdropFilter: 'blur(5px)',
               boxShadow: '0 0 60px rgba(0,0,0,0.3)',
-            }}
-          />
-        </div>
+          }}
+        />
       </div>
+
+      {/* Keyframe animation for flash */}
+      <style>{`
+        @keyframes flashPulse {
+          0% { opacity: 1; transform: scale(1); }
+          100% { opacity: 0; transform: scale(1.1); }
+        }
+      `}</style>
     </>
   );
 };
