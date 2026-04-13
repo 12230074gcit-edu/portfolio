@@ -504,8 +504,8 @@ export const TetrisCanvas = () => {
               backgroundColor: 'rgba(0,0,0,0.2)',
               backdropFilter: 'blur(5px)',
               boxShadow: '0 0 60px rgba(0,0,0,0.3)',
-          }}
-        />
+            }}
+          />
       </div>
 
       {/* Keyframe animation for flash */}
