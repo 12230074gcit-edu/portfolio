@@ -72,6 +72,49 @@ const playSound = (audioCtx, type = 'clear') => {
       gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
       oscillator.start(audioCtx.currentTime);
       oscillator.stop(audioCtx.currentTime + 0.3);
+    } else if (type === 'gameOver') {
+      // Dramatic game over sound - descending sweep with rumble
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const osc3 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      const gain2 = audioCtx.createGain();
+      const gain3 = audioCtx.createGain();
+      
+      // Main descending tone
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(400, audioCtx.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 1.5);
+      gain1.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain1.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+      osc1.connect(gain1);
+      gain1.connect(audioCtx.destination);
+      
+      // Low rumble
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(60, audioCtx.currentTime);
+      osc2.frequency.setValueAtTime(40, audioCtx.currentTime + 0.5);
+      gain2.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
+      osc2.connect(gain2);
+      gain2.connect(audioCtx.destination);
+      
+      // Dissonant high
+      osc3.type = 'square';
+      osc3.frequency.setValueAtTime(800, audioCtx.currentTime);
+      osc3.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.8);
+      gain3.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain3.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+      osc3.connect(gain3);
+      gain3.connect(audioCtx.destination);
+      
+      osc1.start(audioCtx.currentTime);
+      osc2.start(audioCtx.currentTime);
+      osc3.start(audioCtx.currentTime);
+      osc1.stop(audioCtx.currentTime + 1.5);
+      osc2.stop(audioCtx.currentTime + 1.2);
+      osc3.stop(audioCtx.currentTime + 0.8);
+      return;
     }
   } catch (e) {
     // Silently fail if audio not supported
@@ -129,6 +172,8 @@ export const TetrisCanvas = () => {
   const [scale, setScale] = useState(1);
   const [screenFlash, setScreenFlash] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [gameOver, setGameOver] = useState(false);
+  const [finalScore, setFinalScore] = useState(0);
 
   const gridRef = useRef(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
   const activePieceRef = useRef(null);
@@ -138,6 +183,7 @@ export const TetrisCanvas = () => {
   const particlesRef = useRef([]);
   const audioCtxRef = useRef(null);
   const clearedRowsRef = useRef([]);
+  const gameLoopRef = useRef(null);
 
   // Check if mobile (hide tetris on mobile, show on tablet and desktop)
   useEffect(() => {
@@ -302,8 +348,18 @@ export const TetrisCanvas = () => {
     }
   };
 
+  const triggerGameOver = useCallback(() => {
+    setFinalScore(score);
+    setGameOver(true);
+    playSound(audioCtxRef.current, 'gameOver');
+    
+    if (gameLoopRef.current) {
+      cancelAnimationFrame(gameLoopRef.current);
+    }
+  }, [score]);
+
   const moveDown = useCallback(() => {
-    if (!activePieceRef.current) return;
+    if (!activePieceRef.current || gameOver) return;
 
     const nextPos = {
       ...activePieceRef.current.pos,
@@ -318,12 +374,14 @@ export const TetrisCanvas = () => {
       if (nextPiece) {
         activePieceRef.current = nextPiece;
       } else {
-        activePieceRef.current = resetGame();
+        // Game over - can't spawn new piece
+        triggerGameOver();
+        return;
       }
     }
 
     dropCounterRef.current = 0;
-  }, [spawnPiece]);
+  }, [spawnPiece, gameOver, triggerGameOver]);
 
   const moveLeft = () => {
     if (!activePieceRef.current) return;
@@ -426,8 +484,47 @@ export const TetrisCanvas = () => {
 
     window.addEventListener('keydown', handleKeyDown);
 
-    let animId;
+    const update = (time = 0) => {
+      if (gameOver) return;
+      
+      const deltaTime = time - lastTimeRef.current;
+      lastTimeRef.current = time;
 
+      dropCounterRef.current += deltaTime;
+
+      if (dropCounterRef.current > dropIntervalRef.current) {
+        moveDown();
+      }
+
+      draw();
+      gameLoopRef.current = requestAnimationFrame(update);
+    };
+
+    update();
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      if (gameLoopRef.current) {
+        cancelAnimationFrame(gameLoopRef.current);
+      }
+    };
+  }, [draw, moveDown, spawnPiece, gameOver]);
+
+  const resetGame = useCallback(() => {
+    gridRef.current = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+    setScore(0);
+    setTime(0);
+    setGameOver(false);
+    setFinalScore(0);
+    particlesRef.current = [];
+    const newPiece = spawnPiece();
+    activePieceRef.current = newPiece;
+    return newPiece;
+  }, [spawnPiece]);
+
+  const handleTryAgain = () => {
+    resetGame();
+    // Restart game loop
     const update = (time = 0) => {
       const deltaTime = time - lastTimeRef.current;
       lastTimeRef.current = time;
@@ -439,25 +536,10 @@ export const TetrisCanvas = () => {
       }
 
       draw();
-      animId = requestAnimationFrame(update);
+      gameLoopRef.current = requestAnimationFrame(update);
     };
-
     update();
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      cancelAnimationFrame(animId);
-    };
-  }, [draw, moveDown, spawnPiece]);
-
-  function resetGame() {
-    gridRef.current = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
-    setScore(0);
-    setTime(0);
-    const newPiece = spawnPiece();
-    activePieceRef.current = newPiece;
-    return newPiece;
-  }
+  };
 
   // Don't render on mobile devices
   if (isMobile) {
@@ -525,11 +607,115 @@ export const TetrisCanvas = () => {
         </div>
       </div>
 
+      {/* Game Over Overlay */}
+      {gameOver && (
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'radial-gradient(circle, rgba(8,12,114,0.95) 0%, rgba(0,0,0,0.9) 100%)',
+          zIndex: 100,
+          animation: 'gameOverFadeIn 0.5s ease-out',
+        }}>
+          {/* Dramatic glow */}
+          <div style={{
+            position: 'absolute',
+            width: '300px',
+            height: '300px',
+            background: 'radial-gradient(circle, rgba(255,50,50,0.3) 0%, transparent 70%)',
+            filter: 'blur(40px)',
+            animation: 'gameOverPulse 2s ease-in-out infinite',
+          }} />
+
+          <h2 style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: '48px',
+            fontWeight: 700,
+            color: '#fff',
+            marginBottom: '16px',
+            textShadow: '0 0 40px rgba(255,50,50,0.5)',
+            letterSpacing: '4px',
+          }}>
+            GAME OVER
+          </h2>
+
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: '18px',
+            color: 'rgba(255,255,255,0.7)',
+            marginBottom: '8px',
+          }}>
+            Final Score
+          </p>
+
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: '56px',
+            fontWeight: 700,
+            color: '#fff',
+            marginBottom: '40px',
+            textShadow: '0 0 30px rgba(100,150,255,0.5)',
+          }}>
+            {finalScore}
+          </p>
+
+          <button
+            onClick={handleTryAgain}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(100,150,255,0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(100,150,255,0.3)';
+            }}
+            style={{
+              padding: '16px 48px',
+              fontSize: '16px',
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 600,
+              color: '#fff',
+              background: 'linear-gradient(135deg, rgba(100,150,255,0.3) 0%, rgba(150,100,255,0.3) 100%)',
+              border: '1px solid rgba(100,150,255,0.5)',
+              borderRadius: '50px',
+              cursor: 'pointer',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              boxShadow: '0 0 20px rgba(100,150,255,0.3)',
+              transition: 'all 0.3s ease',
+              pointerEvents: 'auto',
+            }}
+          >
+            Try Again
+          </button>
+
+          <p style={{
+            fontFamily: "'Montserrat', sans-serif",
+            fontSize: '12px',
+            color: 'rgba(255,255,255,0.4)',
+            marginTop: '24px',
+          }}>
+            Press any key or click to restart
+          </p>
+        </div>
+      )}
+
       {/* Keyframe animation for flash */}
       <style>{`
         @keyframes flashPulse {
           0% { opacity: 1; transform: scale(1); }
           100% { opacity: 0; transform: scale(1.1); }
+        }
+        @keyframes gameOverFadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+        @keyframes gameOverPulse {
+          0%, 100% { opacity: 0.5; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.1); }
         }
       `}</style>
     </>

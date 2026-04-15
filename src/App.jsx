@@ -17,6 +17,7 @@ import ProjectDetailPage from './components/ProjectDetailPage';
 import Bubbles from './components/Bubbles';
 import Footer from './components/Footer';
 import { FloatingCrystal } from './components/Interactive3D';
+import MusicPlayer from './components/MusicPlayer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -285,6 +286,9 @@ function HomePage() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Ambient Music Player */}
+      <MusicPlayer />
     </div>
   );
 }
