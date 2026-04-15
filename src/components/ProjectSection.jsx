@@ -163,6 +163,7 @@ export default function ProjectsSection() {
     <section
       id="projects-section"
       ref={sectionRef}
+      className="projects-section"
       style={{
         height: "100vh",
         position: "relative",
@@ -273,6 +274,7 @@ export default function ProjectsSection() {
 
       {/* Cards container */}
       <div
+        className="projects-cards-container"
         style={{
           position: "relative",
           width: "min(700px, 90vw)",
@@ -442,6 +444,50 @@ export default function ProjectsSection() {
           </div>
         ))}
       </div>
+
+      {/* Mobile responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .projects-section {
+            min-height: 100vh !important;
+          }
+          .projects-section h2 {
+            padding-top: 30px !important;
+            font-size: 20px !important;
+          }
+          .projects-cards-container {
+            width: calc(100vw - 40px) !important;
+            height: 450px !important;
+            margin: 30px auto !important;
+          }
+          .projects-cards-container > div > div > div {
+            border-radius: 16px !important;
+          }
+          .projects-cards-container > div > div > div > div:first-child {
+            height: 55% !important;
+            padding: 16px !important;
+          }
+          .projects-cards-container > div > div > div > div:last-child {
+            padding: 0 16px 16px !important;
+          }
+          .projects-cards-container h3 {
+            font-size: 16px !important;
+          }
+          .projects-cards-container p {
+            font-size: 12px !important;
+            margin-bottom: 12px !important;
+          }
+          .projects-cards-container span {
+            padding: 6px 12px !important;
+            font-size: 10px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .projects-cards-container {
+            height: 400px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

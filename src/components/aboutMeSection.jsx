@@ -339,14 +339,36 @@ if (typeof document !== 'undefined' && !document.getElementById('about-me-respon
     }
     @media (max-width: 768px) {
       .about-me-section {
-        padding: 60px 24px !important;
+        padding: 50px 20px !important;
         min-height: auto !important;
       }
       .about-me-container {
-        gap: 40px !important;
+        gap: 32px !important;
       }
       .about-me-avatar img {
-        max-width: 280px !important;
+        max-width: 240px !important;
+      }
+      .about-me-content h2 {
+        font-size: 28px !important;
+      }
+      .about-me-content p {
+        font-size: 14px !important;
+        line-height: 1.7 !important;
+      }
+      .about-me-content button {
+        padding: 14px 28px !important;
+        font-size: 12px !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .about-me-section {
+        padding: 40px 16px !important;
+      }
+      .about-me-avatar img {
+        max-width: 200px !important;
+      }
+      .about-me-content h2 {
+        font-size: 24px !important;
       }
     }
   `;

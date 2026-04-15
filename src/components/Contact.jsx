@@ -238,8 +238,27 @@ export default function ContactSection() {
         }
         @media (max-width: 768px) {
           .contact-cta-section {
-            padding: 50px 24px !important;
-            min-height: 60vh !important;
+            padding: 40px 20px !important;
+            min-height: 50vh !important;
+          }
+          .contact-cta-section h2 {
+            font-size: clamp(28px, 8vw, 40px) !important;
+          }
+          .contact-cta-section p {
+            font-size: 14px !important;
+          }
+          .contact-cta-section button {
+            padding: 14px 32px !important;
+            font-size: 13px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .contact-cta-section {
+            padding: 30px 16px !important;
+            min-height: 40vh !important;
+          }
+          .contact-cta-section h2 {
+            font-size: 26px !important;
           }
         }
       `}</style>

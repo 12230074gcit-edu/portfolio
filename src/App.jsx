@@ -145,14 +145,78 @@ function HomePage() {
           overflow: 'hidden'
         }}
       >
-        {/* Tetris background */}
-        <div style={{
+        {/* Tetris background (hidden on mobile) */}
+        <div className="tetris-wrapper" style={{
           position: 'absolute',
           inset: 0,
           zIndex: 1,
           pointerEvents: 'none'
         }}>
           <TetrisCanvas />
+        </div>
+
+        {/* Premium mobile background - shows only on mobile */}
+        <div className="mobile-hero-bg" style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          pointerEvents: 'none',
+          display: 'none',
+        }}>
+          {/* Animated gradient orbs */}
+          <div style={{
+            position: 'absolute',
+            top: '20%',
+            left: '10%',
+            width: '200px',
+            height: '200px',
+            background: 'radial-gradient(circle, rgba(100,150,255,0.3) 0%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(40px)',
+            animation: 'floatOrb1 8s ease-in-out infinite',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '30%',
+            right: '5%',
+            width: '150px',
+            height: '150px',
+            background: 'radial-gradient(circle, rgba(150,100,255,0.3) 0%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(40px)',
+            animation: 'floatOrb2 6s ease-in-out infinite',
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: '60%',
+            left: '20%',
+            width: '100px',
+            height: '100px',
+            background: 'radial-gradient(circle, rgba(100,200,255,0.25) 0%, transparent 70%)',
+            borderRadius: '50%',
+            filter: 'blur(30px)',
+            animation: 'floatOrb3 7s ease-in-out infinite',
+          }} />
+          
+          {/* Decorative lines */}
+          <div style={{
+            position: 'absolute',
+            top: '15%',
+            right: '10%',
+            width: '80px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+            transform: 'rotate(-45deg)',
+          }} />
+          <div style={{
+            position: 'absolute',
+            bottom: '25%',
+            left: '8%',
+            width: '60px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)',
+            transform: 'rotate(30deg)',
+          }} />
         </div>
 
         {/* Floating gradient circles */}
@@ -190,8 +254,10 @@ function HomePage() {
           ))}
         </div>
 
-        {/* 3D Interactive Elements */}
-        <FloatingCrystal size={100} position={{ right: '8%', top: '25%' }} />
+        {/* 3D Interactive Elements - hidden on mobile */}
+        <div className="desktop-3d-element">
+          <FloatingCrystal size={100} position={{ right: '8%', top: '25%' }} />
+        </div>
 
         {/* Hero content */}
         <div style={{ position: 'relative', zIndex: 10 }}>

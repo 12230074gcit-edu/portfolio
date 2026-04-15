@@ -430,7 +430,28 @@ if (typeof document !== 'undefined' && !document.getElementById('services-keyfra
     }
     @media (max-width: 768px) {
       .services-section {
-        padding: 50px 24px 30px !important;
+        padding: 40px 20px 30px !important;
+      }
+      .services-section h3 {
+        font-size: 32px !important;
+      }
+      .services-section p {
+        font-size: 14px !important;
+      }
+      .services-section ul {
+        gap: 8px !important;
+      }
+      .services-section li {
+        font-size: 13px !important;
+        padding: 10px 16px !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .services-section {
+        padding: 30px 16px 20px !important;
+      }
+      .services-section h3 {
+        font-size: 26px !important;
       }
     }
   `;

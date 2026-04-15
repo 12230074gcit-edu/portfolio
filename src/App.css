@@ -182,3 +182,65 @@
     border-right-color: var(--border);
   }
 }
+
+/* Mobile responsive styles for portfolio */
+@media (max-width: 768px) {
+  .tetris-wrapper {
+    display: none !important;
+  }
+  .mobile-hero-bg {
+    display: block !important;
+  }
+  .desktop-3d-element {
+    display: none !important;
+  }
+  
+  /* Reduce floating gradient circles on mobile */
+  section#home > div:nth-child(2) > div {
+    width: 150px !important;
+    height: 150px !important;
+    filter: blur(40px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  section#home > div:nth-child(2) > div {
+    width: 100px !important;
+    height: 100px !important;
+    filter: blur(30px) !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-hero-bg {
+    display: none !important;
+  }
+}
+
+/* Mobile orb animations */
+@keyframes floatOrb1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -30px) scale(1.1);
+  }
+}
+
+@keyframes floatOrb2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-15px, 20px) scale(0.9);
+  }
+}
+
+@keyframes floatOrb3 {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(10px, -15px);
+  }
+}

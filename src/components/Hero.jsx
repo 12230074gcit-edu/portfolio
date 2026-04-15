@@ -204,6 +204,19 @@ export const Hero = () => {
           }}
         />
       ))}
+
+      {/* Mobile responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-content {
+            padding: 0 20px !important;
+          }
+          .hero-content h1 {
+            font-size: clamp(36px, 10vw, 48px) !important;
+            margin-bottom: 20px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

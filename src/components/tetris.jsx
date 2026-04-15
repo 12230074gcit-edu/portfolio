@@ -128,6 +128,7 @@ export const TetrisCanvas = () => {
   const [time, setTime] = useState(0);
   const [scale, setScale] = useState(1);
   const [screenFlash, setScreenFlash] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const gridRef = useRef(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
   const activePieceRef = useRef(null);
@@ -137,6 +138,16 @@ export const TetrisCanvas = () => {
   const particlesRef = useRef([]);
   const audioCtxRef = useRef(null);
   const clearedRowsRef = useRef([]);
+
+  // Check if mobile (hide tetris on mobile, show on tablet and desktop)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Initialize audio context on first interaction
   useEffect(() => {
@@ -446,6 +457,11 @@ export const TetrisCanvas = () => {
     const newPiece = spawnPiece();
     activePieceRef.current = newPiece;
     return newPiece;
+  }
+
+  // Don't render on mobile devices
+  if (isMobile) {
+    return null;
   }
 
   return (

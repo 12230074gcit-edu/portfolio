@@ -159,6 +159,7 @@ export const QuoteSection = () => {
     <section
       id="quote-section"
       ref={sectionRef}
+      className="quote-section"
       style={{
         position: 'relative',
         minHeight: '70vh',
@@ -261,6 +262,7 @@ export const QuoteSection = () => {
       {/* Floating cube - simple float */}
       <div
         ref={cubeRef}
+        className="quote-cube"
         style={{
           position: 'absolute',
           top: '15%',
@@ -285,6 +287,7 @@ export const QuoteSection = () => {
       {/* Floating chess piece */}
       <div
         ref={chessRef}
+        className="quote-chess"
         style={{
           position: 'absolute',
           top: '35%',
@@ -308,6 +311,7 @@ export const QuoteSection = () => {
 
       {/* Decorative dots */}
       <div
+        className="quote-dots"
         style={{
           position: 'absolute',
           bottom: '20%',
@@ -328,6 +332,43 @@ export const QuoteSection = () => {
           />
         ))}
       </div>
+
+      {/* Mobile responsive styles */}
+      <style>{`
+        @media (max-width: 768px) {
+          .quote-section {
+            min-height: 60vh !important;
+            padding: 60px 16px !important;
+          }
+          .quote-section h2 {
+            font-size: clamp(24px, 7vw, 36px) !important;
+            line-height: 1.5 !important;
+          }
+          .quote-cube {
+            width: 80px !important;
+            height: 80px !important;
+            top: 5% !important;
+            left: 5% !important;
+          }
+          .quote-chess {
+            width: 70px !important;
+            height: 70px !important;
+            top: 10% !important;
+            right: 5% !important;
+          }
+          .quote-dots {
+            display: none !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .quote-section h2 {
+            font-size: 22px !important;
+          }
+          .quote-cube, .quote-chess {
+            display: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };
