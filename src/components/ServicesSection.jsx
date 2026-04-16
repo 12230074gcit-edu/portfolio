@@ -250,7 +250,9 @@ export default function ServicesSection() {
       />
 
       {/* Interactive 3D Element */}
-      <Interactive3DElement />
+      <div className="services-3d-cube">
+        <Interactive3DElement />
+      </div>
 
       {/* Title */}
       <div style={{ textAlign: "center", marginBottom: "60px" }}>
@@ -444,6 +446,9 @@ if (typeof document !== 'undefined' && !document.getElementById('services-keyfra
       .services-section li {
         font-size: 13px !important;
         padding: 10px 16px !important;
+      }
+      .services-3d-cube {
+        display: none !important;
       }
     }
     @media (max-width: 480px) {
