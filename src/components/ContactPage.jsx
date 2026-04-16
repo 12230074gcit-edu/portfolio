@@ -185,7 +185,10 @@ export default function ContactPage() {
     });
 
     try {
-      const response = await fetch('/api/contact', {
+      // Use environment variable for backend URL, fallback to localhost for development
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+      
+      const response = await fetch(`${backendUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
