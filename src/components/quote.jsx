@@ -344,17 +344,8 @@ export const QuoteSection = () => {
             font-size: clamp(24px, 7vw, 36px) !important;
             line-height: 1.5 !important;
           }
-          .quote-cube {
-            width: 80px !important;
-            height: 80px !important;
-            top: 5% !important;
-            left: 5% !important;
-          }
-          .quote-chess {
-            width: 70px !important;
-            height: 70px !important;
-            top: 10% !important;
-            right: 5% !important;
+          .quote-cube, .quote-chess {
+            display: none !important;
           }
           .quote-dots {
             display: none !important;
@@ -363,9 +354,6 @@ export const QuoteSection = () => {
         @media (max-width: 480px) {
           .quote-section h2 {
             font-size: 22px !important;
-          }
-          .quote-cube, .quote-chess {
-            display: none !important;
           }
         }
       `}</style>
