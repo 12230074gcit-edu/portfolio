@@ -7,20 +7,48 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:5000',
+  'http://127.0.0.1:5000',
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || process.env.FRONTEND_URL === '*') {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS policy does not allow access from origin ${origin}`));
+    }
+  },
   methods: ['GET', 'POST'],
-  credentials: true
+  credentials: true,
 }));
 app.use(express.json());
 
-// Create nodemailer transporter
+// Create nodemailer transporter using secure SMTP settings for Gmail
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: Number(process.env.SMTP_PORT || 465),
+  secure: process.env.SMTP_SECURE !== 'false',
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+// Verify transporter on startup so runtime issues are easier to diagnose
+transporter.verify((verifyError, success) => {
+  if (verifyError) {
+    console.error('Nodemailer transporter verification failed:', verifyError);
+  } else {
+    console.log('Nodemailer transporter verified successfully');
+  }
 });
 
 // Health check endpoint

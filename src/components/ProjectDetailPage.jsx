@@ -508,7 +508,7 @@ export default function ProjectDetailPage() {
           ref={taglineRef}
           style={{
             fontSize: 'clamp(40px, 5.5vw, 72px)',
-            fontWeight: 400,
+            fontWeight: 700,
             fontStyle: 'italic',
             fontFamily: "'Georgia', 'Times New Roman', serif",
             lineHeight: 1.15,
