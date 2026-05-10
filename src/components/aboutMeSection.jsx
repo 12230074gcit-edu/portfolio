@@ -73,15 +73,6 @@ const AboutMe = () => {
           start: "top 80%",
         },
       });
-
-      // Gentle floating animation
-      gsap.to(avatarRef.current, {
-        y: -12,
-        repeat: -1,
-        yoyo: true,
-        duration: 3,
-        ease: "sine.inOut",
-      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -163,7 +154,6 @@ const AboutMe = () => {
         position: "relative",
         zIndex: 5,
         fontFamily: "'Montserrat', sans-serif",
-        overflow: "visible",
       }}
     >
       {/* Background glow */}
@@ -190,7 +180,6 @@ const AboutMe = () => {
           alignItems: "center",
           justifyContent: "space-between",
           gap: "80px",
-          overflow: "visible",
         }}
       >
         {/* Left - Avatar */}
@@ -203,9 +192,7 @@ const AboutMe = () => {
             width: "45%",
             display: "flex",
             justifyContent: "center",
-            overflow: "visible",
-            paddingTop: "20px",
-            paddingBottom: "20px",
+            alignItems: "center",
           }}
         >
           {/* Glow behind avatar */}
@@ -229,14 +216,16 @@ const AboutMe = () => {
             src="/me.png"
             alt="Jigme Namgyel"
             width={450}
-            height={550}
+            height={450}
             loading="lazy"
             decoding="async"
             style={{
               width: "100%",
               maxWidth: "450px",
-              height: "auto",
-              objectFit: "contain",
+              aspectRatio: "1 / 1",
+              objectFit: "cover",
+              objectPosition: "center top",
+              borderRadius: "50%",
               position: "relative",
               zIndex: 2,
               filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.4))",
