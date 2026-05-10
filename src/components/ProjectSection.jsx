@@ -253,24 +253,57 @@ export default function ProjectsSection() {
       </div>
 
       {/* Section title */}
-      <h2
+      <div
         ref={titleRef}
         style={{
           textAlign: "center",
           paddingTop: "50px",
-          color: "white",
-          fontSize: "clamp(24px, 4vw, 32px)",
-          fontWeight: 700,
-          fontFamily: "'Montserrat', sans-serif",
-          letterSpacing: "2px",
-          textTransform: "uppercase",
-          textShadow: "0 0 30px rgba(255,255,255,0.2)",
           position: "relative",
           zIndex: 2,
         }}
       >
-        Projects
-      </h2>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.6)",
+            fontSize: "clamp(12px, 2vw, 14px)",
+            fontWeight: 500,
+            fontFamily: "'Montserrat', sans-serif",
+            letterSpacing: "3px",
+            textTransform: "uppercase",
+            marginBottom: "12px",
+          }}
+        >
+          Selected Work
+        </p>
+        <h2
+          style={{
+            color: "white",
+            fontSize: "clamp(28px, 5vw, 42px)",
+            fontWeight: 700,
+            fontFamily: "'Montserrat', sans-serif",
+            letterSpacing: "1px",
+            textShadow: "0 0 30px rgba(255,255,255,0.2)",
+            margin: 0,
+            lineHeight: 1.2,
+          }}
+        >
+          Explore My Projects
+        </h2>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.5)",
+            fontSize: "clamp(14px, 2vw, 16px)",
+            fontWeight: 400,
+            fontFamily: "'Montserrat', sans-serif",
+            marginTop: "16px",
+            maxWidth: "500px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          Scroll through to discover what I&apos;ve been building
+        </p>
+      </div>
 
       {/* Cards container */}
       <div
