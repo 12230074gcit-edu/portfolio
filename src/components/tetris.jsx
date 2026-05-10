@@ -174,7 +174,7 @@ export const TetrisCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
-  const [showControls, setShowControls] = useState(false);
+  const [controlsOpacity, setControlsOpacity] = useState(1);
 
   const gridRef = useRef(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
   const activePieceRef = useRef(null);
@@ -235,6 +235,14 @@ export const TetrisCanvas = () => {
       setTime(prev => prev + 1);
     }, 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Auto-fade controls after 5 seconds
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => {
+      setControlsOpacity(0.15);
+    }, 5000);
+    return () => clearTimeout(fadeTimer);
   }, []);
 
   const spawnPiece = useCallback(() => {
@@ -547,19 +555,19 @@ export const TetrisCanvas = () => {
     return null;
   }
 
-  // Keyboard key style
+  // Keyboard key style - compact for side panel
   const kbdStyle = {
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: '32px',
-    height: '32px',
-    padding: '4px 8px',
-    background: 'rgba(255,255,255,0.15)',
-    borderRadius: '6px',
-    border: '1px solid rgba(255,255,255,0.3)',
-    fontSize: '14px',
-    fontWeight: 600,
+    minWidth: '26px',
+    height: '26px',
+    padding: '2px 6px',
+    background: 'rgba(255,255,255,0.1)',
+    borderRadius: '4px',
+    border: '1px solid rgba(255,255,255,0.2)',
+    fontSize: '12px',
+    fontWeight: 500,
   };
 
   return (
@@ -576,109 +584,55 @@ export const TetrisCanvas = () => {
         }} />
       )}
 
-      {/* Controls Guide Button */}
-      <button
-        onClick={() => setShowControls(!showControls)}
+      {/* Controls Guide - Side Panel with auto-fade */}
+      <div 
         style={{
           position: 'absolute',
-          top: '30px',
-          right: '30px',
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          border: '1px solid rgba(255,255,255,0.3)',
-          background: 'rgba(255,255,255,0.1)',
+          left: '30px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          padding: '16px 20px',
+          background: 'rgba(8,12,114,0.6)',
           backdropFilter: 'blur(10px)',
-          color: 'white',
-          fontSize: '18px',
-          fontWeight: 600,
-          cursor: 'pointer',
-          zIndex: 15,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'all 0.3s ease',
-          pointerEvents: 'auto',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
-          e.currentTarget.style.transform = 'scale(1.1)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
-          e.currentTarget.style.transform = 'scale(1)';
-        }}
-        title="Game Controls"
-      >
-        ?
-      </button>
-
-      {/* Controls Guide Panel */}
-      {showControls && (
-        <div style={{
-          position: 'absolute',
-          top: '80px',
-          right: '30px',
-          padding: '20px',
-          background: 'rgba(8,12,114,0.95)',
-          backdropFilter: 'blur(20px)',
-          borderRadius: '16px',
-          border: '1px solid rgba(255,255,255,0.2)',
+          borderRadius: '12px',
+          border: '1px solid rgba(255,255,255,0.15)',
           color: 'white',
           fontFamily: "'Montserrat', sans-serif",
-          fontSize: '14px',
-          zIndex: 15,
-          boxShadow: '0 10px 40px rgba(0,0,0,0.4)',
-          animation: 'fadeIn 0.2s ease-out',
+          fontSize: '12px',
+          zIndex: 10,
           pointerEvents: 'auto',
+          opacity: controlsOpacity,
+          transition: 'opacity 0.5s ease-out',
+          cursor: 'default',
+        }}
+        onMouseEnter={() => setControlsOpacity(1)}
+        onMouseLeave={() => setControlsOpacity(0.15)}
+      >
+        <div style={{ 
+          marginBottom: '12px', 
+          fontSize: '10px', 
+          fontWeight: 600,
+          letterSpacing: '2px',
+          opacity: 0.6,
         }}>
-          <h3 style={{ 
-            margin: '0 0 16px 0', 
-            fontSize: '16px', 
-            fontWeight: 600,
-            letterSpacing: '1px',
-          }}>
-            CONTROLS
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <kbd style={kbdStyle}>←</kbd>
-              <span style={{ opacity: 0.8 }}>Move Left</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <kbd style={kbdStyle}>→</kbd>
-              <span style={{ opacity: 0.8 }}>Move Right</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <kbd style={kbdStyle}>↓</kbd>
-              <span style={{ opacity: 0.8 }}>Move Down</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <kbd style={kbdStyle}>↑</kbd>
-              <span style={{ opacity: 0.8 }}>Rotate</span>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowControls(false)}
-            style={{
-              marginTop: '16px',
-              padding: '8px 16px',
-              background: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: '8px',
-              color: 'white',
-              cursor: 'pointer',
-              fontSize: '12px',
-              width: '100%',
-              transition: 'all 0.2s ease',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
-          >
-            Got it!
-          </button>
+          CONTROLS
         </div>
-      )}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <kbd style={kbdStyle}>←</kbd>
+            <kbd style={kbdStyle}>→</kbd>
+            <span style={{ opacity: 0.7, fontSize: '11px' }}>Move</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <kbd style={kbdStyle}>↓</kbd>
+            <span style={{ opacity: 0.7, fontSize: '11px' }}>Drop</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <kbd style={kbdStyle}>↑</kbd>
+            <span style={{ opacity: 0.7, fontSize: '11px' }}>Rotate</span>
+          </div>
+        </div>
+      </div>
 
       {/* HUD */}
       <div style={{
