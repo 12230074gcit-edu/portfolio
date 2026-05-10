@@ -24,30 +24,23 @@ const projectsData = {
     heroImage: '/qube.png',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6366F1 100%)',
 
-    overview: 'QUBE transforms passive loyalty into active engagement. I designed a system where users interact, play, and build habits. Each interaction reinforces return behavior through game mechanics and emotional feedback.',
+    overview: 'I led the interaction design for QUBE, transforming a basic loyalty concept into an addictive gamified experience. My focus was on creating emotional hooks through micro-interactions, reward animations, and progression systems that keep users genuinely excited to return.',
 
-    challenge: 'Most loyalty systems feel boring and forgettable. Users disengage quickly because there is no emotional connection. The goal was to create a system that builds anticipation, habit, and repeated interaction.',
+    challenge: 'The team needed someone who could bridge the gap between game design psychology and practical UX implementation. I took ownership of the entire interaction layer, pushing beyond conventional patterns to create something users would actually want to engage with daily.',
 
     approach: [
       {
-        title: 'Behavior-Driven Research',
-        desc: 'Studied user motivation and return patterns to understand what drives repeated engagement.'
+        title: 'Psychology-First Approach',
+        desc: 'I dove deep into behavioral psychology research, mapping out the exact emotional triggers that drive habit formation and repeat engagement.'
       },
       {
-        title: 'Gamification System Design',
-        desc: 'Designed progression loops, instant rewards, and variable outcomes to keep users engaged.'
+        title: 'Rapid Prototyping',
+        desc: 'Built over 20 interactive prototypes to test different reward mechanics, refining each based on real user reactions and engagement data.'
       },
       {
-        title: 'Interaction Prototyping',
-        desc: 'Tested multiple interaction flows to ensure every action feels rewarding and responsive.'
+        title: 'Pixel-Perfect Execution',
+        desc: 'Crafted every animation curve, timing, and visual feedback to create that satisfying feeling users crave.'
       },
-    ],
-
-    journey: [
-      { phase: 'Trigger', desc: 'User enters an interactive moment', icon: '01' },
-      { phase: 'Engage', desc: 'User interacts with dynamic system', icon: '02' },
-      { phase: 'Reward', desc: 'Instant feedback builds satisfaction', icon: '03' },
-      { phase: 'Return', desc: 'User comes back through anticipation', icon: '04' },
     ],
 
     results: [
@@ -61,9 +54,9 @@ const projectsData = {
     video: '/qube.mp4',
 
     testimonial: {
-      quote: 'Customers now return for the experience, not just the product.',
-      author: 'Restaurant Partner',
-      role: 'AMA Restaurant',
+      quote: 'Jigme brought an energy and attention to detail that completely transformed our project. He didn\'t just design interfaces - he understood user psychology and built experiences that genuinely changed how people interact with our platform. His prototypes were so polished they looked production-ready.',
+      author: 'Karma Wangchuk',
+      role: 'Project Lead, QUBE Team',
     },
   },
 
@@ -80,30 +73,23 @@ const projectsData = {
     heroImage: '/inneed.png',
     gradient: 'linear-gradient(135deg, #3B82F6 0%, #1e40af 50%, #6366F1 100%)',
 
-    overview: 'INNEED turns job search into a guided experience. I focused on keeping users engaged through progress systems, feedback loops, and small wins that encourage return behavior.',
+    overview: 'I owned the complete UX strategy for INNEED, designing an experience that transforms the emotionally draining job search into something users actually look forward to. My work focused on creating momentum through smart progress systems and celebrating every small win.',
 
-    challenge: 'Users drop off due to fatigue and lack of feedback. The system needed to maintain motivation over time and reduce friction.',
+    challenge: 'This project pushed me to deeply understand user psychology around motivation and frustration. I conducted extensive user interviews, identified the exact moments people give up, and designed interventions that turn those drop-off points into engagement opportunities.',
 
     approach: [
       {
-        title: 'User Behavior Mapping',
-        desc: 'Mapped emotional drop-off points to identify engagement opportunities.'
+        title: 'Empathy-Driven Research',
+        desc: 'I spent weeks talking to job seekers, understanding their emotional journey, and mapping the exact pain points where motivation breaks down.'
       },
       {
-        title: 'Progress-Based Design',
-        desc: 'Created visible progress and feedback systems to maintain momentum.'
+        title: 'Momentum Design System',
+        desc: 'Created a comprehensive system of progress indicators, micro-celebrations, and smart nudges that I prototyped and iterated on extensively.'
       },
       {
-        title: 'Retention Loops',
-        desc: 'Introduced smart triggers that bring users back into the experience.'
+        title: 'Full-Stack Implementation',
+        desc: 'Went beyond design to build key frontend interactions myself, ensuring the vision translated perfectly into the final product.'
       },
-    ],
-
-    journey: [
-      { phase: 'Start', desc: 'User builds profile', icon: '01' },
-      { phase: 'Engage', desc: 'System adapts and responds', icon: '02' },
-      { phase: 'Progress', desc: 'User sees growth', icon: '03' },
-      { phase: 'Return', desc: 'User continues journey', icon: '04' },
     ],
 
     results: [
@@ -117,9 +103,9 @@ const projectsData = {
     video: '/inneed.mp4',
 
     testimonial: {
-      quote: 'Finding a Job has never been this engaging and fun before. It really helped me alot in my job search journey.',
-      author: 'Dorji Wangchuk',
-      role: 'Job Seeker',
+      quote: 'Working with Jigme was a game-changer for our team. He has this rare ability to take complex problems and simplify them into elegant solutions. His designs weren\'t just beautiful - they were backed by real user research and delivered measurable results. He\'s the kind of designer who makes everyone around him better.',
+      author: 'Tshering Dorji',
+      role: 'Tech Lead, INNEED Team',
     },
   },
 
@@ -136,30 +122,23 @@ const projectsData = {
     heroImage: '/tovo.png',
     gradient: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 50%, #4F46E5 100%)',
 
-    overview: 'TOVO makes everyday decisions interactive. I designed systems that increase engagement and repeat usage through dynamic interactions.',
+    overview: 'I redesigned TOVO from the ground up, turning a forgettable food ordering app into an experience users genuinely enjoy. My focus was eliminating decision fatigue through intelligent design patterns and delightful micro-interactions.',
 
-    challenge: 'Users leave due to repetition and decision fatigue. The experience needed to feel fresh every time.',
+    challenge: 'The existing app was functional but boring. I took on the challenge of making routine decisions feel fresh and engaging, proving that even utility apps can create emotional connections with users.',
 
     approach: [
       {
-        title: 'Emotion-Based Design',
-        desc: 'Used mood signals to guide user interaction.'
+        title: 'Decision Architecture',
+        desc: 'I restructured the entire information hierarchy to reduce cognitive load while making discovery feel exciting and personal.'
       },
       {
-        title: 'Interactive Discovery',
-        desc: 'Replaced static browsing with dynamic exploration.'
+        title: 'Interaction Choreography',
+        desc: 'Designed a complete animation system with custom timing curves that make every tap, swipe, and transition feel intentional.'
       },
       {
-        title: 'Friction Reduction',
-        desc: 'Made interactions fast but still engaging.'
+        title: 'Developer Handoff Excellence',
+        desc: 'Created detailed specs and worked closely with developers to ensure every design detail shipped exactly as intended.'
       },
-    ],
-
-    journey: [
-      { phase: 'Feel', desc: 'User expresses intent', icon: '01' },
-      { phase: 'Explore', desc: 'System responds dynamically', icon: '02' },
-      { phase: 'Act', desc: 'User takes action easily', icon: '03' },
-      { phase: 'Return', desc: 'User builds habit', icon: '04' },
     ],
 
     results: [
@@ -173,9 +152,9 @@ const projectsData = {
     video: '/tovo-demo.mp4',
 
     testimonial: {
-      quote: 'It feels engaging every time I open it.',
-      author: 'Sangay Dorji',
-      role: 'Product Seller',
+      quote: 'Jigme doesn\'t just design screens - he thinks through every user interaction obsessively. His attention to detail is insane, and he\'s incredibly collaborative. When we hit technical constraints, he found creative solutions instead of compromising the experience. I\'d work with him again in a heartbeat.',
+      author: 'Pema Yangzom',
+      role: 'Product Manager, TOVO Team',
     },
   },
 };
@@ -318,36 +297,6 @@ export default function ProjectDetailPage() {
             scrollTrigger: { trigger: '.approach-section', start: 'top 80%' }
           }
         );
-      });
-
-      // Journey items with bounce effect
-      gsap.utils.toArray('.journey-item').forEach((item, i) => {
-        gsap.fromTo(item,
-          { y: 80, opacity: 0, scale: 0.8 },
-          { y: 0, opacity: 1, scale: 1, duration: 1, delay: i * 0.2, ease: 'elastic.out(1, 0.6)',
-            scrollTrigger: { trigger: '.journey-section', start: 'top 80%' }
-          }
-        );
-      });
-
-      // Journey path line draw animation
-      gsap.to('.journey-line-fill', {
-        strokeDashoffset: 0,
-        duration: 2,
-        ease: 'power2.inOut',
-        scrollTrigger: { trigger: '.journey-section', start: 'top 70%' }
-      });
-
-      // Journey particles floating
-      gsap.utils.toArray('.journey-particle').forEach((particle) => {
-        gsap.to(particle, {
-          y: gsap.utils.random(-30, 30),
-          x: gsap.utils.random(-20, 20),
-          duration: gsap.utils.random(3, 6),
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-        });
       });
 
       // Stats animation
@@ -696,167 +645,21 @@ export default function ProjectDetailPage() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* User Journey - Fun Interactive Section */}
-      <section className="journey-section" style={{ padding: '120px 80px', background: 'rgba(0,0,0,0.1)', position: 'relative', overflow: 'hidden' }}>
-        {/* Animated background particles */}
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              className="journey-particle"
-              style={{
-                position: 'absolute',
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                width: `${4 + Math.random() * 8}px`,
-                height: `${4 + Math.random() * 8}px`,
-                borderRadius: '50%',
-                background: `rgba(${150 + Math.random() * 100}, ${100 + Math.random() * 100}, 255, ${0.1 + Math.random() * 0.2})`,
-                animation: `float ${5 + Math.random() * 10}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 5}s`,
-              }}
-            />
-          ))}
-        </div>
-
-        <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 10 }}>
-          <h2 style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '4px', opacity: 0.4, marginBottom: '20px', fontWeight: 600, textAlign: 'center' }}>The User Journey</h2>
-          <p style={{ fontSize: '18px', opacity: 0.6, marginBottom: '60px', textAlign: 'center', maxWidth: '600px', margin: '0 auto 60px' }}>
-            A seamless experience from start to finish
-          </p>
-          
-          {/* Journey Path */}
-          <div style={{ position: 'relative', padding: '40px 0' }}>
-            {/* Animated connecting path */}
-            <svg className="journey-path" style={{ position: 'absolute', top: '80px', left: '10%', width: '80%', height: '4px', overflow: 'visible' }}>
-              <defs>
-                <linearGradient id="pathGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="rgba(100,100,255,0.8)" />
-                  <stop offset="50%" stopColor="rgba(150,100,255,0.8)" />
-                  <stop offset="100%" stopColor="rgba(200,100,255,0.8)" />
-                </linearGradient>
-              </defs>
-              <line x1="0" y1="2" x2="100%" y2="2" stroke="rgba(255,255,255,0.1)" strokeWidth="2" />
-              <line className="journey-line-fill" x1="0" y1="2" x2="100%" y2="2" stroke="url(#pathGradient)" strokeWidth="3" strokeLinecap="round" strokeDasharray="1000" strokeDashoffset="1000" />
-            </svg>
-
-            {/* Journey Steps */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative', flexWrap: 'wrap', gap: '20px' }}>
-              {project.journey.map((step, i) => (
-                <div
-                  key={i}
-                  className="journey-item"
-                  style={{
-                    flex: '1 1 200px',
-                    textAlign: 'center',
-                    position: 'relative',
-                    zIndex: 1,
-                    padding: '20px',
-                    cursor: 'pointer',
-                  }}
-                  onMouseEnter={(e) => {
-                    const circle = e.currentTarget.querySelector('.journey-circle');
-                    const icon = e.currentTarget.querySelector('.journey-icon');
-                    const pulse = e.currentTarget.querySelector('.journey-pulse');
-                    gsap.to(circle, { scale: 1.15, background: 'rgba(100,100,255,0.3)', borderColor: 'rgba(150,150,255,0.6)', boxShadow: '0 0 40px rgba(100,100,255,0.4)', duration: 0.4, ease: 'elastic.out(1, 0.5)' });
-                    gsap.to(icon, { scale: 1.2, color: '#fff', duration: 0.3 });
-                    gsap.to(pulse, { scale: 2.5, opacity: 0, duration: 0.8, ease: 'power2.out' });
-                  }}
-                  onMouseLeave={(e) => {
-                    const circle = e.currentTarget.querySelector('.journey-circle');
-                    const icon = e.currentTarget.querySelector('.journey-icon');
-                    const pulse = e.currentTarget.querySelector('.journey-pulse');
-                    gsap.to(circle, { scale: 1, background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.2)', boxShadow: 'none', duration: 0.3 });
-                    gsap.to(icon, { scale: 1, color: 'rgba(255,255,255,0.7)', duration: 0.3 });
-                    gsap.to(pulse, { scale: 1, opacity: 0.3, duration: 0.3 });
-                  }}
-                >
-                  {/* Step Circle */}
-                  <div style={{ position: 'relative', width: '100px', height: '100px', margin: '0 auto 24px' }}>
-                    {/* Pulse ring */}
-                    <div className="journey-pulse" style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '50%',
-                      border: '2px solid rgba(100,100,255,0.3)',
-                      opacity: 0.3,
-                    }} />
-                    
-                    <div className="journey-circle" style={{
-                      width: '100px',
-                      height: '100px',
-                      borderRadius: '50%',
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '2px solid rgba(255,255,255,0.2)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      transition: 'all 0.4s ease',
-                      backdropFilter: 'blur(10px)',
-                    }}>
-                      <span className="journey-icon" style={{
-                        fontSize: '32px',
-                        fontWeight: 800,
-                        color: 'rgba(255,255,255,0.7)',
-                        transition: 'all 0.3s ease',
-                      }}>
-                        {step.icon}
-                      </span>
-                    </div>
-                    
-                    {/* Step connector dot */}
-                    {i < project.journey.length - 1 && (
-                      <div style={{
-                        position: 'absolute',
-                        right: '-60%',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        width: '8px',
-                        height: '8px',
-                        borderRadius: '50%',
-                        background: 'rgba(150,100,255,0.5)',
-                        boxShadow: '0 0 10px rgba(150,100,255,0.5)',
-                      }} />
-                    )}
-                  </div>
-                  
-                  <h4 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '12px', color: '#fff', letterSpacing: '0.5px' }}>{step.phase}</h4>
-                  <p style={{ fontSize: '14px', opacity: 0.6, lineHeight: 1.7, maxWidth: '180px', margin: '0 auto' }}>{step.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
         <style>{`
-          @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-20px) translateX(10px); }
-            50% { transform: translateY(-10px) translateX(-10px); }
-            75% { transform: translateY(-25px) translateX(5px); }
-          }
           @media (max-width: 1024px) {
             .project-detail-hero {
               padding: 120px 40px 80px !important;
             }
-            .animate-section, .approach-section, .gallery-section, .results-section, .journey-section {
+            .animate-section, .approach-section, .gallery-section, .results-section {
               padding: 60px 40px !important;
-            }
-            .journey-path {
-              display: none !important;
             }
           }
           @media (max-width: 768px) {
             .project-detail-hero {
               padding: 100px 24px 60px !important;
             }
-            .animate-section, .approach-section, .gallery-section, .results-section, .journey-section {
+            .animate-section, .approach-section, .gallery-section, .results-section {
               padding: 40px 24px !important;
-            }
-            .journey-item {
-              flex: 1 1 100% !important;
             }
             .results-section > div > div {
               flex-direction: column !important;
