@@ -51,7 +51,6 @@ const projectsData = {
     ],
 
     gallery: ['/qube1.png', '/qube2.png', '/qube3.png', '/qube4.png'],
-    video: '/qube.mp4',
 
     testimonial: {
       quote: 'Jigme brought an energy and attention to detail that completely transformed our project. He didn\'t just design interfaces - he understood user psychology and built experiences that genuinely changed how people interact with our platform. His prototypes were so polished they looked production-ready.',
@@ -149,7 +148,6 @@ const projectsData = {
     ],
 
     gallery: ['/tovo1.png', '/tovo2.png', '/tovo3.png', '/tovo4.png'],
-    video: '/tovo-demo.mp4',
 
     testimonial: {
       quote: 'Jigme doesn\'t just design screens - he thinks through every user interaction obsessively. His attention to detail is insane, and he\'s incredibly collaborative. When we hit technical constraints, he found creative solutions instead of compromising the experience. I\'d work with him again in a heartbeat.',
@@ -583,10 +581,13 @@ export default function ProjectDetailPage() {
             >
               <video
                 controls
+                preload="metadata"
+                playsInline
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
+                  background: '#000',
                 }}
               >
                 <source src={project.video} type="video/mp4" />
