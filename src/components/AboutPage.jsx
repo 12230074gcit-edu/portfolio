@@ -702,11 +702,14 @@ export default function AboutPage() {
         >
           <video
             controls
+            playsInline
+            preload="metadata"
             poster="/video-thumbnail.jpg"
             style={{
               width: "100%",
               height: "100%",
-              objectFit: "cover",
+              objectFit: "contain",
+              background: "#000",
             }}
           >
             <source src="/resume.mp4" type="video/mp4" />
