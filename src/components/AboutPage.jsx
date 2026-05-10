@@ -88,22 +88,7 @@ export default function AboutPage() {
         },
       );
 
-      // Floating avatar
-      gsap.to(avatarRef.current, {
-        y: -15,
-        repeat: -1,
-        yoyo: true,
-        duration: 3,
-        ease: "sine.inOut",
-      });
-      // Image floating (separate from circle)
-      gsap.to(imgRef.current, {
-        y: -25,
-        repeat: -1,
-        yoyo: true,
-        duration: 2.5,
-        ease: "sine.inOut",
-      });
+
       // Stats animation
       gsap.fromTo(
         ".stat-box",

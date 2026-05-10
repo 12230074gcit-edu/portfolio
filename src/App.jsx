@@ -318,11 +318,6 @@ function HomePage() {
       <Suspense fallback={<SectionFallback height="300px" />}>
         <Footer />
       </Suspense>
-
-      {/* Ambient Music Player - lazy loaded */}
-      <Suspense fallback={null}>
-        <MusicPlayer />
-      </Suspense>
     </div>
   );
 }
@@ -344,6 +339,11 @@ function AppContent() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/project/:projectId" element={<ProjectDetailPage />} />
         </Routes>
+      </Suspense>
+      
+      {/* Ambient Music Player - persists across all pages */}
+      <Suspense fallback={null}>
+        <MusicPlayer />
       </Suspense>
     </main>
   );
