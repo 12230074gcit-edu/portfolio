@@ -593,6 +593,59 @@ export default function ProjectDetailPage() {
             Click to view gallery
           </div>
         </div>
+
+        {/* Video Reel - Right under the hook */}
+        {project.video && (
+          <div style={{ marginTop: '60px', width: '100%', maxWidth: '1100px' }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '12px', 
+              marginBottom: '24px' 
+            }}>
+              <div style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: '#ff4444',
+                animation: 'pulse-dot 2s ease-in-out infinite',
+              }} />
+              <span style={{ 
+                fontSize: '13px', 
+                textTransform: 'uppercase', 
+                letterSpacing: '3px', 
+                opacity: 0.7,
+                fontWeight: 600,
+              }}>
+                Watch the Story Unfold
+              </span>
+            </div>
+            <div
+              style={{
+                width: '100%',
+                aspectRatio: '16/9',
+                borderRadius: '20px',
+                background: 'rgba(0,0,0,0.4)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                overflow: 'hidden',
+                position: 'relative',
+                boxShadow: '0 40px 100px rgba(0,0,0,0.5)',
+              }}
+            >
+              <video
+                controls
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              >
+                <source src={project.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Overview */}
@@ -809,6 +862,10 @@ export default function ProjectDetailPage() {
               flex-direction: column !important;
             }
           }
+          @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+          }
         `}</style>
       </section>
 
@@ -856,48 +913,6 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </section>
-
-      {/* Video Reel Section */}
-      {project.video && (
-        <section className="animate-section video-reel-section" style={{ padding: '100px 80px' }}>
-          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-            <h2 style={{ 
-              fontSize: '11px', 
-              textTransform: 'uppercase', 
-              letterSpacing: '4px', 
-              opacity: 0.4, 
-              marginBottom: '40px', 
-              fontWeight: 600 
-            }}>
-              Project Reel
-            </h2>
-            <div
-              style={{
-                width: '100%',
-                aspectRatio: '16/9',
-                borderRadius: '20px',
-                background: 'rgba(0,0,0,0.3)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                overflow: 'hidden',
-                position: 'relative',
-                boxShadow: '0 40px 80px rgba(0,0,0,0.4)',
-              }}
-            >
-              <video
-                controls
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              >
-                <source src={project.video} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Results */}
       <section className="results-section" style={{ padding: '100px 80px', background: 'rgba(0,0,0,0.15)' }}>

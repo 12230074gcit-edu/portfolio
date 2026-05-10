@@ -134,6 +134,20 @@ export default function ContactSection() {
       />
 
       <div style={{ position: "relative", zIndex: 10 }}>
+        {/* Eyebrow text */}
+        <p
+          style={{
+            fontSize: "12px",
+            textTransform: "uppercase",
+            letterSpacing: "4px",
+            opacity: 0.5,
+            marginBottom: "16px",
+            fontWeight: 500,
+          }}
+        >
+          Ready to Build Something Amazing?
+        </p>
+
         {/* Main title */}
         <h1
           ref={titleRef}
@@ -146,24 +160,37 @@ export default function ContactSection() {
             textShadow: "0 0 60px rgba(255,255,255,0.2)",
           }}
         >
-          Let&apos;s Join
+          Your Vision,
           <br />
-          Forces
+          My Craft
         </h1>
 
         {/* Subtitle */}
         <p
           ref={subtitleRef}
           style={{
-            opacity: 0.6,
-            fontSize: "clamp(14px, 2vw, 18px)",
-            maxWidth: "500px",
+            opacity: 0.7,
+            fontSize: "clamp(15px, 2vw, 19px)",
+            maxWidth: "520px",
+            margin: "0 auto 20px",
+            lineHeight: 1.7,
+          }}
+        >
+          Got a project that deserves more than ordinary? I turn bold ideas into 
+          pixel-perfect realities that users actually love.
+        </p>
+
+        {/* Value proposition */}
+        <p
+          style={{
+            opacity: 0.5,
+            fontSize: "13px",
+            maxWidth: "400px",
             margin: "0 auto 40px",
             lineHeight: 1.6,
           }}
         >
-          As long as there&apos;s room to turn things up a notch, we&apos;re in.
-          Let&apos;s create something extraordinary together.
+          No fluff. No endless meetings. Just results that speak for themselves.
         </p>
 
         {/* Contact button - THIS IS THE TARGET FOR HANDS */}
@@ -174,19 +201,20 @@ export default function ContactSection() {
           onMouseLeave={handleLeave}
           onClick={handleClick}
           style={{
-            padding: "18px 40px",
-            borderRadius: "16px",
+            padding: "20px 48px",
+            borderRadius: "50px",
             border: "none",
-            background: "#fff",
+            background: "linear-gradient(135deg, #fff 0%, #f0f0f0 100%)",
             color: "#080C72",
             fontWeight: 700,
-            fontSize: "16px",
+            fontSize: "15px",
             fontFamily: "'Montserrat', sans-serif",
             cursor: "pointer",
             boxShadow: "0 8px 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1)",
-            letterSpacing: "1px",
+            letterSpacing: "1.5px",
             position: "relative",
             overflow: "hidden",
+            textTransform: "uppercase",
           }}
         >
           {/* Shimmer effect */}
@@ -194,14 +222,26 @@ export default function ContactSection() {
             style={{
               position: "absolute",
               inset: 0,
-              background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.4) 50%, transparent 70%)",
+              background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)",
               backgroundSize: "200% 100%",
               animation: "shimmer 3s infinite",
               pointerEvents: "none",
             }}
           />
-          <span style={{ position: "relative", zIndex: 1 }}>Contact Me</span>
+          <span style={{ position: "relative", zIndex: 1 }}>Start a Conversation</span>
         </button>
+
+        {/* Trust indicator */}
+        <p
+          style={{
+            opacity: 0.4,
+            fontSize: "11px",
+            marginTop: "24px",
+            letterSpacing: "1px",
+          }}
+        >
+          Typically respond within 24 hours
+        </p>
       </div>
 
       {/* Decorative elements */}
