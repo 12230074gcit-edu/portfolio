@@ -134,20 +134,6 @@ export default function ContactSection() {
       />
 
       <div style={{ position: "relative", zIndex: 10 }}>
-        {/* Eyebrow text */}
-        <p
-          style={{
-            fontSize: "12px",
-            textTransform: "uppercase",
-            letterSpacing: "4px",
-            opacity: 0.5,
-            marginBottom: "16px",
-            fontWeight: 500,
-          }}
-        >
-          Ready to Build Something Amazing?
-        </p>
-
         {/* Main title */}
         <h1
           ref={titleRef}
@@ -160,37 +146,21 @@ export default function ContactSection() {
             textShadow: "0 0 60px rgba(255,255,255,0.2)",
           }}
         >
-          Your Vision,
-          <br />
-          My Craft
+          Let&apos;s Work Together
         </h1>
 
         {/* Subtitle */}
         <p
           ref={subtitleRef}
           style={{
-            opacity: 0.7,
-            fontSize: "clamp(15px, 2vw, 19px)",
-            maxWidth: "520px",
-            margin: "0 auto 20px",
-            lineHeight: 1.7,
-          }}
-        >
-          Got a project that deserves more than ordinary? I turn bold ideas into 
-          pixel-perfect realities that users actually love.
-        </p>
-
-        {/* Value proposition */}
-        <p
-          style={{
-            opacity: 0.5,
-            fontSize: "13px",
+            opacity: 0.6,
+            fontSize: "clamp(15px, 2vw, 18px)",
             maxWidth: "400px",
             margin: "0 auto 40px",
             lineHeight: 1.6,
           }}
         >
-          No fluff. No endless meetings. Just results that speak for themselves.
+          Have a project in mind? I&apos;d love to hear about it.
         </p>
 
         {/* Contact button - THIS IS THE TARGET FOR HANDS */}
