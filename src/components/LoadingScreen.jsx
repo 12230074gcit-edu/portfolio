@@ -144,56 +144,50 @@ export default function LoadingScreen({ onComplete }) {
         });
       });
 
-      // Progress animation (simulated loading)
+      // Progress animation (faster loading - reduced from ~2.3s to ~1s)
       const progressTl = gsap.timeline();
       progressTl.to(progressRef.current, {
-        scaleX: 0.3,
-        duration: 0.5,
+        scaleX: 0.4,
+        duration: 0.2,
         ease: 'power1.out',
         onUpdate: () => setProgress(Math.round(gsap.getProperty(progressRef.current, 'scaleX') * 100))
       });
       progressTl.to(progressRef.current, {
-        scaleX: 0.6,
-        duration: 0.8,
-        ease: 'power1.out',
-        onUpdate: () => setProgress(Math.round(gsap.getProperty(progressRef.current, 'scaleX') * 100))
-      });
-      progressTl.to(progressRef.current, {
-        scaleX: 0.85,
-        duration: 0.6,
+        scaleX: 0.75,
+        duration: 0.3,
         ease: 'power1.out',
         onUpdate: () => setProgress(Math.round(gsap.getProperty(progressRef.current, 'scaleX') * 100))
       });
       progressTl.to(progressRef.current, {
         scaleX: 1,
-        duration: 0.4,
+        duration: 0.2,
         ease: 'power2.out',
         onUpdate: () => setProgress(Math.round(gsap.getProperty(progressRef.current, 'scaleX') * 100))
       });
 
-      // Exit animation
+      // Exit animation (faster)
       progressTl.to(logoRef.current, {
-        scale: 1.5,
+        scale: 1.3,
         opacity: 0,
-        duration: 0.5,
+        duration: 0.25,
         ease: 'power2.in'
-      }, '+=0.3');
+      }, '+=0.1');
 
       progressTl.to([ringRef.current, ring2Ref.current, ring3Ref.current, glowRef.current], {
-        scale: 2,
+        scale: 1.5,
         opacity: 0,
-        duration: 0.5,
+        duration: 0.25,
         ease: 'power2.in'
-      }, '-=0.4');
+      }, '-=0.2');
 
       progressTl.to(containerRef.current, {
         opacity: 0,
-        duration: 0.5,
+        duration: 0.25,
         ease: 'power2.in',
         onComplete: () => {
           if (onComplete) onComplete();
         }
-      }, '-=0.2');
+      }, '-=0.15');
     });
 
     return () => ctx.revert();
@@ -318,6 +312,8 @@ export default function LoadingScreen({ onComplete }) {
         <img
           src="/logo.svg"
           alt="Logo"
+          width={100}
+          height={100}
           style={{
             width: '100%',
             height: '100%',

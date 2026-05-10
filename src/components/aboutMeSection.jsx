@@ -223,9 +223,14 @@ const AboutMe = () => {
             ref={avatarRef}
             src="/me.png"
             alt="Jigme Namgyel"
+            width={450}
+            height={450}
+            loading="lazy"
+            decoding="async"
             style={{
               width: "100%",
               maxWidth: "450px",
+              aspectRatio: "1 / 1",
               position: "relative",
               zIndex: 2,
               filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.4))",

@@ -1,6 +1,34 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { gsap } from 'gsap';
 import { trackEvents } from '../utils/analytics';
+
+// Memoized bubble creation function for better performance
+const createBubbleConfig = (id) => {
+  // Varied sizes - small, medium, large
+  const sizeCategory = Math.random();
+  let size;
+  if (sizeCategory < 0.5) {
+    size = 12 + Math.random() * 10; // Small: 12-22px
+  } else if (sizeCategory < 0.85) {
+    size = 22 + Math.random() * 15; // Medium: 22-37px
+  } else {
+    size = 37 + Math.random() * 18; // Large: 37-55px
+  }
+
+  return {
+    id,
+    x: 5 + Math.random() * 90,
+    y: 60 + Math.random() * 35, // Start from bottom portion
+    size,
+    opacity: 0.08 + Math.random() * 0.12,
+    speedX: (Math.random() - 0.5) * 0.08,
+    speedY: -0.03 - Math.random() * 0.06,
+    wobbleSpeed: 0.01 + Math.random() * 0.015,
+    wobbleAmount: 0.02 + Math.random() * 0.03,
+    wobble: Math.random() * Math.PI * 2,
+    popped: false,
+  };
+};
 
 export default function Bubbles() {
   const containerRef = useRef(null);
@@ -41,79 +69,67 @@ export default function Bubbles() {
     }
   }, []);
 
-  // Generate initial bubbles with varied sizes
-  useEffect(() => {
-    const initialBubbles = [];
-    const count = 12;
-
-    for (let i = 0; i < count; i++) {
-      initialBubbles.push(createBubble(i));
-    }
-
-    setBubbles(initialBubbles);
+  // Memoized initial bubbles - reduced count for better performance
+  const initialBubbles = useMemo(() => {
+    const count = 8; // Reduced from 12 to 8 for better performance
+    return Array.from({ length: count }, (_, i) => createBubbleConfig(i));
   }, []);
 
-  const createBubble = (id) => {
-    // Varied sizes - small, medium, large
-    const sizeCategory = Math.random();
-    let size;
-    if (sizeCategory < 0.5) {
-      size = 12 + Math.random() * 10; // Small: 12-22px
-    } else if (sizeCategory < 0.85) {
-      size = 22 + Math.random() * 15; // Medium: 22-37px
-    } else {
-      size = 37 + Math.random() * 18; // Large: 37-55px
-    }
+  // Generate initial bubbles with varied sizes
+  useEffect(() => {
+    setBubbles(initialBubbles);
+  }, [initialBubbles]);
 
-    return {
-      id,
-      x: 5 + Math.random() * 90,
-      y: 60 + Math.random() * 35, // Start from bottom portion
-      size,
-      opacity: 0.08 + Math.random() * 0.12,
-      speedX: (Math.random() - 0.5) * 0.08,
-      speedY: -0.03 - Math.random() * 0.06,
-      wobbleSpeed: 0.01 + Math.random() * 0.015,
-      wobbleAmount: 0.02 + Math.random() * 0.03,
-      wobble: Math.random() * Math.PI * 2,
-      popped: false,
-    };
-  };
-
-  // Animate bubbles floating with realistic gentle wobble
+  // Animate bubbles using requestAnimationFrame for smoother, more efficient animation
   useEffect(() => {
     if (bubbles.length === 0) return;
 
-    const interval = setInterval(() => {
-      setBubbles(prev => 
-        prev.map(bubble => {
-          if (bubble.popped) return bubble;
+    let animationFrameId;
+    let lastTime = 0;
+    const targetInterval = 60; // ~16fps instead of 20fps (50ms) - saves CPU while still smooth
 
-          let newX = bubble.x + bubble.speedX + Math.sin(bubble.wobble) * bubble.wobbleAmount;
-          let newY = bubble.y + bubble.speedY;
-          let newWobble = bubble.wobble + bubble.wobbleSpeed;
+    const animate = (currentTime) => {
+      if (currentTime - lastTime >= targetInterval) {
+        lastTime = currentTime;
+        
+        setBubbles(prev => 
+          prev.map(bubble => {
+            if (bubble.popped) return bubble;
 
-          // Soft boundary bounce
-          if (newX < 3) {
-            newX = 3;
-            bubble.speedX = Math.abs(bubble.speedX) * 0.5;
-          }
-          if (newX > 97) {
-            newX = 97;
-            bubble.speedX = -Math.abs(bubble.speedX) * 0.5;
-          }
-          
-          // Reset when reaching top
-          if (newY < 5) {
-            return createBubble(bubble.id);
-          }
+            let newX = bubble.x + bubble.speedX + Math.sin(bubble.wobble) * bubble.wobbleAmount;
+            let newY = bubble.y + bubble.speedY;
+            let newWobble = bubble.wobble + bubble.wobbleSpeed;
 
-          return { ...bubble, x: newX, y: newY, wobble: newWobble };
-        })
-      );
-    }, 50);
+            // Soft boundary bounce
+            if (newX < 3) {
+              newX = 3;
+              bubble.speedX = Math.abs(bubble.speedX) * 0.5;
+            }
+            if (newX > 97) {
+              newX = 97;
+              bubble.speedX = -Math.abs(bubble.speedX) * 0.5;
+            }
+            
+            // Reset when reaching top
+            if (newY < 5) {
+              return createBubbleConfig(bubble.id);
+            }
 
-    return () => clearInterval(interval);
+            return { ...bubble, x: newX, y: newY, wobble: newWobble };
+          })
+        );
+      }
+      
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [bubbles.length]);
 
   // Regenerate popped bubbles after delay
@@ -125,7 +141,7 @@ export default function Bubbles() {
       setBubbles(prev => 
         prev.map(bubble => {
           if (bubble.popped) {
-            return createBubble(bubble.id);
+            return createBubbleConfig(bubble.id);
           }
           return bubble;
         })
@@ -242,6 +258,8 @@ export default function Bubbles() {
               cursor: 'pointer',
               transform: 'translate(-50%, -50%)',
               transition: 'transform 0.15s ease',
+              willChange: 'transform, opacity',
+              contain: 'layout style paint',
             }}
             onMouseEnter={(e) => {
               gsap.to(e.currentTarget, {

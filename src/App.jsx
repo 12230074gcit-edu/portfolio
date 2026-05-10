@@ -1,23 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import LoadingScreen from './components/LoadingScreen';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Navbar } from './components/navbar';
 import { Hero } from './components/Hero';
-import { TetrisCanvas } from './components/tetris';
-import { QuoteSection } from './components/quote';
-import ProjectsSection from './components/ProjectSection';
-import AboutMe from './components/aboutMeSection';
-import ServicesSection from './components/ServicesSection';
-import ContactSection from './components/Contact';
-import ContactPage from './components/ContactPage';
-import AboutPage from './components/AboutPage';
-import ProjectDetailPage from './components/ProjectDetailPage';
-import Bubbles from './components/Bubbles';
-import Footer from './components/Footer';
-import { FloatingCrystal } from './components/Interactive3D';
-import MusicPlayer from './components/MusicPlayer';
+
+// Lazy load heavy components for better LCP
+const TetrisCanvas = lazy(() => import('./components/tetris').then(m => ({ default: m.TetrisCanvas })));
+const QuoteSection = lazy(() => import('./components/quote').then(m => ({ default: m.QuoteSection })));
+const ProjectsSection = lazy(() => import('./components/ProjectSection'));
+const AboutMe = lazy(() => import('./components/aboutMeSection'));
+const ServicesSection = lazy(() => import('./components/ServicesSection'));
+const ContactSection = lazy(() => import('./components/Contact'));
+const ContactPage = lazy(() => import('./components/ContactPage'));
+const AboutPage = lazy(() => import('./components/AboutPage'));
+const ProjectDetailPage = lazy(() => import('./components/ProjectDetailPage'));
+const Bubbles = lazy(() => import('./components/Bubbles'));
+const Footer = lazy(() => import('./components/Footer'));
+const FloatingCrystal = lazy(() => import('./components/Interactive3D').then(m => ({ default: m.FloatingCrystal })));
+const MusicPlayer = lazy(() => import('./components/MusicPlayer'));
+
+// Minimal loading fallback that reserves space without causing CLS
+const SectionFallback = ({ height = '100vh' }) => (
+  <div style={{ minHeight: height, width: '100%' }} />
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -146,14 +153,16 @@ function HomePage() {
           overflow: 'hidden'
         }}
       >
-        {/* Tetris background (hidden on mobile) */}
+        {/* Tetris background (hidden on mobile) - lazy loaded */}
         <div className="tetris-wrapper" style={{
           position: 'absolute',
           inset: 0,
           zIndex: 1,
           pointerEvents: 'none'
         }}>
-          <TetrisCanvas />
+          <Suspense fallback={null}>
+            <TetrisCanvas />
+          </Suspense>
         </div>
 
         {/* Premium mobile background - shows only on mobile */}
@@ -255,9 +264,11 @@ function HomePage() {
           ))}
         </div>
 
-        {/* 3D Interactive Elements - hidden on mobile */}
+        {/* 3D Interactive Elements - hidden on mobile - lazy loaded */}
         <div className="desktop-3d-element">
-          <FloatingCrystal size={100} position={{ right: '8%', top: '25%' }} />
+          <Suspense fallback={null}>
+            <FloatingCrystal size={100} position={{ right: '8%', top: '25%' }} />
+          </Suspense>
         </div>
 
         {/* Hero content */}
@@ -266,29 +277,45 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Interactive Bubbles - below hero */}
-      <Bubbles />
+      {/* Interactive Bubbles - below hero - lazy loaded */}
+      <Suspense fallback={null}>
+        <Bubbles />
+      </Suspense>
 
-      {/* Quote Section */}
-      <QuoteSection />
+      {/* Quote Section - lazy loaded */}
+      <Suspense fallback={<SectionFallback height="50vh" />}>
+        <QuoteSection />
+      </Suspense>
 
-      {/* Projects Section */}
-      <ProjectsSection />
+      {/* Projects Section - lazy loaded */}
+      <Suspense fallback={<SectionFallback height="100vh" />}>
+        <ProjectsSection />
+      </Suspense>
 
-      {/* About Me Section */}
-      <AboutMe />
+      {/* About Me Section - lazy loaded */}
+      <Suspense fallback={<SectionFallback height="100vh" />}>
+        <AboutMe />
+      </Suspense>
 
-      {/* Services Section */}
-      <ServicesSection />
+      {/* Services Section - lazy loaded */}
+      <Suspense fallback={<SectionFallback height="100vh" />}>
+        <ServicesSection />
+      </Suspense>
 
-      {/* Contact CTA Section */}
-      <ContactSection />
+      {/* Contact CTA Section - lazy loaded */}
+      <Suspense fallback={<SectionFallback height="50vh" />}>
+        <ContactSection />
+      </Suspense>
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer - lazy loaded */}
+      <Suspense fallback={<SectionFallback height="300px" />}>
+        <Footer />
+      </Suspense>
 
-      {/* Ambient Music Player */}
-      <MusicPlayer />
+      {/* Ambient Music Player - lazy loaded */}
+      <Suspense fallback={null}>
+        <MusicPlayer />
+      </Suspense>
     </div>
   );
 }
@@ -303,12 +330,14 @@ function AppContent() {
 
   return (
     <main style={{ fontFamily: "'Montserrat', sans-serif" }}>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/project/:projectId" element={<ProjectDetailPage />} />
-      </Routes>
+      <Suspense fallback={<SectionFallback height="100vh" />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/project/:projectId" element={<ProjectDetailPage />} />
+        </Routes>
+      </Suspense>
     </main>
   );
 }

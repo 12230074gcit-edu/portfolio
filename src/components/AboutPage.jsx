@@ -630,6 +630,9 @@ export default function AboutPage() {
                 ref={imgRef}
                 src="/Me1.png"
                 alt="Jigme Namgyel"
+                width={480}
+                height={480}
+                fetchPriority="high"
                 style={{
                   position: "absolute",
                   bottom: "0",
@@ -640,6 +643,7 @@ export default function AboutPage() {
                   objectFit: "cover",
                   objectPosition: "center 20%",
                   pointerEvents: "none",
+                  aspectRatio: "1 / 1",
                 }}
               />
             </div>

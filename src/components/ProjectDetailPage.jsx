@@ -517,7 +517,10 @@ export default function ProjectDetailPage() {
           <img
             src={project.heroImage}
             alt={project.name}
-            style={{ width: '100%', height: 'auto', display: 'block', minHeight: '450px', objectFit: 'cover' }}
+            width={1100}
+            height={550}
+            fetchPriority="high"
+            style={{ width: '100%', height: 'auto', display: 'block', minHeight: '450px', objectFit: 'cover', aspectRatio: '2 / 1' }}
           />
           <div style={{
             position: 'absolute',

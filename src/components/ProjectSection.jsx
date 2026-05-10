@@ -350,11 +350,16 @@ export default function ProjectsSection() {
                   <img
                     src={project.image}
                     alt={project.name}
+                    width={660}
+                    height={340}
+                    loading="lazy"
+                    decoding="async"
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
                       borderRadius: "16px",
+                      aspectRatio: "660 / 340",
                     }}
                   />
                 </div>

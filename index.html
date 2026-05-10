@@ -27,10 +27,33 @@
     <meta property="twitter:description" content="Crafting engaging digital experiences through user-centered gamification design." />
     <meta property="twitter:image" content="/og-image.png" />
     
-    <!-- Fonts -->
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/logo.svg" as="image" type="image/svg+xml">
+    
+    <!-- Fonts - optimized loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    </noscript>
+    
+    <!-- Font fallback to prevent CLS -->
+    <style>
+      /* Font fallback with adjusted metrics to minimize CLS */
+      @font-face {
+        font-family: 'Montserrat Fallback';
+        src: local('Arial');
+        ascent-override: 85%;
+        descent-override: 22%;
+        line-gap-override: 0%;
+        size-adjust: 112%;
+      }
+      body {
+        font-family: 'Montserrat', 'Montserrat Fallback', sans-serif;
+      }
+    </style>
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#080C72" />
