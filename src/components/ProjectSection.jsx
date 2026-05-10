@@ -421,26 +421,43 @@ export default function ProjectsSection() {
                   </div>
                 </div>
 
-                {/* Click indicator overlay */}
+                {/* Strong CTA Button */}
                 <div
+                  className="project-cta-btn"
                   style={{
                     position: "absolute",
                     bottom: "20px",
                     right: "20px",
-                    padding: "8px 16px",
-                    background: "rgba(8, 12, 114, 0.1)",
-                    borderRadius: "20px",
-                    fontSize: "11px",
-                    fontWeight: 600,
-                    color: "#080C72",
+                    padding: "12px 24px",
+                    background: "linear-gradient(135deg, #080C72 0%, #1a1f8f 50%, #080C72 100%)",
+                    backgroundSize: "200% 200%",
+                    borderRadius: "30px",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    color: "#fff",
                     fontFamily: "'Montserrat', sans-serif",
                     display: "flex",
                     alignItems: "center",
-                    gap: "6px",
+                    gap: "10px",
+                    boxShadow: "0 8px 25px rgba(8, 12, 114, 0.4), 0 4px 10px rgba(0,0,0,0.2)",
+                    transition: "all 0.3s ease",
+                    cursor: "pointer",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-3px) scale(1.05)";
+                    e.currentTarget.style.boxShadow = "0 12px 35px rgba(8, 12, 114, 0.5), 0 6px 15px rgba(0,0,0,0.3)";
+                    e.currentTarget.style.backgroundPosition = "100% 100%";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0) scale(1)";
+                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(8, 12, 114, 0.4), 0 4px 10px rgba(0,0,0,0.2)";
+                    e.currentTarget.style.backgroundPosition = "0% 0%";
                   }}
                 >
-                  Click to view
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  View Project
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                 </div>
