@@ -186,8 +186,7 @@ export default function ContactPage() {
 
     try {
       // Use environment variable for backend URL if configured, otherwise use same-origin relative endpoint.
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
-      const endpoint = backendUrl ? `${backendUrl.replace(/\/$/, '')}/api/contact` : '/api/contact';
+     const endpoint = 'https://portfolio-backend-4pdi.onrender.com/api/contact';
       
       const response = await fetch(endpoint, {
         method: 'POST',
