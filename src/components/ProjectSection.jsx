@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -39,6 +39,7 @@ export default function ProjectsSection() {
   const flipRef = useRef([]);
   const marqueeRef = useRef(null);
   const marqueeRef2 = useRef(null);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -135,6 +136,7 @@ export default function ProjectsSection() {
             opacity: 1,
             duration: 0.8,
             ease: "power2.inOut",
+            onStart: () => setActiveCardIndex(i),
           },
           baseTime + 0.5
         );
@@ -150,6 +152,9 @@ export default function ProjectsSection() {
           baseTime + 0.5
         );
       });
+      
+      // Track when scrolling back to first card
+      tl.eventCallback("onReverseComplete", () => setActiveCardIndex(0));
     }, sectionRef);
 
     return () => ctx.revert();
@@ -327,8 +332,8 @@ export default function ProjectsSection() {
               position: "absolute",
               width: "100%",
               height: "100%",
-              zIndex: 10,
               cursor: "pointer",
+              pointerEvents: i === activeCardIndex ? "auto" : "none",
             }}
           >
             {/* Flip wrapper */}
