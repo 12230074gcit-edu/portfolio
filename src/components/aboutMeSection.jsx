@@ -163,6 +163,7 @@ const AboutMe = () => {
         position: "relative",
         zIndex: 5,
         fontFamily: "'Montserrat', sans-serif",
+        overflow: "visible",
       }}
     >
       {/* Background glow */}
@@ -189,6 +190,7 @@ const AboutMe = () => {
           alignItems: "center",
           justifyContent: "space-between",
           gap: "80px",
+          overflow: "visible",
         }}
       >
         {/* Left - Avatar */}
@@ -201,6 +203,9 @@ const AboutMe = () => {
             width: "45%",
             display: "flex",
             justifyContent: "center",
+            overflow: "visible",
+            paddingTop: "20px",
+            paddingBottom: "20px",
           }}
         >
           {/* Glow behind avatar */}

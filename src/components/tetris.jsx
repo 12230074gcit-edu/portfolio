@@ -174,6 +174,7 @@ export const TetrisCanvas = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
+  const [showControls, setShowControls] = useState(false);
 
   const gridRef = useRef(Array.from({ length: ROWS }, () => Array(COLS).fill(0)));
   const activePieceRef = useRef(null);
@@ -546,6 +547,21 @@ export const TetrisCanvas = () => {
     return null;
   }
 
+  // Keyboard key style
+  const kbdStyle = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: '32px',
+    height: '32px',
+    padding: '4px 8px',
+    background: 'rgba(255,255,255,0.15)',
+    borderRadius: '6px',
+    border: '1px solid rgba(255,255,255,0.3)',
+    fontSize: '14px',
+    fontWeight: 600,
+  };
+
   return (
     <>
       {/* Screen flash effect on line clear */}
@@ -558,6 +574,110 @@ export const TetrisCanvas = () => {
           zIndex: 5,
           animation: 'flashPulse 0.15s ease-out',
         }} />
+      )}
+
+      {/* Controls Guide Button */}
+      <button
+        onClick={() => setShowControls(!showControls)}
+        style={{
+          position: 'absolute',
+          top: '30px',
+          right: '30px',
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          border: '1px solid rgba(255,255,255,0.3)',
+          background: 'rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(10px)',
+          color: 'white',
+          fontSize: '18px',
+          fontWeight: 600,
+          cursor: 'pointer',
+          zIndex: 15,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'all 0.3s ease',
+          pointerEvents: 'auto',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+          e.currentTarget.style.transform = 'scale(1.1)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+          e.currentTarget.style.transform = 'scale(1)';
+        }}
+        title="Game Controls"
+      >
+        ?
+      </button>
+
+      {/* Controls Guide Panel */}
+      {showControls && (
+        <div style={{
+          position: 'absolute',
+          top: '80px',
+          right: '30px',
+          padding: '20px',
+          background: 'rgba(8,12,114,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderRadius: '16px',
+          border: '1px solid rgba(255,255,255,0.2)',
+          color: 'white',
+          fontFamily: "'Montserrat', sans-serif",
+          fontSize: '14px',
+          zIndex: 15,
+          boxShadow: '0 10px 40px rgba(0,0,0,0.4)',
+          animation: 'fadeIn 0.2s ease-out',
+          pointerEvents: 'auto',
+        }}>
+          <h3 style={{ 
+            margin: '0 0 16px 0', 
+            fontSize: '16px', 
+            fontWeight: 600,
+            letterSpacing: '1px',
+          }}>
+            CONTROLS
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <kbd style={kbdStyle}>←</kbd>
+              <span style={{ opacity: 0.8 }}>Move Left</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <kbd style={kbdStyle}>→</kbd>
+              <span style={{ opacity: 0.8 }}>Move Right</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <kbd style={kbdStyle}>↓</kbd>
+              <span style={{ opacity: 0.8 }}>Move Down</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <kbd style={kbdStyle}>↑</kbd>
+              <span style={{ opacity: 0.8 }}>Rotate</span>
+            </div>
+          </div>
+          <button
+            onClick={() => setShowControls(false)}
+            style={{
+              marginTop: '16px',
+              padding: '8px 16px',
+              background: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '8px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '12px',
+              width: '100%',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+          >
+            Got it!
+          </button>
+        </div>
       )}
 
       {/* HUD */}
@@ -585,7 +705,8 @@ export const TetrisCanvas = () => {
         alignItems: 'center',
         justifyContent: 'center',
         pointerEvents: 'none',
-        opacity: 0.85,
+        opacity: gameOver ? 0.3 : 0.85,
+        transition: 'opacity 0.3s ease',
       }}>
         <div style={{
           position: 'relative',
@@ -607,18 +728,25 @@ export const TetrisCanvas = () => {
         </div>
       </div>
 
-      {/* Game Over Overlay */}
+      {/* Game Over Overlay - contained within the tetris area */}
       {gameOver && (
         <div style={{
           position: 'absolute',
-          inset: 0,
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'radial-gradient(circle, rgba(8,12,114,0.95) 0%, rgba(0,0,0,0.9) 100%)',
+          padding: '48px 64px',
+          background: 'radial-gradient(circle, rgba(8,12,114,0.98) 0%, rgba(0,0,0,0.95) 100%)',
+          borderRadius: '24px',
+          border: '1px solid rgba(255,255,255,0.15)',
+          boxShadow: '0 20px 80px rgba(0,0,0,0.6)',
           zIndex: 100,
           animation: 'gameOverFadeIn 0.5s ease-out',
+          pointerEvents: 'auto',
         }}>
           {/* Dramatic glow */}
           <div style={{
@@ -710,12 +838,16 @@ export const TetrisCanvas = () => {
           100% { opacity: 0; transform: scale(1.1); }
         }
         @keyframes gameOverFadeIn {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
+          0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+          100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
         @keyframes gameOverPulse {
           0%, 100% { opacity: 0.5; transform: scale(1); }
           50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        @keyframes fadeIn {
+          0% { opacity: 0; transform: translateY(-10px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </>
