@@ -685,94 +685,33 @@ export default function AboutPage() {
             fontWeight: 600,
           }}
         >
-          Video Showcase
+          Video Introduction
         </h2>
         
         <div
-          className="video-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "40px",
+            width: "100%",
+            aspectRatio: "16/9",
+            borderRadius: "20px",
+            background: "rgba(0,0,0,0.3)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            overflow: "hidden",
+            position: "relative",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
           }}
         >
-          {/* Resume Video */}
-          <div>
-            <h3
-              style={{
-                fontSize: "14px",
-                fontWeight: 600,
-                marginBottom: "16px",
-                opacity: 0.8,
-              }}
-            >
-              Resume Video
-            </h3>
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "16/9",
-                borderRadius: "16px",
-                background: "rgba(0,0,0,0.3)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                overflow: "hidden",
-                position: "relative",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-              }}
-            >
-              <video
-                controls
-                poster="/video-thumbnail.jpg"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              >
-                <source src="/resume.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
-
-          {/* InNeed Project Reel */}
-          <div>
-            <h3
-              style={{
-                fontSize: "14px",
-                fontWeight: 600,
-                marginBottom: "16px",
-                opacity: 0.8,
-              }}
-            >
-              InNeed - Project Reel
-            </h3>
-            <div
-              style={{
-                width: "100%",
-                aspectRatio: "16/9",
-                borderRadius: "16px",
-                background: "rgba(0,0,0,0.3)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                overflow: "hidden",
-                position: "relative",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
-              }}
-            >
-              <video
-                controls
-                poster="/inneed-thumbnail.jpg"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              >
-                <source src="/inneed.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </div>
+          <video
+            controls
+            poster="/video-thumbnail.jpg"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          >
+            <source src="/resume.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </section>
 
@@ -1193,10 +1132,6 @@ export default function AboutPage() {
           }
           .video-section {
             padding: 50px 20px !important;
-          }
-          .video-grid {
-            grid-template-columns: 1fr !important;
-            gap: 30px !important;
           }
         }
       `}</style>

@@ -114,7 +114,7 @@ const projectsData = {
     ],
 
     gallery: ['/inneed.png', '/inneed1.png', '/inneed2.png', '/inneed3.png'],
-    
+    video: '/inneed.mp4',
 
     testimonial: {
       quote: 'Finding a Job has never been this engaging and fun before. It really helped me alot in my job search journey.',
@@ -856,6 +856,48 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </section>
+
+      {/* Video Reel Section */}
+      {project.video && (
+        <section className="animate-section video-reel-section" style={{ padding: '100px 80px' }}>
+          <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+            <h2 style={{ 
+              fontSize: '11px', 
+              textTransform: 'uppercase', 
+              letterSpacing: '4px', 
+              opacity: 0.4, 
+              marginBottom: '40px', 
+              fontWeight: 600 
+            }}>
+              Project Reel
+            </h2>
+            <div
+              style={{
+                width: '100%',
+                aspectRatio: '16/9',
+                borderRadius: '20px',
+                background: 'rgba(0,0,0,0.3)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                overflow: 'hidden',
+                position: 'relative',
+                boxShadow: '0 40px 80px rgba(0,0,0,0.4)',
+              }}
+            >
+              <video
+                controls
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              >
+                <source src={project.video} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Results */}
       <section className="results-section" style={{ padding: '100px 80px', background: 'rgba(0,0,0,0.15)' }}>
