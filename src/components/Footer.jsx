@@ -1,10 +1,13 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const footerRef = useRef(null);
   const linksRef = useRef([]);
   const projectsRef = useRef([]);
@@ -13,13 +16,56 @@ export default function Footer() {
   const lineRef = useRef(null);
 
   const quickLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about-section' },
-    { name: 'Services', href: '#services-section' },
-    { name: 'Projects', href: '#projects-section' },
-    { name: 'Download CV', href: '/12230074_CV.pdf', download: true },
-    { name: 'Resume Video', href: '/about#video-section' },
+    { name: 'Home', href: '/', type: 'route' },
+    { name: 'About', href: '/about', type: 'route' },
+    { name: 'Services', href: '#services-section', type: 'scroll' },
+    { name: 'Projects', href: '#projects-section', type: 'scroll' },
+    { name: 'Download CV', href: '/12230074_CV.pdf', type: 'download' },
+    { name: 'Resume Video', href: '/about', type: 'route', scrollTo: 'video-section' },
   ];
+
+  const handleQuickLinkClick = (e, link) => {
+    e.preventDefault();
+    
+    if (link.type === 'download') {
+      window.open(link.href, '_blank');
+      return;
+    }
+    
+    if (link.type === 'route') {
+      navigate(link.href);
+      if (link.scrollTo) {
+        setTimeout(() => {
+          const element = document.getElementById(link.scrollTo);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+    
+    if (link.type === 'scroll') {
+      // If on home page, scroll to section
+      if (location.pathname === '/') {
+        const element = document.querySelector(link.href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        // Navigate to home and then scroll
+        navigate('/');
+        setTimeout(() => {
+          const element = document.querySelector(link.href);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      }
+    }
+  };
 
   const projects = [
     { name: 'QUBE', href: '#' },
@@ -250,7 +296,7 @@ export default function Footer() {
                 <a
                   ref={(el) => (linksRef.current[i] = el)}
                   href={link.href}
-                  {...(link.download ? { download: true, target: '_blank' } : {})}
+                  onClick={(e) => handleQuickLinkClick(e, link)}
                   onMouseEnter={handleLinkHover}
                   onMouseLeave={handleLinkLeave}
                   style={{

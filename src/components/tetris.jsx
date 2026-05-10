@@ -585,7 +585,7 @@ export const TetrisCanvas = () => {
         alignItems: 'center',
         justifyContent: 'center',
         pointerEvents: 'none',
-        opacity: 0.5,
+        opacity: 0.85,
       }}>
         <div style={{
           position: 'relative',

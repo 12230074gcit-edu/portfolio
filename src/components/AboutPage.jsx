@@ -671,6 +671,7 @@ export default function AboutPage() {
 
       {/* Video Introduction Section */}
       <section
+        id="video-section"
         style={{ padding: "80px 60px", maxWidth: "1200px", margin: "0 auto" }}
       >
         <h2
@@ -690,39 +691,25 @@ export default function AboutPage() {
             width: "100%",
             aspectRatio: "16/9",
             borderRadius: "20px",
-            background: "rgba(255,255,255,0.03)",
+            background: "rgba(0,0,0,0.3)",
             border: "1px solid rgba(255,255,255,0.08)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
             overflow: "hidden",
             position: "relative",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
           }}
         >
-          {/* Placeholder for video */}
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "50%",
-                background: "rgba(255,255,255,0.1)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 20px",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-              }}
-            >
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="white">
-                <polygon points="5 3 19 12 5 21 5 3" />
-              </svg>
-            </div>
-            <p style={{ fontSize: "14px", opacity: 0.5 }}>
-              Resume Video Coming Soon
-            </p>
-          </div>
+          <video
+            controls
+            poster="/video-thumbnail.jpg"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          >
+            <source src="/resume.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </section>
 

@@ -185,10 +185,10 @@ export default function ContactPage() {
     });
 
     try {
-      // Use environment variable for backend URL if configured, otherwise use same-origin relative endpoint.
-     const endpoint = 'https://portfolio-backend-4pdi.onrender.com/api/contact';
+      // Use environment variable for backend URL, fallback to localhost for development
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
       
-      const response = await fetch(endpoint, {
+      const response = await fetch(`${backendUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
