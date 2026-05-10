@@ -21,6 +21,13 @@ const Footer = lazy(() => import('./components/Footer'));
 const FloatingCrystal = lazy(() => import('./components/Interactive3D').then(m => ({ default: m.FloatingCrystal })));
 const MusicPlayer = lazy(() => import('./components/MusicPlayer'));
 
+// Wrapper component that prevents GSAP/React conflicts
+const SafeSuspense = ({ children, fallback }) => (
+  <div style={{ display: 'contents' }}>
+    <Suspense fallback={fallback}>{children}</Suspense>
+  </div>
+);
+
 // Minimal loading fallback that reserves space without causing CLS
 const SectionFallback = ({ height = '100vh' }) => (
   <div style={{ minHeight: height, width: '100%' }} />
@@ -160,9 +167,9 @@ function HomePage() {
           zIndex: 1,
           pointerEvents: 'none'
         }}>
-          <Suspense fallback={null}>
+          <SafeSuspense fallback={null}>
             <TetrisCanvas />
-          </Suspense>
+          </SafeSuspense>
         </div>
 
         {/* Premium mobile background - shows only on mobile */}
@@ -266,9 +273,9 @@ function HomePage() {
 
         {/* 3D Interactive Elements - hidden on mobile - lazy loaded */}
         <div className="desktop-3d-element">
-          <Suspense fallback={null}>
+          <SafeSuspense fallback={null}>
             <FloatingCrystal size={100} position={{ right: '8%', top: '25%' }} />
-          </Suspense>
+          </SafeSuspense>
         </div>
 
         {/* Hero content */}
