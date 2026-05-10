@@ -712,7 +712,7 @@ export default function AboutPage() {
               background: "#000",
             }}
           >
-            <source src="/resume.mp4" type="video/mp4" />
+            <source src="/resume1.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
