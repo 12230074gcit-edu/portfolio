@@ -82,9 +82,9 @@ const AboutMe = () => {
   const handleButtonHover = () => {
     gsap.to(buttonRef.current, {
       scale: 1.05,
-      y: -2,
-      boxShadow: "0 15px 40px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.2)",
-      duration: 0.3,
+      y: -3,
+      boxShadow: "0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(255,255,255,0.3)",
+      duration: 0.4,
       ease: "power2.out",
     });
   };
@@ -93,8 +93,8 @@ const AboutMe = () => {
     gsap.to(buttonRef.current, {
       scale: 1,
       y: 0,
-      boxShadow: "0 8px 25px rgba(0,0,0,0.2)",
-      duration: 0.3,
+      boxShadow: "0 8px 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1)",
+      duration: 0.4,
       ease: "power2.out",
     });
   };
@@ -286,20 +286,33 @@ const AboutMe = () => {
             onMouseLeave={handleButtonLeave}
             onClick={handleButtonClick}
             style={{
-              padding: "16px 32px",
-              borderRadius: "14px",
+              padding: "18px 40px",
+              borderRadius: "50px",
               border: "none",
-              background: "#fff",
+              background: "linear-gradient(135deg, #fff 0%, #f0f0f0 100%)",
               color: "#080C72",
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: "14px",
               fontFamily: "'Montserrat', sans-serif",
               cursor: "pointer",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.2)",
-              letterSpacing: "1px",
+              boxShadow: "0 8px 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1)",
+              letterSpacing: "1.5px",
+              textTransform: "uppercase",
+              position: "relative",
+              overflow: "hidden",
             }}
           >
-            EXPLORE MORE
+            <span
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)",
+                backgroundSize: "200% 100%",
+                animation: "shimmer 3s infinite",
+                pointerEvents: "none",
+              }}
+            />
+            <span style={{ position: "relative", zIndex: 1 }}>Explore More</span>
           </button>
         </div>
       </div>
@@ -312,6 +325,10 @@ if (typeof document !== 'undefined' && !document.getElementById('about-me-respon
   const style = document.createElement('style');
   style.id = 'about-me-responsive';
   style.textContent = `
+    @keyframes shimmer {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
     @media (max-width: 1024px) {
       .about-me-section {
         padding: 80px 40px !important;

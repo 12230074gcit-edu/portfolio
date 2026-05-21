@@ -466,32 +466,30 @@ export default function ProjectsSection() {
                     position: "absolute",
                     bottom: "20px",
                     right: "20px",
-                    padding: "12px 24px",
-                    background: "linear-gradient(135deg, #080C72 0%, #1a1f8f 50%, #080C72 100%)",
-                    backgroundSize: "200% 200%",
-                    borderRadius: "30px",
+                    padding: "14px 28px",
+                    background: "linear-gradient(135deg, #fff 0%, #f0f0f0 100%)",
+                    borderRadius: "50px",
                     fontSize: "13px",
                     fontWeight: 700,
-                    color: "#fff",
+                    color: "#080C72",
                     fontFamily: "'Montserrat', sans-serif",
                     display: "flex",
                     alignItems: "center",
                     gap: "10px",
-                    boxShadow: "0 8px 25px rgba(8, 12, 114, 0.4), 0 4px 10px rgba(0,0,0,0.2)",
+                    boxShadow: "0 8px 25px rgba(0,0,0,0.15), 0 0 20px rgba(255,255,255,0.1)",
                     transition: "all 0.3s ease",
                     cursor: "pointer",
                     textTransform: "uppercase",
                     letterSpacing: "1px",
+                    overflow: "hidden",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-3px) scale(1.05)";
-                    e.currentTarget.style.boxShadow = "0 12px 35px rgba(8, 12, 114, 0.5), 0 6px 15px rgba(0,0,0,0.3)";
-                    e.currentTarget.style.backgroundPosition = "100% 100%";
+                    e.currentTarget.style.boxShadow = "0 15px 40px rgba(0,0,0,0.2), 0 0 30px rgba(255,255,255,0.2)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0) scale(1)";
-                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(8, 12, 114, 0.4), 0 4px 10px rgba(0,0,0,0.2)";
-                    e.currentTarget.style.backgroundPosition = "0% 0%";
+                    e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.15), 0 0 20px rgba(255,255,255,0.1)";
                   }}
                 >
                   View Project

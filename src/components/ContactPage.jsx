@@ -629,7 +629,7 @@ export default function ContactPage() {
                 gsap.to(e.currentTarget, {
                   scale: 1.02,
                   y: -3,
-                  boxShadow: '0 20px 60px rgba(100,150,255,0.4), 0 0 80px rgba(100,150,255,0.2)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(255,255,255,0.3)',
                   duration: 0.4,
                   ease: 'power2.out'
                 });
@@ -638,36 +638,37 @@ export default function ContactPage() {
                 gsap.to(e.currentTarget, {
                   scale: 1,
                   y: 0,
-                  boxShadow: '0 10px 40px rgba(100,150,255,0.2)',
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1)',
                   duration: 0.4,
                 });
               }}
               style={{
                 width: '100%',
-                padding: '22px 40px',
-                borderRadius: '16px',
+                padding: '20px 48px',
+                borderRadius: '50px',
                 border: 'none',
-                background: 'linear-gradient(135deg, rgba(100,150,255,0.9) 0%, rgba(80,100,200,0.9) 100%)',
-                color: '#fff',
+                background: 'linear-gradient(135deg, #fff 0%, #f0f0f0 100%)',
+                color: '#080C72',
                 fontWeight: 700,
-                fontSize: '16px',
+                fontSize: '15px',
                 fontFamily: "'Montserrat', sans-serif",
                 cursor: isSubmitting ? 'wait' : 'pointer',
-                boxShadow: '0 10px 40px rgba(100,150,255,0.2)',
-                letterSpacing: '1px',
+                boxShadow: '0 8px 30px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.1)',
+                letterSpacing: '1.5px',
                 position: 'relative',
                 overflow: 'hidden',
                 transition: 'opacity 0.3s ease',
                 opacity: isSubmitting ? 0.7 : 1,
+                textTransform: 'uppercase',
               }}
             >
               <span
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)',
+                  background: 'linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.6) 50%, transparent 70%)',
                   backgroundSize: '200% 100%',
-                  animation: 'shimmer 2s infinite',
+                  animation: 'shimmer 3s infinite',
                 }}
               />
               <span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px' }}>
